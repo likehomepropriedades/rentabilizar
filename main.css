@@ -1,0 +1,1117 @@
+/* Estilo básico para a página */
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+html, body {
+  font-family: 'Titillium Web', sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+header {
+  background-color: #000;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+a {
+  color: #ffffff;        
+  text-decoration: none; 
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #cccccc;     
+}
+
+#logo {
+  margin-left: 25px;
+}
+
+nav {
+  margin-right: 25px;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.menu li {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Ajustes para responsividade do header */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+  }
+
+  #logo {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+
+  nav {
+    margin: 0;
+  }
+
+  .menu {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .menu li {
+    font-size: 1rem;
+  }
+}
+
+
+main {
+  padding: 0px;
+}
+
+#container_img_principal {
+  height: 70vh;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+#img_principal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1);
+  transition: transform 2s ease;
+  transform-origin: center center;
+  display: block;
+}
+
+#sobreposicao {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-image: url('img/fundo-txt-img-principal.svg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  text-align: left;
+  padding: 2rem;
+  box-sizing: border-box;
+  color: #000;
+  z-index: 1;
+}
+
+#sobreposicao h2 {
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  position: relative;
+  z-index: 1;
+  margin: 0.5rem 0;
+  max-width: 90%;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 768px) {
+  #sobreposicao {
+    width: 100%;
+    height: 35vh; /* metade da altura de 70vh da imagem principal */
+    top: auto;
+    bottom: 0; /* fixa na parte inferior da imagem */
+    padding: 1.5rem 1rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  #sobreposicao h2 {
+    font-size: 6vw;
+    max-width: 100%;
+  }
+}
+
+/* Aplica o zoom na imagem ao carregar a página */
+body.loaded #img_principal {
+  transform: scale(1.5); /* Nível de zoom desejado */
+}
+
+#sobre, #vantagens, #servicos, #rentabilizar {
+  scroll-margin-top: 90px; /* ajuste conforme a altura do header */
+}
+
+#sobre{
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+#container_sobre_txt {
+  flex: 1 1 300px;
+  height: auto;
+  font-size: 1.1rem;
+  
+}
+
+#container_sobre {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap; /* permite quebra em telas pequenas */
+  justify-content: center;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#subtitulo_sobre{
+  font-size:xx-large;
+  text-align: center;
+  padding-top: 10px;
+  color: #9f5c39;
+}
+
+.img-container-sobre {
+  flex: 1 1 300px;
+  max-width: 600px;
+  aspect-ratio: 16 / 9;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.img-container-sobre img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#img_e_btn_sobre{
+  text-align: right;
+ 
+}
+.btn-link-sobre {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  margin-top: -2%;
+  margin-right: 10%;
+  background-color: #f0f0f0;
+  color: #000000;
+  border-radius: 28px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-link-sobre:hover {
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.icon-fone {
+  width: 30px;
+  margin-left: -2px;
+}
+
+/* Adapta o layout em telas menores */
+@media (max-width: 768px) {
+  #container_sobre {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  #container_sobre_txt {
+    flex: 1 1 200px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .img-container-sobre {
+  flex: 1 1 600px;
+  max-width: 300px;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.img-container-sobre img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+}
+#vantagens{
+ background-color: #eceae6;
+}
+
+.tit-vantangem{
+  padding-top: 3%;
+  padding-left: 5%;
+  padding-bottom: 3%;
+  text-transform: uppercase;
+}
+
+.subtit_vantagem{
+  text-align: center;
+}
+
+#parte-vantagens {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-bottom: 5%;
+}
+
+#unidade-vantagem {
+  width: 28%;
+  margin: 3px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Responsivo: 2 colunas em telas menores */
+@media (max-width: 768px) {
+  #unidade-vantagem {
+    width: 48%; /* duas colunas */
+  }
+}
+
+/* Responsivo: 1 coluna em telas muito pequenas */
+@media (max-width: 480px) {
+  #unidade-vantagem {
+    width: 100%;
+  }
+}
+
+#icon-vantagem{
+  text-align: center;
+}
+
+#parte-acesso-plataforma{
+  display: flex;
+  align-items: center; /* Alinha verticalmente */
+  justify-content: center; /* Opcional: alinha horizontalmente */
+  gap: 2rem; /* Espaço entre imagem e texto */
+  flex-wrap: wrap; /* Garante responsividade */
+  flex-direction: row;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  background-color: #ffff;
+}
+
+#container-imgs-acesso {
+  position: relative;
+  width: 40%;
+  max-width: 600px;
+  min-width: 280px;
+  height: auto;
+}
+
+#img-acesso-fundo {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+#img-acesso-pc {
+  position: absolute;
+  top: 50%;
+  right: -15%; /* Faz a imagem "vazar" para a direita */
+  transform: translateY(-50%);
+  width: 40%;
+  max-width: 200px;
+  z-index: 1;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+  #container-imgs-acesso {
+    width: 80%;
+  }
+
+  #img-acesso-pc {
+    width: 50%;
+    right: -10%;
+  }
+}
+
+@media (max-width: 480px) {
+  #container-imgs-acesso {
+    width: 95%;
+  }
+
+  #img-acesso-pc {
+    width: 60%;
+    right: -8%;
+  }
+}
+
+#container-texto-acesso{
+  margin-left: 10%;
+  flex: 1; /* Ocupa o espaço restante */
+  min-width: 250px; /* Previne quebra em telas pequenas */
+}
+
+#subtitulo_acesso{
+  font-size: xx-large;
+  text-align: center;
+}
+
+#txt_acesso{
+  font-size: large;
+  text-align: center;
+}
+
+#parte-nossos-numeros {
+  position: relative;
+  background-image: url('img/img-fundo-numeros.jpg');
+  background-size: cover;
+  background-position: top center; /* garante que a imagem seja exibida do topo para baixo */
+  width: 100%; 
+  height: 70%; 
+  padding-bottom: 3%;
+}
+
+#parte-nossos-numeros::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.5); /* transparência desejada sobre a imagem */
+  z-index: 0; /* garante que fique atrás do conteúdo da div */
+}
+
+#parte-nossos-numeros > * {
+  position: relative;
+  z-index: 1; /* garante que o conteúdo fique acima da camada de transparência */
+}
+
+#titulo_numeros {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  max-width: 90%;
+  text-transform: uppercase;
+  padding: 5%;
+}
+
+.btn-link-numeros {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  margin-top: -2%;
+  margin-left: 22.5%;
+  background-color: #000000;
+  color: #f0f0f0;
+  border-radius: 28px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-link-numeros:hover {
+  background-color: #f0f0f0;
+  color: #000000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#container_itens_nossos_numeros{
+  display: flex;
+  flex-direction: row;
+  align-items: center; /* Alinha verticalmente */
+  justify-content: left; 
+  gap: 2rem; /* Espaço entre imagem e texto */
+  flex-wrap: wrap; /* Garante responsividade */
+  background-color: rgba(255, 255, 255, 0.3); /* fundo branco com 30% de transparência */
+  border-top-right-radius: 15px; /* cantos superiores e inferiores direitos arredondados */
+  border-bottom-right-radius: 15px;
+  width: 55%; 
+  padding: 3%;
+  text-align: center;
+}
+
+
+
+@media (max-width: 1020px) {
+  #container_itens_nossos_numeros {
+    width: 85%;
+    flex-direction: column;
+    justify-content: center; 
+  }
+}
+
+@media (max-width: 768px) {
+  #container_itens_nossos_numeros {
+    width: 85%;
+    flex-direction: column;
+    justify-content: center; 
+  }
+}
+
+.icon-numeros{
+  height: 80px;
+}
+
+.txt-numeros{
+  padding: 5%;
+}
+
+#servicos{
+  width: 100%;
+}
+
+#titulo_servicos {
+  text-align: right;
+  text-transform: uppercase;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 2%;
+}
+
+#container_servicos {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* já ajuda, mas vamos ajustar melhor */
+  gap: 20px;
+}
+
+#descricao_servicos {
+  width: 50%;
+  text-align: left;           
+}
+
+.item_servico {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* "left" não é válido aqui */
+  padding-left: 15%;
+  position: relative; /* Necessário para a linha no bottom */
+  padding-bottom: 6px; /* Espaço para a linha */
+}
+
+.item_servico::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 85%;
+  height: 4px;
+  background-color: black;
+  margin-left: 0;
+}
+
+#foto_servicos {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end; /* alinhamento à direita */
+  width: 400px;
+}
+
+
+#foto_servicos img {
+  max-width: 100%;
+  height: auto;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  display: block;
+}
+/* Responsividade para telas menores */@media (max-width: 780px) {
+  #titulo_servicos {
+    text-align: left;
+    text-transform: uppercase;
+    padding: 5%;
+  }
+
+  #container_servicos {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+  }
+
+  #foto_servicos {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  #foto_servicos img {
+    width: 50%;
+    border-radius: 15px; /* Todos os cantos arredondados */
+    margin-bottom: 10px;
+  }
+
+  #descricao_servicos {
+    width: 100%;
+  }
+
+  .item_servico{
+    padding-left: 5%;
+  }
+}
+
+
+
+#rentabilizar {
+  background-image: url('img/img-quero-rentabilizar-back.jpg');
+  padding-top: 5%;
+  margin-top: 5%;
+  display: flex;
+  flex-direction: row;
+  color: #f4f4f4;
+  justify-content: space-between;
+  align-items: center; /* Alinha verticalmente os filhos */
+}
+
+#subtitulo_formulario {
+  font-size: xx-large;
+  width: 25%;
+  text-align: left;
+  margin-left: 10%
+}
+
+.form-container {
+  width: 50%;
+  margin-left: auto; /* Alinha à direita */
+  background: rgba(0, 0, 0, 0.8); 
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+form fieldset {
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+legend {
+  font-weight: bold;
+  padding: 0 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border: 1px solid #fff;        /* contorno branco */
+  border-radius: 4px;
+  background-color: transparent; /* fundo transparente */
+  color: #fff;                   /* texto branco */
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #ccc; /* cor de placeholder mais clara */
+}
+
+
+.checkbox-group {
+  margin-left: 20px;
+  margin-bottom: 12px;
+}
+
+/* Agrupamento de checkboxes ou radios em linha com quebra */
+.checkbox-group,
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px; /* espaço entre os itens */
+  margin-bottom: 16px;
+}
+
+.checkbox-group label,
+.radio-group label,
+fieldset label {
+  flex: 1 1 auto; /* permite ajustar a largura e quebrar se necessário */
+  white-space: nowrap;
+}
+
+/* Esconde os checkboxes e radios padrão */
+input[type="checkbox"],
+input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  margin: 0 8px 0 0;
+  font: inherit;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #fff;
+  border-radius: 4px;
+  display: inline-grid;
+  place-content: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* Radio específico: arredondado */
+input[type="radio"] {
+  border-radius: 50%;
+}
+
+/* Marcado: preenchimento branco */
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: #fff;
+  border-color: #fff;
+}
+
+/* Marca interna (✓ ou bolinha para radio) */
+input[type="checkbox"]:checked::before {
+  content: "✓";
+  color: #000;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+}
+
+input[type="radio"]:checked::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #000;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+}
+
+/* Ajustes para o label que acompanha */
+label {
+  color: #f4f4f4;
+  font-size: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.radio-inline-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+.radio-inline-group label {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #fff;
+  appearance: none;
+  cursor: pointer;
+}
+
+select:hover {
+  background-color: rgba(200, 200, 200, 0.2); /* leve cinza ao passar o mouse */
+}
+
+select option {
+  background-color: #000;
+  color: #fff;
+}
+
+.grid-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.grid-campos label {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ajustes visuais */
+.grid-campos input,
+.grid-campos select,
+.grid-campos textarea {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+
+.grid-campos textarea[name="outros"] {
+  width: 100%;
+  height: 100%;
+  resize: vertical;
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  padding: 8px;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Estiliza o label do textarea */
+.grid-campos label:has(textarea[name="outros"]) {
+  grid-column: span 1; /* ou simplesmente remova essa regra */
+}
+
+.grid-campos textarea[name="outros"] {
+  height: 35px; /* igual ao dos inputs */
+  resize: none; /* impede redimensionamento manual */
+}
+
+.btn-wrapper {
+  margin-top: -1vh;        /* 80% da altura da tela */
+  text-align: center;      /* Centraliza o botão horizontalmente */
+}
+
+.btn-submit {
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  border-radius: 28px;
+  padding: 15px 40px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #000000;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Grupo de dois campos em linha */
+.dupla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Oculta labels e usa placeholders */
+.dupla label,
+fieldset label.inline {
+  position: relative;
+  display: block;
+}
+
+.dupla label span,
+fieldset label.inline span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+footer {
+  background-color: #000000;
+  text-align: center;
+  padding: 0px;
+  width: 100%;
+  bottom: 0;
+  color: #ffffff;
+}
+#container-footer{
+   display: flex;
+  flex-direction: row;     /* Itens em linha */
+  align-items: center;     /* Alinhamento vertical ao centro */
+  justify-content: space-around; /* Ou use space-between / center conforme desejar */
+  flex-wrap: wrap;         /* Permite quebra em telas menores */
+  padding: 20px;
+  gap: 20px;
+}
+
+#logo-footer img,
+#localizacao img,
+#contato-redes img {
+  max-height: 50px;
+}
+#localizacao{
+    display: flex;
+  align-items: center; /* Alinha texto e ícone verticalmente */
+  gap: 10px;
+}
+#endereco {
+  text-align: right;
+}
+#endereco p {
+  margin: 0;
+  line-height: 1.2;
+  font-size: 14px; /* ou outro tamanho desejado */
+}
+
+#contato-redes {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+#sitemap {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+#sitemap ul {
+  list-style: none;         /* remove as bolinhas */
+  padding: 0;
+  margin: 0;
+  text-align: right;        /* alinha os links à direita */
+}
+
+#sitemap li {
+  margin-bottom: 8px;       /* espaçamento entre os itens */
+}
+
+#sitemap a {
+  color: #ffffff;           /* branco puro */
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-block;    /* garante comportamento de bloco para alinhamento */
+}
+
+#sitemap a:hover,
+#sitemap a:focus {
+  color: #d1d1d1;
+  text-decoration: none;
+}
+
+#sitemap a:visited {
+  color: #ffffff;
+}
+/* Modal - fundo escuro */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 9999; 
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Conteúdo da Modal */
+.modal-content {
+  background-color: #111;
+  color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  position: relative;
+}
+
+/* Botão de fechar */
+.close-modal {
+  color: #fff;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-modal:hover {
+  color: #ff0000;
+}
+
+
+/* Font Weights Utilitários */
+.titillium-web-extralight { font-weight: 200; }
+.titillium-web-light { font-weight: 300; }
+.titillium-web-regular { font-weight: 400; }
+.titillium-web-semibold { font-weight: 600; }
+.titillium-web-bold { font-weight: 700; }
+.titillium-web-black { font-weight: 900; }
+
+.titillium-web-extralight-italic { font-weight: 200; font-style: italic; }
+.titillium-web-light-italic { font-weight: 300; font-style: italic; }
+.titillium-web-regular-italic { font-weight: 400; font-style: italic; }
+.titillium-web-semibold-italic { font-weight: 600; font-style: italic; }
+.titillium-web-bold-italic { font-weight: 700; font-style: italic; }
+
+/* =========================================================
+   ≥1201 px  ➜ layout original (flex‑row, 25 % + 50 %)
+   ========================================================= */
+
+/* ---------------------------------------------------------
+   ≤1200 px  ➜ desktop médio / notebook
+   --------------------------------------------------------- */
+@media (max-width: 1200px) {
+  /* empilha a coluna de texto e o formulário */
+  #rentabilizar {
+    flex-direction: column;
+    text-align: center;
+    padding: 6% 5% 8%;
+  }
+
+  /* subtítulo e formulário centralizados e mais largos */
+  #subtitulo_formulario,
+  .form-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+
+  #subtitulo_formulario {
+    margin-left: 0;         /* zera recuo */
+    text-align: center;     /* centraliza texto */
+    font-size: 2rem;        /* levemente menor */
+  }
+
+  /* evita que o botão fique longe demais quando empilhado */
+  .btn-wrapper {
+    margin-top: 6vh;
+  }
+}
+
+/* ---------------------------------------------------------
+   ≤992 px  ➜ tablets
+   --------------------------------------------------------- */
+@media (max-width: 992px) {
+  /* fields em uma coluna */
+  .dupla,
+  .grid-campos {
+    grid-template-columns: 1fr;
+  }
+
+  /* diminui paddings e bordas para caber melhor */
+  .form-container {
+    padding: 24px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  textarea,
+  select {
+    padding: 8px;
+    font-size: 0.95rem;
+  }
+
+  legend {
+    font-size: 1rem;
+  }
+
+  /* radios/checkboxes: alinhar em coluna quando necessário */
+  .radio-inline-group,
+  .checkbox-group,
+  .radio-group {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-wrapper {
+    margin-top: 48px;
+  }
+}
+
+/* ---------------------------------------------------------
+   ≤600 px  ➜ smartphones
+   --------------------------------------------------------- */
+@media (max-width: 600px) {
+  html {
+    font-size: 14px;        /* tipografia geral menor */
+  }
+
+  #rentabilizar {
+    padding-top: 10%;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 20px 16px;
+  }
+
+  /* títulos em uma linha só e centrados */
+  #subtitulo_formulario h2 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+
+  /* botão mais compacto */
+  .btn-submit {
+    font-size: 1rem;
+    padding: 12px 28px;
+  }
+
+  /* espaço menor para o botão; evita que fique fora da viewport */
+  .btn-wrapper {
+    margin-top: 32px;
+  }
+
+  /* Responsivo: centraliza os links em telas pequenas */
+  @media (max-width: 600px) {
+    #sitemap ul {
+      text-align: center;
+    }
+  }
+}
