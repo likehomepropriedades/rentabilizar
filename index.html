@@ -356,83 +356,9 @@
     </div>
   </footer>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbybvCUTr2jfwFrYiVERTsJKXOvP_1XOI0Uay7YcygCip9G4mEVfo90BiH7SBu-cxI76/exec";
-
-    fetch(API_URL)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('texto_img_principal').innerText = data.texto_img_principal || 'Sem texto';
-        document.getElementById('texto_sobre').innerText = data.texto_sobre || 'Sem conteúdo';
-        document.getElementById('subtitulo_sobre').innerText = data.subtitulo_sobre || 'Sem subtitulo_sobre'; 
-        document.getElementById('titulo_vantagens').innerText = data.titulo_vantagens || 'Sem titulo_vantagens';
-        document.getElementById('subtitulo_vantagem_01').innerText = data.subtitulo_vantagem_01 || 'Sem subtitulo_vantagem_01'; 
-        document.getElementById('subtitulo_vantagem_02').innerText = data.subtitulo_vantagem_02 || 'Sem subtitulo_vantagem_02'; 
-        document.getElementById('subtitulo_vantagem_03').innerText = data.subtitulo_vantagem_03 || 'Sem subtitulo_vantagem_03';
-        document.getElementById('subtitulo_vantagem_04').innerText = data.subtitulo_vantagem_04 || 'Sem subtitulo_vantagem_04';
-        document.getElementById('subtitulo_vantagem_05').innerText = data.subtitulo_vantagem_05 || 'Sem subtitulo_vantagem_05';
-        document.getElementById('subtitulo_vantagem_06').innerText = data.subtitulo_vantagem_06 || 'Sem subtitulo_vantagem_06';
-        document.getElementById('txt_vantagem_01').innerText = data.txt_vantagem_01 || 'Sem txt_vantagem_01';
-        document.getElementById('txt_vantagem_02').innerText = data.txt_vantagem_02 || 'Sem txt_vantagem_02';
-        document.getElementById('txt_vantagem_03').innerText = data.txt_vantagem_03 || 'Sem txt_vantagem_03';
-        document.getElementById('txt_vantagem_04').innerText = data.txt_vantagem_04 || 'Sem txt_vantagem_04';
-        document.getElementById('txt_vantagem_05').innerText = data.txt_vantagem_05 || 'Sem txt_vantagem_05';
-        document.getElementById('txt_vantagem_06').innerText = data.txt_vantagem_06 || 'Sem txt_vantagem_06';
-        document.getElementById('subtitulo_acesso').innerText = data.subtitulo_acesso || 'Sem subtitulo_acesso';  
-        document.getElementById('txt_acesso').innerText = data.txt_acesso || 'Sem txt_acesso';
-        document.getElementById('titulo_numeros').innerText = data.titulo_numeros || 'Sem titulo_numeros';
-        document.getElementById('txt_item_01').innerText = data.txt_item_01 || 'Sem txt_item_01';
-        document.getElementById('txt_item_02').innerText = data.txt_item_02 || 'Sem txt_item_02';
-        document.getElementById('txt_item_03').innerText = data.txt_item_03 || 'Sem txt_item_03';
-        document.getElementById('txt_item_04').innerText = data.txt_item_04 || 'Sem txt_item_04';
-        document.getElementById('txt_item_05').innerText = data.txt_item_05 || 'Sem txt_item_05';
-        document.getElementById('titulo_servicos').innerText = data.titulo_servicos || 'Sem titulo_servicos';
-        document.getElementById('subtitulo_txt_servicos01').innerText = data.subtitulo_txt_servicos01 || 'Sem subtitulo_txt_servicos01';
-        document.getElementById('subtitulo_txt_servicos02').innerText = data.subtitulo_txt_servicos02 || 'Sem subtitulo_txt_servicos02';
-        document.getElementById('subtitulo_txt_servicos03').innerText = data.subtitulo_txt_servicos03 || 'Sem subtitulo_txt_servicos03';
-        document.getElementById('subtitulo_txt_servicos04').innerText = data.subtitulo_txt_servicos04 || 'Sem subtitulo_txt_servicos04';
-        document.getElementById('subtitulo_txt_servicos05').innerText = data.subtitulo_txt_servicos05 || 'Sem subtitulo_txt_servicos05';
-        document.getElementById('txt_servicos01').innerText = data.txt_servicos01 || 'Sem txt_servicos01';
-        document.getElementById('txt_servicos02').innerText = data.txt_servicos02 || 'Sem txt_servicos02';
-        document.getElementById('txt_servicos03').innerText = data.txt_servicos03 || 'Sem txt_servicos03';
-        document.getElementById('txt_servicos04').innerText = data.txt_servicos04 || 'Sem txt_servicos04';
-        document.getElementById('txt_servicos05').innerText = data.txt_servicos05 || 'Sem txt_servicos05';
-        document.getElementById('subtitulo_formulario').innerText = data.subtitulo_formulario || 'Sem subtitulo_formulario';
-        
-      
-       // if (data.img_principal) {
-        //  document.getElementById('img_principal').src = data.img_principal;
-       // }
-   
-      })
-      .catch(error => {
-        console.error('Erro ao carregar dados:', error);
-      });
-
-    // Adiciona a classe "loaded" ao body após o carregamento do DOM
-    document.addEventListener('DOMContentLoaded', () => {
-      document.body.classList.add('loaded');
-    });
-
-    // validações do formulário 
-      const simRadio = document.getElementById('anuncio_sim');
-      const naoRadio = document.getElementById('anuncio_nao');
-      const checkboxGroup = document.getElementById('plataformas_group');
-
-      function toggleCheckboxGroup() {
-        if (simRadio.checked) {
-          checkboxGroup.style.display = 'flex';
-        } else {
-          checkboxGroup.style.display = 'none';
-        }
-      }
-
-      simRadio.addEventListener('change', toggleCheckboxGroup);
-      naoRadio.addEventListener('change', toggleCheckboxGroup);
-
-      // Executa no carregamento da página
-      toggleCheckboxGroup();
-  </script>
+   <!-- Bibliotecas -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="js/script.js" defer></script>
 
   <!-- Modal Termos de Uso -->
   <div id="modal-termos" class="modal">
@@ -559,6 +485,25 @@
         }
       });
     });
+
+    // validações do formulário 
+      const simRadio = document.getElementById('anuncio_sim');
+      const naoRadio = document.getElementById('anuncio_nao');
+      const checkboxGroup = document.getElementById('plataformas_group');
+
+      function toggleCheckboxGroup() {
+        if (simRadio.checked) {
+          checkboxGroup.style.display = 'flex';
+        } else {
+          checkboxGroup.style.display = 'none';
+        }
+      }
+
+      simRadio.addEventListener('change', toggleCheckboxGroup);
+      naoRadio.addEventListener('change', toggleCheckboxGroup);
+
+      // Executa no carregamento da página
+      toggleCheckboxGroup();
 </script>
 
 </body>
