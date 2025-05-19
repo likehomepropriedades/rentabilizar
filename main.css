@@ -43,6 +43,7 @@ a:hover {
 
 nav {
   margin-right: 25px;
+  padding-right: 25px;
 }
 
 .menu {
@@ -50,7 +51,6 @@ nav {
   display: flex;
   gap: 1rem;
   margin: 0;
-  padding: 0;
 }
 
 .menu li {
