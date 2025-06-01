@@ -296,6 +296,7 @@ body.loaded #img_principal {
   margin: 3px;
   padding: 10px;
   box-sizing: border-box;
+  text-align: center;
 }
 
 /* Responsivo: 2 colunas em telas menores */
