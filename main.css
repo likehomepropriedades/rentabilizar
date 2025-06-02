@@ -544,13 +544,13 @@ body.loaded #img_principal {
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end; /* alinhamento à direita */
-  width: 30%;
+  
 }
 
 
   #foto_servicos img {
     width: 50vw;               /* 50% da largura da viewport */
-    height: 300px;             /* altura fixa */
+    height: 700px;             /* altura fixa */
     object-fit: cover;         /* evita distorções e preenche mantendo proporção */
     border-top-left-radius: 15px;
     border-bottom-left-radius: 15px;
