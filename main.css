@@ -575,9 +575,12 @@ body.loaded #img_principal {
   }
 
   #foto_servicos img {
-    width: 50%;
-    border-radius: 15px; /* Todos os cantos arredondados */
-    margin-bottom: 10px;
+    width: 50vw;               /* 50% da largura da viewport */
+    height: 300px;             /* altura fixa */
+    object-fit: cover;         /* evita distorções e preenche mantendo proporção */
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    display: block;
   }
 
   #descricao_servicos {
