@@ -13,30 +13,50 @@
 </head>
 <body>
   <h1>Administração de Conteúdo</h1>
-  <button onclick="carregarCSV()">🔄 Carregar conteúdo do GitHub</button>
+  <button onclick="carregarCSV()">🔄 Carregar conteúdo</button>
   <div id="formArea"></div>
   <button class="btn" onclick="salvarNoGitHub()">💾 Salvar no GitHub</button>
 
   <script>
-   const backendURL = "https://script.google.com/macros/s/AKfycbzey5q-iqv6DwmL4sAV30fQ5c0UL9RDThEuAHAZvJUO72VwivMQ4nOGSioBR-ApPPfEBA/exec";
+    const backendURL = "https://script.google.com/macros/s/AKfycbzey5q-iqv6DwmL4sAV30fQ5c0UL9RDThEuAHAZvJUO72VwivMQ4nOGSioBR-ApPPfEBA/exec";
+    let dados = [];
+    let shaAtual = "";
+
+    async function checarUsuario() {
+      const res = await fetch(backendURL + "?user=true");
+      const json = await res.json();
+      if (json.error) {
+        document.body.innerHTML = "<h2>Acesso negado</h2><p>" + json.error + "</p>";
+        throw new Error("Usuário não autorizado");
+      }
+      console.log("Usuário autenticado:", json.email);
+    }
 
     async function carregarCSV() {
-      const url = `https://api.github.com/repos/${usuario}/${repositorio}/contents/${caminhoCSV}?ref=${branch}`;
-      const resposta = await fetch(url, {
-        headers: { Authorization: `token ${token}` }
-      });
-      const conteudo = await resposta.json();
+      try {
+        await checarUsuario();
 
-      shaAtual = conteudo.sha;
+        const resposta = await fetch(backendURL);
+        const conteudo = await resposta.json();
 
-      const csv = atob(conteudo.content);
-      const linhas = csv.trim().split("\n").slice(1); // remove cabeçalho
-      dados = linhas.map(linha => {
-        const [chave, ...valorPartes] = linha.split(",");
-        return { chave, valor: valorPartes.join(",") };
-      });
+        if (conteudo.error) {
+          alert("Erro ao carregar: " + conteudo.error);
+          return;
+        }
 
-      renderizarFormulario();
+        shaAtual = conteudo.sha;
+
+        const linhas = conteudo.csv.trim().split("\n").slice(1); // remove cabeçalho
+        dados = linhas.map(linha => {
+          const [chave, ...valorPartes] = linha.split(",");
+          const valor = valorPartes.join(",").replace(/^"(.*)"$/, "$1").replace(/""/g, '"');
+          return { chave, valor };
+        });
+
+        renderizarFormulario();
+      } catch (e) {
+        console.error("Erro ao carregar CSV:", e);
+      }
     }
 
     function renderizarFormulario() {
@@ -59,24 +79,27 @@
     }
 
     async function salvarNoGitHub() {
-  const csvNovo = "chave,valor\n" + dados.map(d => `${d.chave},"${d.valor.replace(/"/g, '""')}"`).join("\n");
+      const csvNovo = "chave,valor\n" + dados
+        .map(d => `${d.chave},"${d.valor.replace(/"/g, '""')}"`)
+        .join("\n");
 
-  const resposta = await fetch(backendURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
-  });
+      const resposta = await fetch(backendURL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
+      });
 
-  const resultado = await resposta.json();
-  if (resposta.ok) {
-    alert("Atualização realizada com sucesso!");
-    carregarCSV();
-  } else {
-    alert("Erro: " + resultado.error);
-  }
-}
+      const resultado = await resposta.json();
+      if (resposta.ok) {
+        alert("Atualização realizada com sucesso!");
+        carregarCSV();
+      } else {
+        alert("Erro: " + resultado.error);
+      }
+    }
 
-    
+    // Carregar automaticamente ao abrir
+    window.onload = carregarCSV;
   </script>
 </body>
 </html>
