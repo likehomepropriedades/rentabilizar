@@ -544,7 +544,7 @@ body.loaded #img_principal {
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end; /* alinhamento à direita */
-  width: 100%;
+  width: 60%;
 }
 
 
