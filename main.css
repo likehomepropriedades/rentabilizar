@@ -548,13 +548,16 @@ body.loaded #img_principal {
 }
 
 
-#foto_servicos img {
-  max-width: 100%;
-  height: auto;
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  display: block;
-}
+  #foto_servicos img {
+    width: 50vw;               /* 50% da largura da viewport */
+    height: 300px;             /* altura fixa */
+    object-fit: cover;         /* evita distorções e preenche mantendo proporção */
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    display: block;
+  }
+
+
 /* Responsividade para telas menores */@media (max-width: 780px) {
   #titulo_servicos {
     text-align: left;
@@ -568,20 +571,11 @@ body.loaded #img_principal {
     text-align: center;
   }
 
-  #foto_servicos {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  #foto_servicos img {
-    width: 50vw;               /* 50% da largura da viewport */
-    height: 300px;             /* altura fixa */
-    object-fit: cover;         /* evita distorções e preenche mantendo proporção */
-    border-top-left-radius: 15px;
-    border-bottom-left-radius: 15px;
-    display: block;
-  }
+    #foto_servicos {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
 
   #descricao_servicos {
     width: 100%;
