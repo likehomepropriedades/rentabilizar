@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Admin - Conteúdo LikeHome</title>
+  <link rel="icon" href="data:,">
   <style>
     body { font-family: Arial, sans-serif; padding: 2rem; }
     input, textarea { width: 100%; margin-bottom: 10px; }
@@ -23,10 +24,12 @@
     let shaAtual = "";
 
     async function checarUsuario() {
-      const res = await fetch(backendURL + "?user=true");
+      const res = await fetch(backendURL + "?user=true", {
+        credentials: "include"
+      });
       const json = await res.json();
       if (json.error) {
-        document.body.innerHTML = "<h2>Acesso negado</h2><p>" + json.error + "</p>";
+        document.body.innerHTML = `<h2>Acesso negado</h2><p>${json.error}</p>`;
         throw new Error("Usuário não autorizado");
       }
       console.log("Usuário autenticado:", json.email);
@@ -36,7 +39,9 @@
       try {
         await checarUsuario();
 
-        const resposta = await fetch(backendURL);
+        const resposta = await fetch(backendURL, {
+          credentials: "include"
+        });
         const conteudo = await resposta.json();
 
         if (conteudo.error) {
@@ -46,7 +51,7 @@
 
         shaAtual = conteudo.sha;
 
-        const linhas = conteudo.csv.trim().split("\n").slice(1); // remove cabeçalho
+        const linhas = conteudo.csv.trim().split("\n").slice(1);
         dados = linhas.map(linha => {
           const [chave, ...valorPartes] = linha.split(",");
           const valor = valorPartes.join(",").replace(/^"(.*)"$/, "$1").replace(/""/g, '"');
@@ -86,6 +91,7 @@
       const resposta = await fetch(backendURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
       });
 
@@ -98,7 +104,6 @@
       }
     }
 
-    // Carregar automaticamente ao abrir
     window.onload = carregarCSV;
   </script>
 </body>
