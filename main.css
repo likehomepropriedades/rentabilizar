@@ -511,7 +511,7 @@ body.loaded #img_principal {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between; /* já ajuda, mas vamos ajustar melhor */
+  justify-content: space-between; 
   gap: 20px;
 }
 
@@ -544,7 +544,7 @@ body.loaded #img_principal {
   flex-shrink: 0;
   display: flex;
   justify-content: flex-end; /* alinhamento à direita */
-  width: 400px;
+  width: 100%;
 }
 
 
@@ -1115,4 +1115,8 @@ footer {
       text-align: center;
     }
   }
+    #foto_servicos {
+      width: 50%;
+    }
+
 }
