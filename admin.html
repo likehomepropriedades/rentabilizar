@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin - Conteúdo LikeHome</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; }
+    input, textarea { width: 100%; margin-bottom: 10px; }
+    textarea { height: 80px; }
+    .item { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; }
+    .btn { padding: 10px 20px; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Administração de Conteúdo</h1>
+  <button onclick="carregarCSV()">🔄 Carregar conteúdo do GitHub</button>
+  <div id="formArea"></div>
+  <button class="btn" onclick="salvarNoGitHub()">💾 Salvar no GitHub</button>
+
+  <script>
+   const backendURL = "https://script.google.com/macros/s/AKfycbzey5q-iqv6DwmL4sAV30fQ5c0UL9RDThEuAHAZvJUO72VwivMQ4nOGSioBR-ApPPfEBA/exec";
+
+    async function carregarCSV() {
+      const url = `https://api.github.com/repos/${usuario}/${repositorio}/contents/${caminhoCSV}?ref=${branch}`;
+      const resposta = await fetch(url, {
+        headers: { Authorization: `token ${token}` }
+      });
+      const conteudo = await resposta.json();
+
+      shaAtual = conteudo.sha;
+
+      const csv = atob(conteudo.content);
+      const linhas = csv.trim().split("\n").slice(1); // remove cabeçalho
+      dados = linhas.map(linha => {
+        const [chave, ...valorPartes] = linha.split(",");
+        return { chave, valor: valorPartes.join(",") };
+      });
+
+      renderizarFormulario();
+    }
+
+    function renderizarFormulario() {
+      const formArea = document.getElementById("formArea");
+      formArea.innerHTML = "";
+
+      dados.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <strong>${item.chave}</strong><br>
+          <textarea onchange="atualizarValor(${index}, this.value)">${item.valor}</textarea>
+        `;
+        formArea.appendChild(div);
+      });
+    }
+
+    function atualizarValor(index, novoValor) {
+      dados[index].valor = novoValor;
+    }
+
+    async function salvarNoGitHub() {
+  const csvNovo = "chave,valor\n" + dados.map(d => `${d.chave},"${d.valor.replace(/"/g, '""')}"`).join("\n");
+
+  const resposta = await fetch(backendURL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
+  });
+
+  const resultado = await resposta.json();
+  if (resposta.ok) {
+    alert("Atualização realizada com sucesso!");
+    carregarCSV();
+  } else {
+    alert("Erro: " + resultado.error);
+  }
+}
+
+    
+  </script>
+</body>
+</html>
