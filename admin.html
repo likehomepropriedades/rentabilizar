@@ -5,37 +5,73 @@
   <title>Admin - Conteúdo LikeHome</title>
   <link rel="icon" href="data:,">
   <style>
-    body { font-family: Arial, sans-serif; padding: 2rem; }
-    input, textarea { width: 100%; margin-bottom: 10px; }
+    body { font-family: Arial, sans-serif; padding: 2rem; max-width: 800px; margin: auto; }
+    input, textarea { width: 100%; margin-bottom: 10px; font-size: 1rem; padding: 0.5rem; }
     textarea { height: 80px; }
-    .item { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; }
-    .btn { padding: 10px 20px; margin-top: 1rem; }
+    .item { border: 1px solid #ccc; padding: 1rem; margin-bottom: 1rem; border-radius: 5px; background: #f9f9f9; }
+    .btn { padding: 10px 20px; margin-top: 1rem; cursor: pointer; }
+    .btn:disabled { background: #ccc; cursor: not-allowed; }
+    #status { margin-bottom: 1rem; font-weight: bold; color: #555; }
+    #welcome { margin-bottom: 1.5rem; }
+    #logout { margin-left: 10px; font-size: 0.9rem; cursor: pointer; color: blue; text-decoration: underline; background: none; border: none; }
   </style>
 </head>
 <body>
-  <h1>Administração de Conteúdo</h1>
-  <button onclick="carregarCSV()">🔄 Carregar conteúdo</button>
+  <h1>Administração de Conteúdo LikeHome</h1>
+  <div id="welcome"></div>
+  <button id="btnCarregar" class="btn" onclick="carregarCSV()">🔄 Carregar conteúdo</button>
+  <button id="btnLogout" style="display:none;" class="btn" onclick="logout()">🚪 Logout</button>
+  <div id="status"></div>
   <div id="formArea"></div>
-  <button class="btn" onclick="salvarNoGitHub()">💾 Salvar no GitHub</button>
+  <button id="btnSalvar" class="btn" onclick="salvarNoGitHub()">💾 Salvar no GitHub</button>
 
   <script>
     const backendURL = "https://script.google.com/macros/s/AKfycbzey5q-iqv6DwmL4sAV30fQ5c0UL9RDThEuAHAZvJUO72VwivMQ4nOGSioBR-ApPPfEBA/exec";
     let dados = [];
     let shaAtual = "";
 
+    const btnCarregar = document.getElementById("btnCarregar");
+    const btnSalvar = document.getElementById("btnSalvar");
+    const btnLogout = document.getElementById("btnLogout");
+    const welcomeDiv = document.getElementById("welcome");
+    const statusDiv = document.getElementById("status");
+    const formArea = document.getElementById("formArea");
+
     async function checarUsuario() {
-      const res = await fetch(backendURL + "?user=true", {
-        credentials: "include"
-      });
-      const json = await res.json();
-      if (json.error) {
-        document.body.innerHTML = `<h2>Acesso negado</h2><p>${json.error}</p>`;
-        throw new Error("Usuário não autorizado");
+      statusDiv.textContent = "Verificando usuário...";
+      btnCarregar.disabled = true;
+      btnSalvar.disabled = true;
+
+      try {
+        const res = await fetch(backendURL + "?user=true", {
+          credentials: "include"
+        });
+        const json = await res.json();
+        if (json.error) {
+          welcomeDiv.innerHTML = `<h2>Acesso negado</h2><p>${json.error}</p>`;
+          throw new Error("Usuário não autorizado");
+        }
+        welcomeDiv.textContent = `Bem-vindo(a), ${json.email}`;
+        btnLogout.style.display = "inline-block";
+        return json.email;
+      } catch (e) {
+        console.error(e);
+        welcomeDiv.innerHTML = `<h2>Erro de autenticação</h2><p>${e.message}</p>`;
+        throw e;
+      } finally {
+        statusDiv.textContent = "";
+        btnCarregar.disabled = false;
       }
-      console.log("Usuário autenticado:", json.email);
     }
 
     async function carregarCSV() {
+      statusDiv.textContent = "Carregando conteúdo...";
+      btnCarregar.disabled = true;
+      btnSalvar.disabled = true;
+      formArea.innerHTML = "";
+      dados = [];
+      shaAtual = "";
+
       try {
         await checarUsuario();
 
@@ -53,19 +89,35 @@
 
         const linhas = conteudo.csv.trim().split("\n").slice(1);
         dados = linhas.map(linha => {
-          const [chave, ...valorPartes] = linha.split(",");
-          const valor = valorPartes.join(",").replace(/^"(.*)"$/, "$1").replace(/""/g, '"');
+          // Cuidado com vírgulas internas entre aspas
+          const regexCSV = /("([^"]|"")*"|[^,]*)(,|$)/g;
+          let matches = [];
+          let m;
+          while ((m = regexCSV.exec(linha)) !== null) {
+            matches.push(m[1]);
+            if (m.index === regexCSV.lastIndex) {
+              regexCSV.lastIndex++;
+            }
+          }
+          const chave = matches[0].replace(/^"|"$/g, "");
+          const valorRaw = matches.slice(1).join(",");
+          const valor = valorRaw.replace(/^"|"$/g, "").replace(/""/g, '"');
+
           return { chave, valor };
         });
 
         renderizarFormulario();
       } catch (e) {
         console.error("Erro ao carregar CSV:", e);
+        alert("Erro ao carregar conteúdo. Veja console para detalhes.");
+      } finally {
+        statusDiv.textContent = "";
+        btnCarregar.disabled = false;
+        btnSalvar.disabled = false;
       }
     }
 
     function renderizarFormulario() {
-      const formArea = document.getElementById("formArea");
       formArea.innerHTML = "";
 
       dados.forEach((item, index) => {
@@ -84,24 +136,42 @@
     }
 
     async function salvarNoGitHub() {
-      const csvNovo = "chave,valor\n" + dados
-        .map(d => `${d.chave},"${d.valor.replace(/"/g, '""')}"`)
-        .join("\n");
+      statusDiv.textContent = "Salvando conteúdo...";
+      btnSalvar.disabled = true;
+      btnCarregar.disabled = true;
 
-      const resposta = await fetch(backendURL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
-      });
+      try {
+        const csvNovo = "chave,valor\n" + dados
+          .map(d => `${d.chave},"${d.valor.replace(/"/g, '""')}"`)
+          .join("\n");
 
-      const resultado = await resposta.json();
-      if (resposta.ok) {
-        alert("Atualização realizada com sucesso!");
-        carregarCSV();
-      } else {
-        alert("Erro: " + resultado.error);
+        const resposta = await fetch(backendURL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ csv: csvNovo, sha: shaAtual })
+        });
+
+        const resultado = await resposta.json();
+        if (resposta.ok) {
+          alert("Atualização realizada com sucesso!");
+          await carregarCSV();
+        } else {
+          alert("Erro: " + resultado.error);
+        }
+      } catch (e) {
+        console.error("Erro ao salvar no GitHub:", e);
+        alert("Erro ao salvar conteúdo. Veja console para detalhes.");
+      } finally {
+        statusDiv.textContent = "";
+        btnSalvar.disabled = false;
+        btnCarregar.disabled = false;
       }
+    }
+
+    function logout() {
+      // Redireciona para logout do Google (remova se não quiser logout)
+      window.location.href = "https://accounts.google.com/Logout?continue=https://likehomepropriedades.github.io/";
     }
 
     window.onload = carregarCSV;
