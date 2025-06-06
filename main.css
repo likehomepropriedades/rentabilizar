@@ -110,7 +110,7 @@ main {
 
 #sobreposicao {
   position: absolute;
-  top: 0;
+  top: 40vh;;
   right: 0;
   width: 50%;
   height: auto;
@@ -141,7 +141,6 @@ main {
   #sobreposicao {
     width: 100%;
     height: 35vh; /* metade da altura de 70vh da imagem principal */
-    top: auto;
     bottom: 0; /* fixa na parte inferior da imagem */
     padding: 1.5rem 1rem;
     align-items: center;
