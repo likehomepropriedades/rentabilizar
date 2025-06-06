@@ -138,14 +138,7 @@ main {
 
 /* Responsivo para telas menores */
 @media (max-width: 768px) {
-  #sobreposicao {
-    width: 100%;
-    height: 35vh; /* metade da altura de 70vh da imagem principal */
-    bottom: 0; /* fixa na parte inferior da imagem */
-    padding: 1.5rem 1rem;
-    align-items: center;
-    text-align: center;
-  }
+
 
   #sobreposicao h2 {
     font-size: 6vw;
