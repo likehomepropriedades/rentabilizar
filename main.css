@@ -113,7 +113,7 @@ main {
   top: 0;
   right: 0;
   width: 50%;
-  height: 100%;
+  height: auto;
   background-image: url('img/fundo-txt-img-principal.svg');
   background-size: cover;
   background-position: center;
