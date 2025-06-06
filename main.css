@@ -93,7 +93,7 @@ main {
 
 #container_img_principal {
   height: 70vh;
-  width: 100%;
+  width: auto;
   overflow: hidden;
   position: relative;
 }
