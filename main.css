@@ -113,7 +113,7 @@ main {
 
 #sobreposicao {
   position: absolute;
-  top: 40vh; /* Pode ajustar conforme necessário */
+  top: 20vh; /* Pode ajustar conforme necessário */
   right: 0;
   width: 50%;
   padding: 2rem;
