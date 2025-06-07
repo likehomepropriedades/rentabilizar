@@ -91,29 +91,32 @@ main {
   padding: 0px;
 }
 
+/****** AREA DA IMG PRINCIPAL ******/
+
 #container_img_principal {
-  
-  width: auto;
-  overflow: hidden;
+  width: 100%; /* Usar 100% para melhor responsividade */
   position: relative;
+  overflow: hidden;
+  height: 60vh; /* Altura fixa para desktop e mobile */
+  max-height: 600px; /* Limite máximo opcional */
 }
 
 #img_principal {
   width: 100%;
-  height: auto;
+  height: 100%; /* Agora preenche o container */
   object-fit: cover;
+  display: block;
   transform: scale(1);
   transition: transform 2s ease;
   transform-origin: center center;
-  display: block;
 }
 
 #sobreposicao {
   position: absolute;
-  top: 40vh;;
+  top: 40vh; /* Pode ajustar conforme necessário */
   right: 0;
   width: 50%;
-  height: auto;
+  padding: 2rem;
   background-image: url('img/fundo-txt-img-principal.svg');
   background-size: cover;
   background-position: center;
@@ -121,24 +124,39 @@ main {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  text-align: left;
-  padding: 2rem;
-  box-sizing: border-box;
   color: #000;
+  box-sizing: border-box;
+  text-align: left;
   z-index: 1;
 }
 
 #sobreposicao h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
-  position: relative;
-  z-index: 1;
   margin: 0.5rem 0;
   max-width: 90%;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsivo para telas menores */
 @media (max-width: 768px) {
+  #container_img_principal {
+    height: 50vh; /* menor altura no mobile */
+  }
 
+  #sobreposicao {
+    top: auto; /* zera o top */
+    bottom: 0; /* posiciona no rodapé da imagem */
+    left: 0;
+    width: 100%;
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+    background-image: url('img/fundo-txt-img-principal.svg'); /* mantém fundo */
+    background-size: cover;
+    background-position: center;
+    z-index: 2;
+  }
 
   #sobreposicao h2 {
     font-size: 6vw;
