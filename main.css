@@ -92,31 +92,32 @@ main {
 }
 
 /****** AREA DA IMG PRINCIPAL ******/
-
 #container_img_principal {
-  width: 100%; /* Usar 100% para melhor responsividade */
+  width: 100%;
   position: relative;
   overflow: hidden;
-  height: 60vh; /* Altura fixa para desktop e mobile */
-  max-height: 600px; /* Limite máximo opcional */
+  height: auto; /* deixa a altura natural */
+  max-height: 600px; /* opcional para desktop */
 }
 
 #img_principal {
   width: 100%;
-  height: 100%; /* Agora preenche o container */
+  height: auto;
   object-fit: cover;
   display: block;
   transform: scale(1);
   transition: transform 2s ease;
   transform-origin: center center;
+  z-index: 0; /* atrás */
+  position: relative;
 }
 
 #sobreposicao {
   position: absolute;
-  top: 20vh; /* Pode ajustar conforme necessário */
+  top: 40vh;
   right: 0;
   width: 50%;
-  padding: 2rem;
+  height: auto;
   background-image: url('img/fundo-txt-img-principal.svg');
   background-size: cover;
   background-position: center;
@@ -124,37 +125,39 @@ main {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  color: #000;
-  box-sizing: border-box;
   text-align: left;
+  padding: 2rem;
+  box-sizing: border-box;
+  color: #000;
   z-index: 1;
 }
 
 #sobreposicao h2 {
   font-size: clamp(1.5rem, 3vw, 2.5rem);
+  position: relative;
+  z-index: 2;
   margin: 0.5rem 0;
   max-width: 90%;
-  position: relative;
-  z-index: 1;
 }
 
 /* Responsivo para telas menores */
 @media (max-width: 768px) {
   #container_img_principal {
-    height: 50vh; /* menor altura no mobile */
+    height: auto; /* deixa natural */
   }
 
   #sobreposicao {
-    top: auto; /* zera o top */
-    bottom: 0; /* posiciona no rodapé da imagem */
+    top: 0;
     left: 0;
     width: 100%;
-    padding: 1rem;
-    align-items: center;
-    text-align: center;
-    background-image: url('img/fundo-txt-img-principal.svg'); /* mantém fundo */
+    height: 100%;
+    padding: 2rem;
+    background-image: url('img/fundo-txt-img-principal.svg');
     background-size: cover;
     background-position: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     z-index: 2;
   }
 
@@ -163,6 +166,7 @@ main {
     max-width: 100%;
   }
 }
+
 
 /* Aplica o zoom na imagem ao carregar a página */
 body.loaded #img_principal {
