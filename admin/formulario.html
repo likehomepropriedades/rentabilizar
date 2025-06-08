@@ -149,9 +149,9 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2Mz9ZPzjW-IDp0Xs1TaqRaL0NWK7SbeFtE9dRO9FZcaz9QA/exec';
 
 let SHA_ATUAL = '';
-let EMAIL_USUARIO = 'pollam@gmail.com';
+let EMAIL_USUARIO = '';
 
-/*async function obterUsuario() {
+async function obterUsuario() {
   const res = await fetch(`${API_URL}?user=true`, { credentials: 'include' });
   const data = await res.json();
   if (data.error) {
@@ -161,7 +161,7 @@ let EMAIL_USUARIO = 'pollam@gmail.com';
   EMAIL_USUARIO = data.email;
   document.getElementById('usuario-logado').textContent = 'Usuário: ' + EMAIL_USUARIO;
 }
-*/
+
 async function carregarDados() {
   const res = await fetch(API_URL, { credentials: 'include' });
   const data = await res.json();
