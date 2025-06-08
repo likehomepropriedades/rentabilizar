@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerenciamento de Conteúdo</title>
+  <link rel="stylesheet" href="estilos.css" />
+</head>
+<body>
+  <h1>Gerenciamento de Conteúdo</h1>
+
+  <!-- Área Sobre -->
+  <section>
+    <h2>Área "Sobre"</h2>
+    <label>
+      Imagem Principal:
+      <input type="file" name="sobre_imagem_principal" accept="image/*" />
+      <a id="link_sobre_imagem_principal" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    <label>Texto da Imagem Principal: <input type="text" name="sobre_texto_imagem" /></label>
+    <label>Texto "Sobre": <textarea name="sobre_texto"></textarea></label>
+    <label>
+      Imagem do Texto "Sobre":
+      <input type="file" name="sobre_imagem_texto" accept="image/*" />
+      <a id="link_sobre_imagem_texto" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    <label>Texto Destaque "Sobre": <input type="text" name="sobre_texto_destaque" /></label>
+  </section>
+
+  <!-- Área Vantagens -->
+<section>
+  <h2>Área "Vantagens"</h2>
+  <label>Título: <input type="text" name="vantagens_titulo" /></label>
+  <div id="grupos-vantagens" class="accordion-container"></div>
+</section>
+
+  <!-- Área Acesso Plataforma -->
+  <section>
+    <h2>Área "Acesso Plataforma"</h2>
+    <label>
+      Imagem:
+      <input type="file" name="acesso_imagem" accept="image/*" />
+      <a id="link_acesso_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    <label>Título: <input type="text" name="acesso_titulo" /></label>
+    <label>Descrição: <textarea name="acesso_descricao"></textarea></label>
+  </section>
+
+    <!-- Área Nossos Números -->
+    <section>
+    <h2>Área "Nossos Números"</h2>
+    <label>Título: <input type="text" name="numeros_titulo" /></label>
+    <div id="grupos-numeros" class="accordion-container"></div>
+    <label>
+        Imagem de Fundo:
+        <input type="file" name="numeros_imagem_fundo" accept="image/*" />
+        <a id="link_numeros_imagem_fundo" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    </section>
+
+    <!-- Área Nossos Serviços -->
+    <section>
+    <h2>Área "Nossos Serviços"</h2>
+    <label>Título: <input type="text" name="servicos_titulo" /></label>
+    <label>
+        Imagem:
+        <input type="file" name="servicos_imagem" accept="image/*" />
+        <a id="link_servicos_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    <div id="grupos-servicos" class="accordion-container"></div>
+    </section>
+
+  <!-- Área Quero Rentabilizar -->
+  <section>
+    <h2>Área "Quero Rentabilizar"</h2>
+    <label>
+      Imagem:
+      <input type="file" name="rentabilizar_imagem" accept="image/*" />
+      <a id="link_rentabilizar_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+    </label>
+    <label>Descrição: <textarea name="rentabilizar_descricao"></textarea></label>
+  </section>
+
+ <script>
+  function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
+    let html = '';
+    for (let i = 1; i <= quantidade; i++) {
+      html += `
+        <div class="accordion-item">
+          <button class="accordion-toggle" type="button">${titulo} ${i}</button>
+          <div class="accordion-content">
+      `;
+      campos.forEach(campo => {
+        html += `<label>${campo.label}: `;
+        if (campo.tipo === 'textarea') {
+          html += `<textarea name="${prefixo}_${i}_${campo.nome}"></textarea>`;
+        } else {
+          html += `<input type="${campo.tipo}" name="${prefixo}_${i}_${campo.nome}" />`;
+        }
+        html += `</label>`;
+      });
+      html += `</div></div>`;
+    }
+    document.getElementById(id).innerHTML = html;
+  }
+
+  gerarGrupo('grupos-vantagens', 'Grupo Vantagem', [
+    { label: 'Ícone', nome: 'icone', tipo: 'text' },
+    { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
+    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+  ], 'vantagem', 4);
+
+  gerarGrupo('grupos-numeros', 'Grupo Nossos Números', [
+    { label: 'Ícone', nome: 'icone', tipo: 'text' },
+    { label: 'Descrição', nome: 'descricao', tipo: 'text' }
+  ], 'numeros', 5);
+
+  gerarGrupo('grupos-servicos', 'Grupo Serviço', [
+    { label: 'Título', nome: 'titulo', tipo: 'text' },
+    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+  ], 'servico', 5);
+
+  // Pré-visualização de imagens
+  document.addEventListener('change', function (e) {
+    if (e.target.type === 'file') {
+      const file = e.target.files[0];
+      if (file) {
+        const link = document.getElementById('link_' + e.target.name);
+        const url = URL.createObjectURL(file);
+        link.href = url;
+        link.style.display = 'inline';
+      }
+    }
+  });
+
+  // Accordion functionality
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('accordion-toggle')) {
+      e.target.classList.toggle('active');
+      const content = e.target.nextElementSibling;
+      content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+    }
+  });
+</script>
+
+ // carrega dados da APPS SCRIPT GOOGLE 
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2Mz9ZPzjW-IDp0Xs1TaqRaL0NWK7SbeFtE9dRO9FZcaz9QA/exec';
+
+let SHA_ATUAL = '';
+let EMAIL_USUARIO = '';
+
+async function obterUsuario() {
+  const res = await fetch(`${API_URL}?user=true`, { credentials: 'include' });
+  const data = await res.json();
+  if (data.error) {
+    alert('Acesso negado: ' + data.error);
+    throw new Error(data.error);
+  }
+  EMAIL_USUARIO = data.email;
+  document.getElementById('usuario-logado').textContent = 'Usuário: ' + EMAIL_USUARIO;
+}
+
+async function carregarDados() {
+  const res = await fetch(API_URL, { credentials: 'include' });
+  const data = await res.json();
+  if (data.error) {
+    alert('Erro ao carregar CSV: ' + data.error);
+    return;
+  }
+
+  SHA_ATUAL = data.sha;
+  const csv = data.csv;
+  preencherFormulario(csv);
+}
+
+function preencherFormulario(csv) {
+  const linhas = csv.split('\n');
+  linhas.forEach(linha => {
+    const [campo, valor] = linha.split(';');
+    const input = document.querySelector(`[name="${campo}"]`);
+    if (input) input.value = valor || '';
+    const link = document.querySelector(`[data-preview="${campo}"]`);
+    if (link && valor) link.href = valor;
+  });
+}
+
+function coletarDadosCSV() {
+  const inputs = document.querySelectorAll('[name]');
+  const linhas = [];
+
+  inputs.forEach(input => {
+    const campo = input.name;
+    const valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
+    linhas.push(`${campo};${valor}`);
+  });
+
+  return linhas.join('\n');
+}
+
+async function enviarDados() {
+  const csv = coletarDadosCSV();
+
+  const payload = {
+    csv,
+    sha: SHA_ATUAL
+  };
+
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await res.json();
+
+  if (data.success) {
+    alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
+  } else {
+    alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await obterUsuario();
+    await carregarDados();
+
+    document.getElementById('btn-enviar').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await enviarDados();
+    });
+  } catch (err) {
+    console.error('Erro de inicialização:', err);
+  }
+});
+</script>
+
+
+<div class="form-actions">
+ <p id="usuario-logado"></p>
+<button id="btn-enviar">Enviar</button>
+</div>
+</body>
+</html>
