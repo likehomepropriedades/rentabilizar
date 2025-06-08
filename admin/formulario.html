@@ -151,6 +151,8 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2
 let SHA_ATUAL = '';
 let EMAIL_USUARIO = '';
 
+// Função comentada temporariamente pois backend ainda não retorna usuário
+/*
 async function obterUsuario() {
   const res = await fetch(`${API_URL}?user=true`, { credentials: 'include' });
   const data = await res.json();
@@ -161,6 +163,7 @@ async function obterUsuario() {
   EMAIL_USUARIO = data.email;
   document.getElementById('usuario-logado').textContent = 'Usuário: ' + EMAIL_USUARIO;
 }
+*/
 
 async function carregarDados() {
   const res = await fetch(API_URL, { credentials: 'include' });
@@ -227,7 +230,9 @@ async function enviarDados() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    await obterUsuario();
+    // Temporariamente comentado para evitar erro CORS e falta de autenticação
+    // await obterUsuario();
+
     await carregarDados();
 
     document.getElementById('btn-enviar').addEventListener('click', async (e) => {
@@ -238,6 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Erro de inicialização:', err);
   }
 });
+
 </script>
 
 
