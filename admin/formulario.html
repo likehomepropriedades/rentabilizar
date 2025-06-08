@@ -90,68 +90,79 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
-    // Função para gerar grupos dinâmicos (vantagens, números, serviços)
-    function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
-      let html = '';
-      for (let i = 1; i <= quantidade; i++) {
-        html += `
-          <div class="accordion-item">
-            <button class="accordion-toggle" type="button">${titulo} ${i}</button>
-            <div class="accordion-content">
-        `;
-        campos.forEach(campo => {
-          html += `<label>${campo.label}: `;
-          if (campo.tipo === 'textarea') {
-            html += `<textarea name="${prefixo}_${i}_${campo.nome}"></textarea>`;
-          } else {
-            html += `<input type="${campo.tipo}" name="${prefixo}_${i}_${campo.nome}" />`;
-          }
-          html += `</label>`;
-        });
-        html += `</div></div>`;
-      }
-      document.getElementById(id).innerHTML = html;
+   // Função para gerar grupos dinâmicos (vantagens, números, serviços, com suporte a imagens)
+  function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
+    let html = '';
+    for (let i = 1; i <= quantidade; i++) {
+      const index = String(i).padStart(2, '0');
+      html += `
+        <div class="accordion-item">
+          <button class="accordion-toggle" type="button">${titulo} ${i}</button>
+          <div class="accordion-content">
+      `;
+      campos.forEach(campo => {
+        const nomeCampo = `${prefixo}_${index}_${campo.nome}`;
+        html += `<label>${campo.label}: `;
+
+        if (campo.tipo === 'textarea') {
+          html += `<textarea name="${nomeCampo}"></textarea>`;
+        } else if (campo.tipo === 'file') {
+          html += `
+            <input type="file" name="${nomeCampo}" accept="image/*" />
+            <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
+          `;
+        } else {
+          html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
+        }
+
+        html += `</label>`;
+      });
+      html += `</div></div>`;
     }
+    document.getElementById(id).innerHTML = html;
+  }
 
-    gerarGrupo('grupos-vantagens', 'Vantagem', [
-      { label: 'Ícone', nome: 'icone', tipo: 'text' },
-      { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
-      { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-    ], 'subtitulo_vantagem', 6);
+  // Geração dos grupos com campo de imagem incluído
+  gerarGrupo('grupos-vantagens', 'Vantagem', [
+    { label: 'Ícone', nome: 'icone', tipo: 'file' }, // agora é imagem
+    { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
+    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+  ], 'subtitulo_vantagem', 6);
 
-    gerarGrupo('grupos-numeros', 'Número', [
-      { label: 'Ícone', nome: 'icone', tipo: 'text' },
-      { label: 'Descrição', nome: 'descricao', tipo: 'text' }
-    ], 'txt_item', 6);
+  gerarGrupo('grupos-numeros', 'Número', [
+    { label: 'Ícone', nome: 'icone', tipo: 'file' }, // agora é imagem
+    { label: 'Descrição', nome: 'descricao', tipo: 'text' }
+  ], 'txt_item', 6);
 
-    gerarGrupo('grupos-servicos', 'Serviço', [
-      { label: 'Título', nome: 'titulo', tipo: 'text' },
-      { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-    ], 'txt_servicos', 5);
+  gerarGrupo('grupos-servicos', 'Serviço', [
+    { label: 'Imagem', nome: 'imagem', tipo: 'file' }, // opcional
+    { label: 'Título', nome: 'titulo', tipo: 'text' },
+    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+  ], 'txt_servicos', 5);
 
-    // Visualizar imagens selecionadas
-    document.addEventListener('change', function (e) {
-      if (e.target.type === 'file') {
-        const file = e.target.files[0];
-        if (file) {
-          const link = document.getElementById('link_' + e.target.name);
-          if (link) {
-            const url = URL.createObjectURL(file);
-            link.href = url;
-            link.style.display = 'inline';
-          }
+  // Visualizar imagens selecionadas
+  document.addEventListener('change', function (e) {
+    if (e.target.type === 'file') {
+      const file = e.target.files[0];
+      if (file) {
+        const link = document.getElementById('link_' + e.target.name);
+        if (link) {
+          const url = URL.createObjectURL(file);
+          link.href = url;
+          link.style.display = 'inline';
         }
       }
-    });
+    }
+  });
 
-    // Accordion toggle
-    document.addEventListener('click', function (e) {
-      if (e.target.classList.contains('accordion-toggle')) {
-        e.target.classList.toggle('active');
-        const content = e.target.nextElementSibling;
-        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
-      }
-    });
+  // Accordion toggle
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('accordion-toggle')) {
+      e.target.classList.toggle('active');
+      const content = e.target.nextElementSibling;
+      content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+    }
+  });
 
     // API proxy GAS
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
