@@ -149,24 +149,9 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2Mz9ZPzjW-IDp0Xs1TaqRaL0NWK7SbeFtE9dRO9FZcaz9QA/exec';
 
 let SHA_ATUAL = '';
-let EMAIL_USUARIO = '';
-
-// Função comentada temporariamente pois backend ainda não retorna usuário
-/*
-async function obterUsuario() {
-  const res = await fetch(`${API_URL}?user=true`, { credentials: 'include' });
-  const data = await res.json();
-  if (data.error) {
-    alert('Acesso negado: ' + data.error);
-    throw new Error(data.error);
-  }
-  EMAIL_USUARIO = data.email;
-  document.getElementById('usuario-logado').textContent = 'Usuário: ' + EMAIL_USUARIO;
-}
-*/
 
 async function carregarDados() {
-  const res = await fetch(API_URL, { credentials: 'include' });
+  const res = await fetch(API_URL);
   const data = await res.json();
   if (data.error) {
     alert('Erro ao carregar CSV: ' + data.error);
@@ -178,29 +163,7 @@ async function carregarDados() {
   preencherFormulario(csv);
 }
 
-function preencherFormulario(csv) {
-  const linhas = csv.split('\n');
-  linhas.forEach(linha => {
-    const [campo, valor] = linha.split(';');
-    const input = document.querySelector(`[name="${campo}"]`);
-    if (input) input.value = valor || '';
-    const link = document.querySelector(`[data-preview="${campo}"]`);
-    if (link && valor) link.href = valor;
-  });
-}
-
-function coletarDadosCSV() {
-  const inputs = document.querySelectorAll('[name]');
-  const linhas = [];
-
-  inputs.forEach(input => {
-    const campo = input.name;
-    const valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
-    linhas.push(`${campo};${valor}`);
-  });
-
-  return linhas.join('\n');
-}
+// Remova também a função obterUsuario() por enquanto, se depende de autenticação
 
 async function enviarDados() {
   const csv = coletarDadosCSV();
@@ -212,7 +175,6 @@ async function enviarDados() {
 
   const res = await fetch(API_URL, {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json'
     },
@@ -230,9 +192,6 @@ async function enviarDados() {
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // Temporariamente comentado para evitar erro CORS e falta de autenticação
-    // await obterUsuario();
-
     await carregarDados();
 
     document.getElementById('btn-enviar').addEventListener('click', async (e) => {
@@ -243,6 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.error('Erro de inicialização:', err);
   }
 });
+
 
 </script>
 
