@@ -81,135 +81,155 @@
     <label>Descrição: <textarea name="rentabilizar_descricao"></textarea></label>
   </section>
 
- <script>
-  function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
-    let html = '';
-    for (let i = 1; i <= quantidade; i++) {
-      html += `
-        <div class="accordion-item">
-          <button class="accordion-toggle" type="button">${titulo} ${i}</button>
-          <div class="accordion-content">
-      `;
-      campos.forEach(campo => {
-        html += `<label>${campo.label}: `;
-        if (campo.tipo === 'textarea') {
-          html += `<textarea name="${prefixo}_${i}_${campo.nome}"></textarea>`;
-        } else {
-          html += `<input type="${campo.tipo}" name="${prefixo}_${i}_${campo.nome}" />`;
-        }
-        html += `</label>`;
-      });
-      html += `</div></div>`;
+  <script>
+    // Função para gerar campos repetitivos
+    function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
+      let html = '';
+      for (let i = 1; i <= quantidade; i++) {
+        html += `
+          <div class="accordion-item">
+            <button class="accordion-toggle" type="button">${titulo} ${i}</button>
+            <div class="accordion-content">
+        `;
+        campos.forEach(campo => {
+          html += `<label>${campo.label}: `;
+          if (campo.tipo === 'textarea') {
+            html += `<textarea name="${prefixo}_${i}_${campo.nome}"></textarea>`;
+          } else {
+            html += `<input type="${campo.tipo}" name="${prefixo}_${i}_${campo.nome}" />`;
+          }
+          html += `</label>`;
+        });
+        html += `</div></div>`;
+      }
+      document.getElementById(id).innerHTML = html;
     }
-    document.getElementById(id).innerHTML = html;
-  }
 
-  gerarGrupo('grupos-vantagens', 'Grupo Vantagem', [
-    { label: 'Ícone', nome: 'icone', tipo: 'text' },
-    { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
-    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-  ], 'vantagem', 4);
+    gerarGrupo('grupos-vantagens', 'Grupo Vantagem', [
+      { label: 'Ícone', nome: 'icone', tipo: 'text' },
+      { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
+      { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+    ], 'vantagem', 4);
 
-  gerarGrupo('grupos-numeros', 'Grupo Nossos Números', [
-    { label: 'Ícone', nome: 'icone', tipo: 'text' },
-    { label: 'Descrição', nome: 'descricao', tipo: 'text' }
-  ], 'numeros', 5);
+    gerarGrupo('grupos-numeros', 'Grupo Nossos Números', [
+      { label: 'Ícone', nome: 'icone', tipo: 'text' },
+      { label: 'Descrição', nome: 'descricao', tipo: 'text' }
+    ], 'numeros', 5);
 
-  gerarGrupo('grupos-servicos', 'Grupo Serviço', [
-    { label: 'Título', nome: 'titulo', tipo: 'text' },
-    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-  ], 'servico', 5);
+    gerarGrupo('grupos-servicos', 'Grupo Serviço', [
+      { label: 'Título', nome: 'titulo', tipo: 'text' },
+      { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
+    ], 'servico', 5);
 
-  // Pré-visualização de imagens
-  document.addEventListener('change', function (e) {
-    if (e.target.type === 'file') {
-      const file = e.target.files[0];
-      if (file) {
-        const link = document.getElementById('link_' + e.target.name);
-        const url = URL.createObjectURL(file);
-        link.href = url;
-        link.style.display = 'inline';
+    // Pré-visualização de imagens
+    document.addEventListener('change', function (e) {
+      if (e.target.type === 'file') {
+        const file = e.target.files[0];
+        if (file) {
+          const link = document.getElementById('link_' + e.target.name);
+          const url = URL.createObjectURL(file);
+          link.href = url;
+          link.style.display = 'inline';
+        }
+      }
+    });
+
+    // Accordion functionality
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('accordion-toggle')) {
+        e.target.classList.toggle('active');
+        const content = e.target.nextElementSibling;
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+      }
+    });
+
+    // URL do proxy Google Apps Script (com execução anônima habilitada)
+    const API_URL = 'https://script.google.com/macros/s/AKfycbz-MZsLSwhzrpmKn02PI2jP435Dmgatqn7NL-Qq9bgl1_Zz6Ggea9mw9Eud0acP8jJ1aw/exec';
+
+    let SHA_ATUAL = '';
+
+    async function carregarDados() {
+      const res = await fetch(API_URL);
+      const data = await res.json();
+      if (data.error) {
+        alert('Erro ao carregar CSV: ' + data.error);
+        return;
+      }
+
+      SHA_ATUAL = data.sha;
+      const csv = data.csv;
+      preencherFormulario(csv);
+    }
+
+    function preencherFormulario(csv) {
+      const linhas = csv.split('\n');
+      linhas.forEach(linha => {
+        const [campo, valor] = linha.split(';');
+        const input = document.querySelector(`[name="${campo}"]`);
+        if (input) input.value = valor || '';
+        const link = document.getElementById('link_' + campo);
+        if (link && valor) {
+          link.href = valor;
+          link.style.display = 'inline';
+        }
+      });
+    }
+
+    function coletarDadosCSV() {
+      const inputs = document.querySelectorAll('[name]');
+      const linhas = [];
+
+      inputs.forEach(input => {
+        const campo = input.name;
+        const valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
+        linhas.push(`${campo};${valor}`);
+      });
+
+      return linhas.join('\n');
+    }
+
+    async function enviarDados() {
+      const csv = coletarDadosCSV();
+
+      const payload = {
+        csv,
+        sha: SHA_ATUAL
+      };
+
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
+      } else {
+        alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
       }
     }
-  });
 
-  // Accordion functionality
-  document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('accordion-toggle')) {
-      e.target.classList.toggle('active');
-      const content = e.target.nextElementSibling;
-      content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
-    }
-  });
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        await carregarDados();
 
-//**********************************
-// CARREGA DADOS APPS SCRIPT GOOGLE
-//**********************************
-
-const API_URL = 'https://script.google.com/macros/s/AKfycbz-MZsLSwhzrpmKn02PI2jP435Dmgatqn7NL-Qq9bgl1_Zz6Ggea9mw9Eud0acP8jJ1aw/exec';
-
-let SHA_ATUAL = '';
-
-async function carregarDados() {
-  const res = await fetch(API_URL);
-  const data = await res.json();
-  if (data.error) {
-    alert('Erro ao carregar CSV: ' + data.error);
-    return;
-  }
-
-  SHA_ATUAL = data.sha;
-  const csv = data.csv;
-  preencherFormulario(csv);
-}
-
-// Remova também a função obterUsuario() por enquanto, se depende de autenticação
-
-async function enviarDados() {
-  const csv = coletarDadosCSV();
-
-  const payload = {
-    csv,
-    sha: SHA_ATUAL
-  };
-
-  const res = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
-
-  const data = await res.json();
-
-  if (data.success) {
-    alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
-  } else {
-    alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
-  }
-}
-
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    await carregarDados();
-
-    document.getElementById('btn-enviar').addEventListener('click', async (e) => {
-      e.preventDefault();
-      await enviarDados();
+        document.getElementById('btn-enviar').addEventListener('click', async (e) => {
+          e.preventDefault();
+          await enviarDados();
+        });
+      } catch (err) {
+        console.error('Erro de inicialização:', err);
+      }
     });
-  } catch (err) {
-    console.error('Erro de inicialização:', err);
-  }
-});
+  </script>
 
-
-</script>
-
-
-<div class="form-actions">
- <p id="usuario-logado"></p>
-<button id="btn-enviar">Enviar</button>
-</div>
+  <div class="form-actions">
+    <p id="usuario-logado"></p>
+    <button id="btn-enviar">Enviar</button>
+  </div>
 </body>
 </html>
