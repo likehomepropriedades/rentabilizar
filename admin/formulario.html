@@ -178,16 +178,21 @@
       resultado.data.forEach(({ chave, valor }) => {
         const input = document.querySelector(`[name="${chave}"]`);
         if (input) {
-          input.value = valor || '';
+          // Ignora inputs do tipo file
+          if (input.type !== 'file') {
+            input.value = valor || '';
+          }
         }
+
+        // Atualiza visualização do link da imagem, se aplicável
         const link = document.getElementById('link_' + chave);
         if (link && valor) {
           link.href = valor;
+          link.textContent = 'Ver imagem carregada';
           link.style.display = 'inline';
         }
       });
     }
-
     // Coleta dados do formulário e converte em CSV
     function coletarDadosCSV() {
       const inputs = document.querySelectorAll('[name]');
