@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gerenciamento de Conteúdo</title>
   <link rel="stylesheet" href="estilos.css" />
 </head>
@@ -14,75 +14,83 @@
     <h2>Área "Sobre"</h2>
     <label>
       Imagem Principal:
-      <input type="file" name="sobre_imagem_principal" accept="image/*" />
-      <a id="link_sobre_imagem_principal" class="preview-link" target="_blank">Ver imagem carregada</a>
+      <input type="file" name="logo_top" accept="image/*" />
+      <a id="link_logo_top" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
     <label>Texto da Imagem Principal: <input type="text" name="texto_img_principal" /></label>
     <label>Texto "Sobre": <textarea name="texto_sobre"></textarea></label>
     <label>
       Imagem do Texto "Sobre":
-      <input type="file" name="sobre_imagem_texto" accept="image/*" />
-      <a id="link_sobre_imagem_texto" class="preview-link" target="_blank">Ver imagem carregada</a>
+      <input type="file" name="img_sobre" accept="image/*" />
+      <a id="link_img_sobre" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
     <label>Texto Destaque "Sobre": <input type="text" name="subtitulo_sobre" /></label>
   </section>
 
   <!-- Área Vantagens -->
-<section>
-  <h2>Área "Vantagens"</h2>
-  <label>Título: <input type="text" name="vantagens_titulo" /></label>
-  <div id="grupos-vantagens" class="accordion-container"></div>
-</section>
+  <section>
+    <h2>Área "Vantagens"</h2>
+    <label>Título: <input type="text" name="titulo_vantagens" /></label>
+    <div id="grupos-vantagens" class="accordion-container"></div>
+  </section>
 
   <!-- Área Acesso Plataforma -->
   <section>
     <h2>Área "Acesso Plataforma"</h2>
     <label>
       Imagem:
-      <input type="file" name="acesso_imagem" accept="image/*" />
-      <a id="link_acesso_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+      <input type="file" name="img_acesso" accept="image/*" />
+      <a id="link_img_acesso" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
-    <label>Título: <input type="text" name="acesso_titulo" /></label>
-    <label>Descrição: <textarea name="acesso_descricao"></textarea></label>
+    <label>Título: <input type="text" name="subtitulo_acesso" /></label>
+    <label>Descrição: <textarea name="txt_acesso"></textarea></label>
   </section>
 
-    <!-- Área Nossos Números -->
-    <section>
+  <!-- Área Nossos Números -->
+  <section>
     <h2>Área "Nossos Números"</h2>
-    <label>Título: <input type="text" name="numeros_titulo" /></label>
+    <label>Título: <input type="text" name="titulo_numeros" /></label>
     <div id="grupos-numeros" class="accordion-container"></div>
     <label>
-        Imagem de Fundo:
-        <input type="file" name="numeros_imagem_fundo" accept="image/*" />
-        <a id="link_numeros_imagem_fundo" class="preview-link" target="_blank">Ver imagem carregada</a>
+      Imagem de Fundo:
+      <input type="file" name="img_numeros" accept="image/*" />
+      <a id="link_img_numeros" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
-    </section>
+  </section>
 
-    <!-- Área Nossos Serviços -->
-    <section>
+  <!-- Área Nossos Serviços -->
+  <section>
     <h2>Área "Nossos Serviços"</h2>
-    <label>Título: <input type="text" name="servicos_titulo" /></label>
+    <label>Título: <input type="text" name="titulo_servicos" /></label>
     <label>
-        Imagem:
-        <input type="file" name="servicos_imagem" accept="image/*" />
-        <a id="link_servicos_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+      Imagem:
+      <input type="file" name="img_servicos" accept="image/*" />
+      <a id="link_img_servicos" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
     <div id="grupos-servicos" class="accordion-container"></div>
-    </section>
+  </section>
 
   <!-- Área Quero Rentabilizar -->
   <section>
     <h2>Área "Quero Rentabilizar"</h2>
     <label>
       Imagem:
-      <input type="file" name="rentabilizar_imagem" accept="image/*" />
-      <a id="link_rentabilizar_imagem" class="preview-link" target="_blank">Ver imagem carregada</a>
+      <input type="file" name="img_rentabilizar" accept="image/*" />
+      <a id="link_img_rentabilizar" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
-    <label>Descrição: <textarea name="rentabilizar_descricao"></textarea></label>
+    <label>Descrição: <textarea name="txt_rentabilizar"></textarea></label>
   </section>
 
+  <!-- Botão para enviar -->
+  <div class="form-actions">
+    <button id="btn-enviar">Enviar</button>
+  </div>
+
+  <!-- PapaParse para CSV -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
   <script>
-    // Função para gerar campos repetitivos
+    // Função para gerar grupos dinâmicos (vantagens, números, serviços)
     function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
       let html = '';
       for (let i = 1; i <= quantidade; i++) {
@@ -105,36 +113,38 @@
       document.getElementById(id).innerHTML = html;
     }
 
-    gerarGrupo('grupos-vantagens', 'Grupo Vantagem', [
+    gerarGrupo('grupos-vantagens', 'Vantagem', [
       { label: 'Ícone', nome: 'icone', tipo: 'text' },
       { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
       { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-    ], 'vantagem', 4);
+    ], 'subtitulo_vantagem', 6);
 
-    gerarGrupo('grupos-numeros', 'Grupo Nossos Números', [
+    gerarGrupo('grupos-numeros', 'Número', [
       { label: 'Ícone', nome: 'icone', tipo: 'text' },
       { label: 'Descrição', nome: 'descricao', tipo: 'text' }
-    ], 'numeros', 5);
+    ], 'txt_item', 6);
 
-    gerarGrupo('grupos-servicos', 'Grupo Serviço', [
+    gerarGrupo('grupos-servicos', 'Serviço', [
       { label: 'Título', nome: 'titulo', tipo: 'text' },
       { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-    ], 'servico', 5);
+    ], 'txt_servicos', 5);
 
-    // Pré-visualização de imagens
+    // Visualizar imagens selecionadas
     document.addEventListener('change', function (e) {
       if (e.target.type === 'file') {
         const file = e.target.files[0];
         if (file) {
           const link = document.getElementById('link_' + e.target.name);
-          const url = URL.createObjectURL(file);
-          link.href = url;
-          link.style.display = 'inline';
+          if (link) {
+            const url = URL.createObjectURL(file);
+            link.href = url;
+            link.style.display = 'inline';
+          }
         }
       }
     });
 
-    // Accordion functionality
+    // Accordion toggle
     document.addEventListener('click', function (e) {
       if (e.target.classList.contains('accordion-toggle')) {
         e.target.classList.toggle('active');
@@ -143,11 +153,11 @@
       }
     });
 
-    // URL do proxy Google Apps Script (com execução anônima habilitada)
+    // API proxy GAS
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
-
     let SHA_ATUAL = '';
 
+    // Carrega dados do CSV e preenche formulário
     async function carregarDados() {
       const res = await fetch(API_URL);
       const data = await res.json();
@@ -155,24 +165,22 @@
         alert('Erro ao carregar CSV: ' + data.error);
         return;
       }
-
       SHA_ATUAL = data.sha;
-      const csv = data.csv;
-      preencherFormulario(csv);
+      preencherFormulario(data.csv);
     }
 
-    function preencherFormulario(csv) {
-      const linhas = csv.split('\n');
-      linhas.forEach(linha => {
-        const index = linha.indexOf(';');
-        if (index === -1) return; // ignora linhas inválidas
-        const campo = linha.slice(0, index).trim();
-        const valor = linha.slice(index + 1).trim();
+    function preencherFormulario(csvText) {
+      const resultado = Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true,
+      });
 
-        const input = document.querySelector(`[name="${campo}"]`);
-        if (input) input.value = valor || '';
-
-        const link = document.getElementById('link_' + campo);
+      resultado.data.forEach(({ chave, valor }) => {
+        const input = document.querySelector(`[name="${chave}"]`);
+        if (input) {
+          input.value = valor || '';
+        }
+        const link = document.getElementById('link_' + chave);
         if (link && valor) {
           link.href = valor;
           link.style.display = 'inline';
@@ -180,37 +188,28 @@
       });
     }
 
+    // Coleta dados do formulário e converte em CSV
     function coletarDadosCSV() {
       const inputs = document.querySelectorAll('[name]');
-      const linhas = [];
-
+      const data = [];
       inputs.forEach(input => {
-        const campo = input.name;
+        const chave = input.name;
         const valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
-        linhas.push(`${campo};${valor}`);
+        data.push({ chave, valor });
       });
-
-      return linhas.join('\n');
+      return Papa.unparse(data);
     }
 
+    // Envia dados para backend via POST
     async function enviarDados() {
       const csv = coletarDadosCSV();
-
-      const payload = {
-        csv,
-        sha: SHA_ATUAL
-      };
-
+      const payload = { csv, sha: SHA_ATUAL };
       const res = await fetch(API_URL, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
-
       const data = await res.json();
-
       if (data.success) {
         alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
       } else {
@@ -218,11 +217,11 @@
       }
     }
 
+    // Inicializa tudo
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         await carregarDados();
-
-        document.getElementById('btn-enviar').addEventListener('click', async (e) => {
+        document.getElementById('btn-enviar').addEventListener('click', async e => {
           e.preventDefault();
           await enviarDados();
         });
@@ -231,10 +230,5 @@
       }
     });
   </script>
-
-  <div class="form-actions">
-    <p id="usuario-logado"></p>
-    <button id="btn-enviar">Enviar</button>
-  </div>
 </body>
 </html>
