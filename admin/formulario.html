@@ -164,9 +164,14 @@
     function preencherFormulario(csv) {
       const linhas = csv.split('\n');
       linhas.forEach(linha => {
-        const [campo, valor] = linha.split(';');
+        const index = linha.indexOf(';');
+        if (index === -1) return; // ignora linhas inválidas
+        const campo = linha.slice(0, index).trim();
+        const valor = linha.slice(index + 1).trim();
+
         const input = document.querySelector(`[name="${campo}"]`);
         if (input) input.value = valor || '';
+
         const link = document.getElementById('link_' + campo);
         if (link && valor) {
           link.href = valor;
