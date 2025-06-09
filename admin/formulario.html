@@ -95,17 +95,21 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
+    // Função para criar os grupos com acordeão (vantagens, números, serviços)
     function gerarGrupo(id, titulo, campos, quantidade = 6) {
       let html = '';
       for (let i = 1; i <= quantidade; i++) {
-        html += `<div class="accordion-item"><button class="accordion-toggle" type="button">${titulo} ${i}</button><div class="accordion-content">`;
+        html += `<div class="accordion-item">
+          <button class="accordion-toggle" type="button">${titulo} ${i}</button>
+          <div class="accordion-content">`;
         campos.forEach(campo => {
           const nomeCampo = `${campo.prefixo}_${i}`;
           html += `<label>${campo.label}: `;
           if (campo.tipo === 'textarea') {
             html += `<textarea name="${nomeCampo}"></textarea>`;
           } else if (campo.tipo === 'file') {
-            html += `<input type="file" name="${nomeCampo}" accept="image/*" /><a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>`;
+            html += `<input type="file" name="${nomeCampo}" accept="image/*" />
+                     <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>`;
           } else {
             html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
           }
@@ -116,6 +120,7 @@
       document.getElementById(id).innerHTML = html;
     }
 
+    // Gerar os grupos conforme sua configuração atual
     gerarGrupo('grupos-vantagens', 'Vantagem', [
       { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
       { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
@@ -132,20 +137,21 @@
       { label: 'Descrição', prefixo: 'txt_servicos', tipo: 'textarea' }
     ], 5);
 
+    // Evento para mostrar link da imagem selecionada localmente (preview)
     document.addEventListener('change', function (e) {
       if (e.target.type === 'file') {
         const file = e.target.files[0];
-        if (file) {
-          const link = document.getElementById('link_' + e.target.name);
-          if (link) {
-            const url = URL.createObjectURL(file);
-            link.href = url;
-            link.style.display = 'inline';
-          }
+        const link = document.getElementById('link_' + e.target.name);
+        if (file && link) {
+          const url = URL.createObjectURL(file);
+          link.href = url;
+          link.style.display = 'inline';
+          link.textContent = 'Ver imagem selecionada';
         }
       }
     });
 
+    // Toggle para acordeão
     document.addEventListener('click', function (e) {
       if (e.target.classList.contains('accordion-toggle')) {
         e.target.classList.toggle('active');
@@ -154,9 +160,11 @@
       }
     });
 
+    // URL da API Google Apps Script para carregar e salvar CSV
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
     let SHA_ATUAL = '';
 
+    // Função para carregar os dados do CSV
     async function carregarDados() {
       const res = await fetch(API_URL);
       const data = await res.json();
@@ -168,6 +176,7 @@
       preencherFormulario(data.csv);
     }
 
+    // Preenche o formulário com os dados do CSV, ajustando links das imagens
     function preencherFormulario(csvText) {
       const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
       resultado.data.forEach(({ chave, valor }) => {
@@ -178,6 +187,7 @@
 
         const link = document.getElementById('link_' + chave);
         if (link && valor) {
+          // Corrige o caminho removendo '/admin/' e montando a URL completa
           const urlCorrigida = new URL(valor.replace(/^\/admin\//, '/'), 'https://rentabilizar.likehomepropriedades.com.br');
           link.href = urlCorrigida.href;
           link.textContent = 'Ver imagem carregada';
@@ -186,26 +196,33 @@
       });
     }
 
-  function coletarDadosCSV() {
-    const inputs = document.querySelectorAll('[name]');
-    const data = [];
-    inputs.forEach(input => {
-      const chave = input.name;
-      let valor = '';
-      if (input.type === 'file') {
-        const file = input.files[0];
-        if (file) valor = '/img/icons/' + file.name;
-      } else {
-        valor = (input.value || '').replace(/(\r\n|\n|\r)/gm, ' ').trim();
-        if (typeof valor === 'string' && valor.startsWith('/admin/')) {
-          valor = valor.replace(/^\/admin\//, '/');
+    // Coleta dados do formulário para montar CSV
+    // Atenção: aqui só registra o nome do arquivo das imagens para salvar no CSV,
+    // o upload real das imagens será implementado depois.
+    function coletarDadosCSV() {
+      const inputs = document.querySelectorAll('[name]');
+      const data = [];
+      inputs.forEach(input => {
+        const chave = input.name;
+        let valor = '';
+        if (input.type === 'file') {
+          const file = input.files[0];
+          if (file) {
+            // Para já usar um padrão de caminho relativo das imagens no site
+            valor = '/img/icons/' + file.name;
+          }
+        } else {
+          valor = (input.value || '').replace(/(\r\n|\n|\r)/gm, ' ').trim();
+          if (typeof valor === 'string' && valor.startsWith('/admin/')) {
+            valor = valor.replace(/^\/admin\//, '/');
+          }
         }
-      }
-      data.push({ chave, valor });
-    });
-    return Papa.unparse(data);
-  }
+        data.push({ chave, valor });
+      });
+      return Papa.unparse(data);
+    }
 
+    // Envia os dados para API salvar no CSV do GitHub
     async function enviarDados() {
       const csv = coletarDadosCSV();
       const payload = { csv, sha: SHA_ATUAL };
@@ -222,6 +239,7 @@
       }
     }
 
+    // Inicialização ao carregar a página
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         await carregarDados();
