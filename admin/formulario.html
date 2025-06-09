@@ -9,21 +9,26 @@
 <body>
   <h1>Gerenciamento de Conteúdo</h1>
 
+  <!-- Área capa - foto principal -->
+   <section>
+    <h2>Área "Capa" - Foto principal do site</h2>
+     <label>
+      Imagem Principal:
+      <input type="file" name="img_principal" accept="image/*" />
+      <a id="img_principal" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
+    </label>
+    <label>Texto da Imagem Principal: <input type="text" name="texto_img_principal" /></label>
+   </section>
+
   <!-- Área Sobre -->
   <section>
     <h2>Área "Sobre"</h2>
-    <label>
-      Imagem Principal:
-      <input type="file" name="logo_top" accept="image/*" />
-      <a id="link_logo_top" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-    </label>
-    <label>Texto da Imagem Principal: <input type="text" name="texto_img_principal" /></label>
-    <label>Texto "Sobre": <textarea name="texto_sobre"></textarea></label>
     <label>
       Imagem do Texto "Sobre":
       <input type="file" name="img_sobre" accept="image/*" />
       <a id="link_img_sobre" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
+    <label>Texto "Sobre": <textarea name="texto_sobre"></textarea></label>
     <label>Texto Destaque "Sobre": <input type="text" name="subtitulo_sobre" /></label>
   </section>
 
