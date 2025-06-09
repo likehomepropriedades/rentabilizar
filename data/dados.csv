@@ -28,6 +28,12 @@ img_acesso,\img\img_acesso_plataforma.jpg
 subtitulo_acesso,Acesso à plataforma do proprietário
 txt_acesso,"Você acompanha reservas, faturamento e desempenho do seu imóvel em tempo real, com total transparência e autonomia."
 titulo_numeros,Nossos números falam por si
+img_numeros,\img\img-fundo-numeros.jpg
+icone_numero_1,\img\icons\item_1.svg
+icone_numero_2,\img\icons\item_2.svg
+icone_numero_3,\img\icons\item_3.svg
+icone_numero_4,\img\icons\item_4.svg
+icone_numero_5,\img\icons\item_5.svg
 txt_item_1, +40 Propriedades sob gestão
 txt_item_2,56% de ocupação média
 txt_item_3,"R$ 1.000.000,00 em reservas só em 2024"
