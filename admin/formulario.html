@@ -142,19 +142,19 @@
   ], 5);
 
   // Visualizar imagens selecionadas
-  document.addEventListener('change', function (e) {
-    if (e.target.type === 'file') {
-      const file = e.target.files[0];
-      if (file) {
-        const link = document.getElementById('link_' + e.target.name);
-        if (link) {
-          const url = URL.createObjectURL(file);
-          link.href = url.replace('/admin/', '/'); // Corrige o caminho se houver erro
-          link.style.display = 'inline';
+    document.addEventListener('change', function (e) {
+      if (e.target.type === 'file') {
+        const file = e.target.files[0];
+        if (file) {
+          const link = document.getElementById('link_' + e.target.name);
+          if (link) {
+            const url = URL.createObjectURL(file);
+            link.href = url;
+            link.style.display = 'inline';
+          }
         }
       }
-    }
-  });
+    });
 
   // Accordion toggle
   document.addEventListener('click', function (e) {
@@ -189,33 +189,52 @@
 
       resultado.data.forEach(({ chave, valor }) => {
         const input = document.querySelector(`[name="${chave}"]`);
-        if (input) {
-          // Ignora inputs do tipo file
-          if (input.type !== 'file') {
-            input.value = valor || '';
-          }
+        if (input && input.type !== 'file') {
+          input.value = valor || '';
         }
 
-        // Atualiza visualização do link da imagem, se aplicável
+        // Atualiza visualização do link da imagem
         const link = document.getElementById('link_' + chave);
         if (link && valor) {
-          link.href = valor;
+          const urlCorrigida = valor
+            .replace(/https?:\/\/[^\/]+\/admin\//, '/')
+            .replace(/^\/admin\//, '/');
+          link.href = urlCorrigida;
           link.textContent = 'Ver imagem carregada';
           link.style.display = 'inline';
         }
       });
     }
+
     // Coleta dados do formulário e converte em CSV
     function coletarDadosCSV() {
       const inputs = document.querySelectorAll('[name]');
       const data = [];
       inputs.forEach(input => {
         const chave = input.name;
-        const valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
+        let valor = '';
+
+        if (input.type === 'file') {
+          const file = input.files[0];
+          if (file) {
+            valor = '/img/icons/' + file.name;
+          }
+        } else {
+          valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
+          valor = valor
+            .replace(/https?:\/\/[^\/]+\/admin\//, '/')
+            .replace(/^\/admin\//, '/');
+
+          if (valor.startsWith('blob:')) {
+            valor = '';
+          }
+        }
+
         data.push({ chave, valor });
       });
       return Papa.unparse(data);
     }
+
 
     // Envia dados para backend via POST
     async function enviarDados() {
