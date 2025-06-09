@@ -10,15 +10,15 @@
   <h1>Gerenciamento de Conteúdo</h1>
 
   <!-- Área capa - foto principal -->
-   <section>
+  <section>
     <h2>Área "Capa" - Foto principal do site</h2>
-     <label>
+    <label>
       Imagem Principal:
       <input type="file" name="img_principal" accept="image/*" />
       <a id="link_img_principal" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
     </label>
     <label>Texto da Imagem Principal: <input type="text" name="texto_img_principal" /></label>
-   </section>
+  </section>
 
   <!-- Área Sobre -->
   <section>
@@ -120,7 +120,7 @@
       { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
       { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
       { label: 'Descrição', prefixo: 'txt_vantagem', tipo: 'textarea' }
-    ], 6);
+    ]);
 
     gerarGrupo('grupos-numeros', 'Número', [
       { label: 'Ícone', prefixo: 'icone_numero', tipo: 'file' },
