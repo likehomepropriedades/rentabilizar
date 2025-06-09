@@ -149,7 +149,7 @@
         const link = document.getElementById('link_' + e.target.name);
         if (link) {
           const url = URL.createObjectURL(file);
-          link.href = url;
+          link.href = url.replace('/admin/', '/'); // Corrige o caminho se houver erro
           link.style.display = 'inline';
         }
       }
