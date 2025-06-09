@@ -95,7 +95,6 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
-    // Função para criar os grupos com acordeão (vantagens, números, serviços)
     function gerarGrupo(id, titulo, campos, quantidade = 6) {
       let html = '';
       for (let i = 1; i <= quantidade; i++) {
@@ -120,7 +119,6 @@
       document.getElementById(id).innerHTML = html;
     }
 
-    // Gerar os grupos conforme sua configuração atual
     gerarGrupo('grupos-vantagens', 'Vantagem', [
       { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
       { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
@@ -137,7 +135,6 @@
       { label: 'Descrição', prefixo: 'txt_servicos', tipo: 'textarea' }
     ], 5);
 
-    // Evento para mostrar link da imagem selecionada localmente (preview)
     document.addEventListener('change', function (e) {
       if (e.target.type === 'file') {
         const file = e.target.files[0];
@@ -151,7 +148,6 @@
       }
     });
 
-    // Toggle para acordeão
     document.addEventListener('click', function (e) {
       if (e.target.classList.contains('accordion-toggle')) {
         e.target.classList.toggle('active');
@@ -160,23 +156,20 @@
       }
     });
 
-    // URL da API Google Apps Script para carregar e salvar CSV
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
     let SHA_ATUAL = '';
 
-    // Função para carregar os dados do CSV
     async function carregarDados() {
-      const res = await fetch(API_URL);
+      const res = await fetch(API_URL, { method: 'GET' });
       const data = await res.json();
       if (data.error) {
         alert('Erro ao carregar CSV: ' + data.error);
         return;
       }
-      SHA_ATUAL = data.sha;
+      SHA_ATUAL = data.sha || ''; // pega o SHA que vem da API
       preencherFormulario(data.csv);
     }
 
-    // Preenche o formulário com os dados do CSV, ajustando links das imagens
     function preencherFormulario(csvText) {
       const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
       resultado.data.forEach(({ chave, valor }) => {
@@ -184,10 +177,8 @@
         if (input && input.type !== 'file') {
           input.value = valor || '';
         }
-
         const link = document.getElementById('link_' + chave);
         if (link && valor) {
-          // Corrige o caminho removendo '/admin/' e montando a URL completa
           const urlCorrigida = new URL(valor.replace(/^\/admin\//, '/'), 'https://rentabilizar.likehomepropriedades.com.br');
           link.href = urlCorrigida.href;
           link.textContent = 'Ver imagem carregada';
@@ -196,9 +187,6 @@
       });
     }
 
-    // Coleta dados do formulário para montar CSV
-    // Atenção: aqui só registra o nome do arquivo das imagens para salvar no CSV,
-    // o upload real das imagens será implementado depois.
     function coletarDadosCSV() {
       const inputs = document.querySelectorAll('[name]');
       const data = [];
@@ -208,7 +196,6 @@
         if (input.type === 'file') {
           const file = input.files[0];
           if (file) {
-            // Para já usar um padrão de caminho relativo das imagens no site
             valor = '/img/icons/' + file.name;
           }
         } else {
@@ -222,24 +209,27 @@
       return Papa.unparse(data);
     }
 
-    // Envia os dados para API salvar no CSV do GitHub
     async function enviarDados() {
       const csv = coletarDadosCSV();
       const payload = { csv, sha: SHA_ATUAL };
-      const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
-      } else {
-        alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (data.success) {
+          SHA_ATUAL = data.commit; // Atualiza SHA com o commit mais recente
+          alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
+        } else {
+          alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
+        }
+      } catch (err) {
+        alert('Erro na comunicação com o servidor: ' + err.message);
       }
     }
 
-    // Inicialização ao carregar a página
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         await carregarDados();
