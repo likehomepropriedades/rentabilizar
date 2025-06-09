@@ -91,17 +91,17 @@
 
   <script>
    // Função para gerar grupos dinâmicos (vantagens, números, serviços, com suporte a imagens)
-  function gerarGrupo(id, titulo, campos, prefixo, quantidade = 6) {
+   // Função para gerar grupos dinâmicos com prefixo individual por campo
+  function gerarGrupo(id, titulo, campos, quantidade = 6) {
     let html = '';
     for (let i = 1; i <= quantidade; i++) {
-      const index = String(i).padStart(2, '0');
       html += `
         <div class="accordion-item">
           <button class="accordion-toggle" type="button">${titulo} ${i}</button>
           <div class="accordion-content">
       `;
       campos.forEach(campo => {
-        const nomeCampo = `${prefixo}_${index}_${campo.nome}`;
+        const nomeCampo = `${campo.prefixo}_${i}`;
         html += `<label>${campo.label}: `;
 
         if (campo.tipo === 'textarea') {
@@ -122,12 +122,12 @@
     document.getElementById(id).innerHTML = html;
   }
 
-  // Geração dos grupos com campo de imagem incluído
+  // Geração do grupo de vantagens com prefixos individuais
   gerarGrupo('grupos-vantagens', 'Vantagem', [
-    { label: 'Ícone', nome: 'icone', tipo: 'file' }, // agora é imagem
-    { label: 'Texto Destaque', nome: 'destaque', tipo: 'text' },
-    { label: 'Descrição', nome: 'txt_vantagem_0', tipo: 'textarea' }
-  ], 'subtitulo_vantagem_0', 6);
+    { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
+    { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
+    { label: 'Descrição', prefixo: 'txt_vantagem', tipo: 'textarea' }
+  ], 6);
 
   gerarGrupo('grupos-numeros', 'Número', [
     { label: 'Ícone', nome: 'icone', tipo: 'file' }, // agora é imagem
