@@ -5,12 +5,12 @@ texto_sobre,"A LikeHome nasceu em Porto Alegre com um propósito claro: elevar o
 subtitulo_sobre,"Gestão profissional de imóveis de curta e longa temporada com foco em sofisticação, curadoria e retorno financeiro."
 img_principal,img\foto_principal.jpg
 titulo_vantagens,Vantagens
-icone_vantagem,img\icons\icon-vantagem-1.svg
-icone_vantagem,img\icons\icon-vantagem-2.svg
-icone_vantagem,img\icons\icon-vantagem-3.svg
-icone_vantagem,img\icons\icon-vantagem-4.svg
-icone_vantagem,img\icons\icon-vantagem-5.svg
-icone_vantagem,img\icons\icon-vantagem-6.svg
+icone_vantagem_1,img\icons\icon-vantagem-1.svg
+icone_vantagem_2,img\icons\icon-vantagem-2.svg
+icone_vantagem_3,img\icons\icon-vantagem-3.svg
+icone_vantagem_4,img\icons\icon-vantagem-4.svg
+icone_vantagem_5,img\icons\icon-vantagem-5.svg
+icone_vantagem_6,img\icons\icon-vantagem-6.svg
 subtitulo_vantagem_1,"Imóvel parado, custo dobrado"
 subtitulo_vantagem_2,Gestão com tecnologia de ponta
 subtitulo_vantagem_3,Divulgação multiplataforma e em mídia digital
@@ -32,14 +32,14 @@ txt_item_3,"R$ 1.000.000,00 em reservas só em 2024"
 txt_item_4,Nota 4.9 no Airbnb
 txt_item_5, + 2.000 reservas realizadas
 titulo_servicos,Nossos serviços
-subtitulo_txt_servicos1,Gestão da Propriedade
-subtitulo_txt_servicos2,Implantação & Home Staging
-subtitulo_txt_servicos3,Fotografia Profissional
-subtitulo_txt_servicos4,Atendimento ao Hóspede
-subtitulo_txt_servicos5,Listing Management
-txt_servicos1,"Manutenção, limpeza, compras, verificação de danos"
-txt_servicos2,Adequação completa para locação
-txt_servicos3,Anúncios com imagens imobiliárias feitas por especialistas.
-txt_servicos4,"Check-in/out, verificação, contratos, suporte e cobranças."
-txt_servicos5,Publicação em múltiplas plataformas e gestão inteligente de preços.
+subtitulo_txt_servicos_1,Gestão da Propriedade
+subtitulo_txt_servicos_2,Implantação & Home Staging
+subtitulo_txt_servicos_3,Fotografia Profissional
+subtitulo_txt_servicos_4,Atendimento ao Hóspede
+subtitulo_txt_servicos_5,Listing Management
+txt_servicos_1,"Manutenção, limpeza, compras, verificação de danos"
+txt_servicos_2,Adequação completa para locação
+txt_servicos_3,Anúncios com imagens imobiliárias feitas por especialistas.
+txt_servicos_4,"Check-in/out, verificação, contratos, suporte e cobranças."
+txt_servicos_5,Publicação em múltiplas plataformas e gestão inteligente de preços.
 subtitulo_formulario,Seu imóvel tem potencial para fazer parte da nossa curadoria exclusiva?

@@ -90,7 +90,7 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
-   // Função para gerar grupos dinâmicos (vantagens, números, serviços, com suporte a imagens)
+   
    // Função para gerar grupos dinâmicos com prefixo individual por campo
   function gerarGrupo(id, titulo, campos, quantidade = 6) {
     let html = '';
@@ -122,23 +122,24 @@
     document.getElementById(id).innerHTML = html;
   }
 
-  // Geração do grupo de vantagens com prefixos individuais
+  // Grupo: Vantagens
   gerarGrupo('grupos-vantagens', 'Vantagem', [
     { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
     { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
     { label: 'Descrição', prefixo: 'txt_vantagem', tipo: 'textarea' }
   ], 6);
 
+  // Grupo: Números
   gerarGrupo('grupos-numeros', 'Número', [
-    { label: 'Ícone', nome: 'icone', tipo: 'file' }, // agora é imagem
-    { label: 'Descrição', nome: 'descricao', tipo: 'text' }
-  ], 'txt_item', 6);
+    { label: 'Ícone', prefixo: 'icone_numero', tipo: 'file' },
+    { label: 'Descrição', prefixo: 'txt_item', tipo: 'text' }
+  ], 6);
 
+  // Grupo: Serviços
   gerarGrupo('grupos-servicos', 'Serviço', [
-    { label: 'Imagem', nome: 'imagem', tipo: 'file' }, // opcional
-    { label: 'Título', nome: 'titulo', tipo: 'text' },
-    { label: 'Descrição', nome: 'descricao', tipo: 'textarea' }
-  ], 'txt_servicos', 5);
+    { label: 'Título', prefixo: 'subtitulo_txt_servicos', tipo: 'text' },
+    { label: 'Descrição', prefixo: 'txt_servicos', tipo: 'textarea' }
+  ], 5);
 
   // Visualizar imagens selecionadas
   document.addEventListener('change', function (e) {
