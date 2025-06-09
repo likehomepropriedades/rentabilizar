@@ -90,58 +90,43 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
   <script>
-   
-   // Função para gerar grupos dinâmicos com prefixo individual por campo
-  function gerarGrupo(id, titulo, campos, quantidade = 6) {
-    let html = '';
-    for (let i = 1; i <= quantidade; i++) {
-      html += `
-        <div class="accordion-item">
-          <button class="accordion-toggle" type="button">${titulo} ${i}</button>
-          <div class="accordion-content">
-      `;
-      campos.forEach(campo => {
-        const nomeCampo = `${campo.prefixo}_${i}`;
-        html += `<label>${campo.label}: `;
-
-        if (campo.tipo === 'textarea') {
-          html += `<textarea name="${nomeCampo}"></textarea>`;
-        } else if (campo.tipo === 'file') {
-          html += `
-            <input type="file" name="${nomeCampo}" accept="image/*" />
-            <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
-          `;
-        } else {
-          html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
-        }
-
-        html += `</label>`;
-      });
-      html += `</div></div>`;
+    function gerarGrupo(id, titulo, campos, quantidade = 6) {
+      let html = '';
+      for (let i = 1; i <= quantidade; i++) {
+        html += `<div class="accordion-item"><button class="accordion-toggle" type="button">${titulo} ${i}</button><div class="accordion-content">`;
+        campos.forEach(campo => {
+          const nomeCampo = `${campo.prefixo}_${i}`;
+          html += `<label>${campo.label}: `;
+          if (campo.tipo === 'textarea') {
+            html += `<textarea name="${nomeCampo}"></textarea>`;
+          } else if (campo.tipo === 'file') {
+            html += `<input type="file" name="${nomeCampo}" accept="image/*" /><a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>`;
+          } else {
+            html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
+          }
+          html += `</label>`;
+        });
+        html += `</div></div>`;
+      }
+      document.getElementById(id).innerHTML = html;
     }
-    document.getElementById(id).innerHTML = html;
-  }
 
-  // Grupo: Vantagens
-  gerarGrupo('grupos-vantagens', 'Vantagem', [
-    { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
-    { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
-    { label: 'Descrição', prefixo: 'txt_vantagem', tipo: 'textarea' }
-  ], 6);
+    gerarGrupo('grupos-vantagens', 'Vantagem', [
+      { label: 'Ícone', prefixo: 'icone_vantagem', tipo: 'file' },
+      { label: 'Texto Destaque', prefixo: 'subtitulo_vantagem', tipo: 'text' },
+      { label: 'Descrição', prefixo: 'txt_vantagem', tipo: 'textarea' }
+    ], 6);
 
-  // Grupo: Números
-  gerarGrupo('grupos-numeros', 'Número', [
-    { label: 'Ícone', prefixo: 'icone_numero', tipo: 'file' },
-    { label: 'Descrição', prefixo: 'txt_item', tipo: 'text' }
-  ], 6);
+    gerarGrupo('grupos-numeros', 'Número', [
+      { label: 'Ícone', prefixo: 'icone_numero', tipo: 'file' },
+      { label: 'Descrição', prefixo: 'txt_item', tipo: 'text' }
+    ], 6);
 
-  // Grupo: Serviços
-  gerarGrupo('grupos-servicos', 'Serviço', [
-    { label: 'Título', prefixo: 'subtitulo_txt_servicos', tipo: 'text' },
-    { label: 'Descrição', prefixo: 'txt_servicos', tipo: 'textarea' }
-  ], 5);
+    gerarGrupo('grupos-servicos', 'Serviço', [
+      { label: 'Título', prefixo: 'subtitulo_txt_servicos', tipo: 'text' },
+      { label: 'Descrição', prefixo: 'txt_servicos', tipo: 'textarea' }
+    ], 5);
 
-  // Visualizar imagens selecionadas
     document.addEventListener('change', function (e) {
       if (e.target.type === 'file') {
         const file = e.target.files[0];
@@ -156,20 +141,17 @@
       }
     });
 
-  // Accordion toggle
-  document.addEventListener('click', function (e) {
-    if (e.target.classList.contains('accordion-toggle')) {
-      e.target.classList.toggle('active');
-      const content = e.target.nextElementSibling;
-      content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
-    }
-  });
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('accordion-toggle')) {
+        e.target.classList.toggle('active');
+        const content = e.target.nextElementSibling;
+        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+      }
+    });
 
-    // API proxy GAS
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
     let SHA_ATUAL = '';
 
-    // Carrega dados do CSV e preenche formulário
     async function carregarDados() {
       const res = await fetch(API_URL);
       const data = await res.json();
@@ -182,61 +164,41 @@
     }
 
     function preencherFormulario(csvText) {
-      const resultado = Papa.parse(csvText, {
-        header: true,
-        skipEmptyLines: true,
-      });
-
+      const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
       resultado.data.forEach(({ chave, valor }) => {
         const input = document.querySelector(`[name="${chave}"]`);
         if (input && input.type !== 'file') {
           input.value = valor || '';
         }
 
-        // Atualiza visualização do link da imagem
         const link = document.getElementById('link_' + chave);
         if (link && valor) {
-          const urlCorrigida = valor
-            .replace(/https?:\/\/[^\/]+\/admin\//, '/')
-            .replace(/^\/admin\//, '/');
-          link.href = urlCorrigida;
+          const urlCorrigida = new URL(valor.replace(/^\/admin\//, '/'), 'https://rentabilizar.likehomepropriedades.com.br');
+          link.href = urlCorrigida.href;
           link.textContent = 'Ver imagem carregada';
           link.style.display = 'inline';
         }
       });
     }
 
-    // Coleta dados do formulário e converte em CSV
     function coletarDadosCSV() {
       const inputs = document.querySelectorAll('[name]');
       const data = [];
       inputs.forEach(input => {
         const chave = input.name;
         let valor = '';
-
         if (input.type === 'file') {
           const file = input.files[0];
-          if (file) {
-            valor = '/img/icons/' + file.name;
-          }
+          if (file) valor = '/img/icons/' + file.name;
         } else {
           valor = input.value.replace(/(\r\n|\n|\r)/gm, ' ').trim();
-          valor = valor
-            .replace(/https?:\/\/[^\/]+\/admin\//, '/')
-            .replace(/^\/admin\//, '/');
-
-          if (valor.startsWith('blob:')) {
-            valor = '';
-          }
+          if (valor.startsWith('/admin/')) valor = valor.replace(/^\/admin\//, '/');
         }
-
         data.push({ chave, valor });
       });
       return Papa.unparse(data);
     }
 
-
-    // Envia dados para backend via POST
     async function enviarDados() {
       const csv = coletarDadosCSV();
       const payload = { csv, sha: SHA_ATUAL };
@@ -253,7 +215,6 @@
       }
     }
 
-    // Inicializa tudo
     document.addEventListener('DOMContentLoaded', async () => {
       try {
         await carregarDados();
