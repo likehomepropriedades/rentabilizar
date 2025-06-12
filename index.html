@@ -277,33 +277,34 @@
           </div>
         </fieldset>
 
-        <fieldset>
-          <legend>Já tem anúncio em alguma plataforma?</legend>
-          <div class="radio-inline-group">
-            <label>
-              <input type="radio" id="anuncio_nao" name="anuncio" value="nao"> Não
-            </label>
-            <label>
-              <input type="radio" id="anuncio_sim" name="anuncio" value="sim"> Sim
-            </label>
-          </div>
+       <fieldset>
+        <legend>Já tem anúncio em alguma plataforma?</legend>
+        <div class="radio-inline-group">
+          <label>
+            <input type="radio" name="anuncio" value="nao"> Não
+          </label>
+          <label>
+            <input type="radio" name="anuncio" value="sim"> Sim
+          </label>
+        </div>
 
-          <div class="checkbox-group" id="plataformas_group" style="display: none;">
-            <label><input type="checkbox" name="plataforma" value="booking"> Booking</label>
-            <label><input type="checkbox" name="plataforma" value="airbnb"> Airbnb</label>
-            <label><input type="checkbox" name="plataforma" value="outra"> Outra</label>
-          </div>
-        </fieldset>
+        <div class="checkbox-group" id="plataformas_group" style="display: none;">
+          <label><input type="checkbox" name="plataforma" value="Booking"> Booking</label>
+          <label><input type="checkbox" name="plataforma" value="Airbnb"> Airbnb</label>
+          <label><input type="checkbox" name="plataforma" value="Outra"> Outra</label>
+        </div>
+      </fieldset>
 
-        <fieldset>
-          <legend>Como conheceu a LikeHome?</legend>
-          <div class="radio-group">
-            <label><input type="radio" name="origem" value="instagram"> Instagram</label>
-            <label><input type="radio" name="origem" value="indicacao"> Indicação</label>
-            <label><input type="radio" name="origem" value="anuncio"> Anúncio Online</label>
-            <label><input type="radio" name="origem" value="outro"> Outro</label>
-          </div>
-        </fieldset>
+      <fieldset>
+        <legend>Como conheceu a LikeHome?</legend>
+        <div class="radio-group">
+          <label><input type="radio" name="origem" value="Instagram"> Instagram</label>
+          <label><input type="radio" name="origem" value="Indicação"> Indicação</label>
+          <label><input type="radio" name="origem" value="Anúncio Online"> Anúncio Online</label>
+          <label><input type="radio" name="origem" value="Outro"> Outro</label>
+        </div>
+      </fieldset>
+
 
         <div class="btn-wrapper">
           <button type="submit" class="btn-submit">QUERO RENTABILIZAR</button>
@@ -461,9 +462,21 @@
   <script>
     // formulário quero rentabilizar
     const form = document.getElementById("queroRentabilizar");
+
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
 
+      const anuncioSim = document.querySelector('input[name="anuncio"]:checked')?.value === "sim";
+
+      if (anuncioSim) {
+        const plataformasMarcadas = form.querySelectorAll('input[name="plataforma"]:checked');
+        if (plataformasMarcadas.length === 0) {
+          alert("Por favor, selecione ao menos uma plataforma.");
+          return;
+        }
+      }
+
+      // Usa FormData normalmente
       const formData = new FormData(form);
 
       try {
@@ -476,22 +489,29 @@
 
         if (result.success) {
           alert(result.message);
-          form.reset(); // opcional: limpa o form após envio
+          form.reset(); // limpa o formulário após sucesso
+          document.getElementById('plataformas_group').style.display = 'none';
         } else {
           alert("Erro: " + result.message);
         }
       } catch (err) {
-        alert("Erro ao enviar o formulário2: " + err.message);
+        alert("Erro ao enviar o formulário: " + err.message);
       }
     });
 
-      // Garante que 'plataforma' será enviado como string (se houver)
-      const plataformas = [];
-      form.querySelectorAll('input[name="plataforma"]:checked').forEach(el => {
-        plataformas.push(el.value);
-      });
-      data.plataforma = plataformas.join(', ');
+    // Controle de visibilidade do grupo de checkboxes
+    const checkboxGroup = document.getElementById('plataformas_group');
+    const radiosAnuncio = document.querySelectorAll('input[name="anuncio"]');
 
+    function atualizarVisibilidadePlataformas() {
+      const selecionado = document.querySelector('input[name="anuncio"]:checked');
+      checkboxGroup.style.display = (selecionado && selecionado.value === 'sim') ? 'flex' : 'none';
+    }
+
+    window.addEventListener("DOMContentLoaded", atualizarVisibilidadePlataformas);
+    radiosAnuncio.forEach(radio => {
+      radio.addEventListener('change', atualizarVisibilidadePlataformas);
+    });
   
     // Modal Termos de Uso
     document.querySelector('a[href="#termos-de-uso"]').addEventListener('click', function (e) {
@@ -523,24 +543,7 @@
       });
     });
 
-    // Validação para mostrar ou esconder plataformas
-    const checkboxGroup = document.getElementById('plataformas_group');
-
-    document.querySelectorAll('input[name="anuncio"]').forEach(radio => {
-      radio.addEventListener('change', () => {
-        checkboxGroup.style.display = (radio.value === 'sim' && radio.checked) ? 'flex' : 'none';
-      });
-    });
-
-    // Executa no carregamento da página
-    window.addEventListener("DOMContentLoaded", () => {
-      const selectedAnuncio = document.querySelector('input[name="anuncio"]:checked');
-      if (selectedAnuncio && selectedAnuncio.value === 'sim') {
-        checkboxGroup.style.display = 'flex';
-      } else {
-        checkboxGroup.style.display = 'none';
-      }
-    });
+   
 </script>
 
 
