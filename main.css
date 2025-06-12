@@ -629,7 +629,7 @@ body.loaded #img_principal {
   align-items: center; /* Alinha verticalmente os filhos */
 }
 
-#subtitulo_formulario {
+.subtitulo_formulario {
   font-size: xx-large;
   width: 25%;
   text-align: left;

@@ -461,6 +461,29 @@
   <script>
     // formulário quero rentabilizar
     const form = document.getElementById("queroRentabilizar");
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyHlZVPaHHNW6kZkqWr_BYoKgK1QSnNOaDMyMt7HsUevfORAndzg1yfAa9WBLtd7dF4/exec", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(result.message);
+          form.reset(); // opcional: limpa o form após envio
+        } else {
+          alert("Erro: " + result.message);
+        }
+      } catch (err) {
+        alert("Erro ao enviar o formulário: " + err.message);
+      }
+    });
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -489,7 +512,7 @@
       data.plataforma = plataformas.join(', ');
 
       try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbz8bijoXlHkqOP-wfhYRUJ4Z6q3K7RIs3Bfdl1P8_LJqy1mwowfP200Kw1ctWaPI--f/exec", {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbyHlZVPaHHNW6kZkqWr_BYoKgK1QSnNOaDMyMt7HsUevfORAndzg1yfAa9WBLtd7dF4/exec", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data)
