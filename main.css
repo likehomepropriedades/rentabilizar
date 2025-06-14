@@ -520,6 +520,10 @@ body.loaded #img_principal {
   .txt-numeros{
     padding: 10%;
   }
+
+  .btn-link-numeros {
+   margin-left: 38%
+}
 }
 
 #servicos{
@@ -1053,6 +1057,7 @@ footer {
   .subtitulo_formulario {
     width: 100%;
     text-align: left;
+    margin-bottom: 5px;
   }
 
   /* evita que o botão fique longe demais quando empilhado */
