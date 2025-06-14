@@ -499,30 +499,27 @@ body.loaded #img_principal {
   text-align: center;
 }
 
-
-
-@media (max-width: 1020px) {
-  #container_itens_nossos_numeros {
-    width: 85%;
-    flex-direction: column;
-    justify-content: center; 
-  }
-}
-
-@media (max-width: 768px) {
-  #container_itens_nossos_numeros {
-    width: 85%;
-    flex-direction: column;
-    justify-content: center; 
-  }
-}
-
 .icon-numeros{
   height: 80px;
 }
 
 .txt-numeros{
   padding: 5%;
+}
+
+@media (max-width: 1200px) {
+  #container_itens_nossos_numeros {
+    width: 100%;
+    justify-content: center
+  }
+
+  .icon-numeros{
+    height: 100px;
+  }
+
+  .txt-numeros{
+    padding: 10%;
+  }
 }
 
 #servicos{
@@ -1052,6 +1049,10 @@ footer {
     margin-left: 0;         /* zera recuo */
     text-align: center;     /* centraliza texto */
     font-size: 2rem;        /* levemente menor */
+  }
+  .subtitulo_formulario {
+    width: 100%;
+    text-align: left;
   }
 
   /* evita que o botão fique longe demais quando empilhado */
