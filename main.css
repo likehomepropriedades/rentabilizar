@@ -634,7 +634,8 @@ body.loaded #img_principal {
   font-size: xx-large;
   width: 25%;
   text-align: left;
-  margin-left: 10%
+  margin-left: 10%;
+  margin-bottom: 5px;
 }
 
 .form-container {
