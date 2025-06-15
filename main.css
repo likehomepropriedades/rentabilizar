@@ -59,7 +59,7 @@ nav {
 }
 
 /* Ajustes para responsividade do header */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   header {
     flex-direction: column;
     align-items: center;
@@ -77,8 +77,8 @@ nav {
   }
 
   .menu {
-    flex-direction: column;
-    gap: 0.5rem;
+     width: 100%;
+     justify-content: center;
   }
 
   .menu li {
@@ -509,7 +509,7 @@ body.loaded #img_principal {
 
 @media (max-width: 1200px) {
   #container_itens_nossos_numeros {
-    width: 100%;
+    width: auto;
     justify-content: center
   }
 
@@ -603,7 +603,7 @@ body.loaded #img_principal {
   }
 
     #foto_servicos {
-      width: 100%;
+      width: 95%;
       display: flex;
       justify-content: center;
     }
@@ -1055,9 +1055,10 @@ footer {
     font-size: 2rem;        /* levemente menor */
   }
   .subtitulo_formulario {
-    width: 100%;
-    text-align: left;
-    margin-bottom: 5px;
+    width: 80%;
+    margin-left: 0;         /* zera recuo */
+    text-align: center;     /* centraliza texto */
+    font-size: 2rem;        /* levemente menor */
   }
 
   /* evita que o botão fique longe demais quando empilhado */
