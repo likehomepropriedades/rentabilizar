@@ -634,7 +634,7 @@ body.loaded #img_principal {
   font-size: xx-large;
   width: 25%;
   text-align: left;
-  margin-left: 10%;
+  margin-left: 10%
 }
 
 .form-container {
@@ -1057,7 +1057,6 @@ footer {
   .subtitulo_formulario {
     width: 80%;
     margin-left: 0;         /* zera recuo */
-    margin-bottom: 5px;
     text-align: center;     /* centraliza texto */
     font-size: 2rem;        /* levemente menor */
   }
