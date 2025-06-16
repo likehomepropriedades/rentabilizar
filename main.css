@@ -61,28 +61,33 @@ nav {
 /* Ajustes para responsividade do header */
 @media (max-width: 1200px) {
   header {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    justify-content: space-around;
   }
 
   #logo {
     margin: 0;
     margin-bottom: 10px;
+    margin-left: 10px;
   }
 
-  nav {
-    margin: 0;
+  #nav {
+    margin-right: 20px;
+    width: 70%;
   }
 
   .menu {
      width: 100%;
      justify-content: center;
+     
   }
 
   .menu li {
-    font-size: 1rem;
+    font-size: 1.2rem;
+    padding-left: 1.5%;
   }
 }
 
@@ -271,7 +276,7 @@ body.loaded #img_principal {
 }
 
 /* Adapta o layout em telas menores */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   #container_sobre {
     flex-direction: column;
     text-align: center;
@@ -281,11 +286,12 @@ body.loaded #img_principal {
     flex: 1 1 200px;
     padding-left: 10px;
     padding-right: 10px;
+    font-size: medium;
   }
 
   .img-container-sobre {
   flex: 1 1 600px;
-  max-width: 300px;
+  max-width: 700px;
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   overflow: hidden;
