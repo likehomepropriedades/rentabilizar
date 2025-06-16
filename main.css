@@ -290,7 +290,7 @@ body.loaded #img_principal {
   }
 
   .img-container-sobre {
-  flex: 1 1 600px;
+  flex: 1 1 800px;
   max-width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 10px;
@@ -304,7 +304,7 @@ body.loaded #img_principal {
     display: block;
   }
   #subtitulo_sobre{
-    font-size:medium;
+    font-size:12px;
   }
 }
 #vantagens{
