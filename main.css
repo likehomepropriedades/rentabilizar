@@ -279,13 +279,14 @@ body.loaded #img_principal {
 @media (max-width: 1200px) {
   #container_sobre {
     flex-direction: column;
-    text-align: center;
+    font-size: 12px;
   }
 
   #container_sobre_txt {
     flex: 1 1 200px;
     padding-left: 10px;
     padding-right: 10px;
+    font-size: 12px;
   }
 
   .img-container-sobre {
@@ -301,6 +302,10 @@ body.loaded #img_principal {
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+  #subtitulo_sobre{
+
+    font-size:14px;
   }
  
 }
