@@ -295,14 +295,17 @@ body.loaded #img_principal {
   aspect-ratio: 16 / 9;
   border-radius: 10px;
   overflow: hidden;
-}
+  }
 
-.img-container-sobre img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+  .img-container-sobre img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #subtitulo_sobre{
+    font-size:xx-small;
+  }
 }
 #vantagens{
  background-color: #eceae6;
@@ -336,7 +339,7 @@ body.loaded #img_principal {
 }
 
 /* Responsivo: 2 colunas em telas menores */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   #unidade-vantagem {
     width: 48%; /* duas colunas */
   }
