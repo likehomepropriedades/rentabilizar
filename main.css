@@ -286,15 +286,14 @@ body.loaded #img_principal {
     flex: 1 1 200px;
     padding-left: 10px;
     padding-right: 10px;
-    font-size: 12px;
   }
 
   .img-container-sobre {
-  flex: 1 1 800px;
-  max-width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 10px;
-  overflow: hidden;
+    flex: 1 1 800px;
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
   }
 
   .img-container-sobre img {
@@ -303,9 +302,7 @@ body.loaded #img_principal {
     object-fit: cover;
     display: block;
   }
-  #subtitulo_sobre{
-    font-size:12px;
-  }
+ 
 }
 #vantagens{
  background-color: #eceae6;
