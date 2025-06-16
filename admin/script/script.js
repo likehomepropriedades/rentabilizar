@@ -78,14 +78,15 @@ async function uploadImagemParaGithub(file) {
         const nomeArquivo = file.name;
 
         const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // ← evita preflight
+        body: JSON.stringify({
             email: USER_EMAIL,
             imagemBase64: base64,
             nomeArquivo: nomeArquivo
-          }),
+            }),
         });
+
 
         const data = await res.json();
         if (data.success && data.imageUrl) {
@@ -182,10 +183,11 @@ async function enviarDados() {
     };
 
     const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
     });
+
 
     const data = await res.json();
     if (data.success) {
