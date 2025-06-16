@@ -1,6 +1,6 @@
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 // URL do CSV versionado no GitHub (arquivo raw)
-const GITHUB_CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/dados.csv";
+const GITHUB_CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 
 // URL do Apps Script responsável apenas pelo upload de imagens
 const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2Mz9ZPzjW-IDp0Xs1TaqRaL0NWK7SbeFtE9dRO9FZcaz9QA/exec';
