@@ -77,16 +77,22 @@ async function uploadImagemParaGithub(file) {
         const base64 = reader.result;
         const nomeArquivo = file.name;
 
+        if (!base64 || !base64.startsWith('data:image')) {
+          return reject('Formato de imagem inválido ou leitura falhou');
+        }
+
+        // (Opcional) debug
+        console.log('Base64 da imagem:', base64.slice(0, 100));
+
         const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" }, // ← evita preflight
-        body: JSON.stringify({
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
             email: USER_EMAIL,
             imagemBase64: base64,
             nomeArquivo: nomeArquivo
-            }),
+          }),
         });
-
 
         const data = await res.json();
         if (data.success && data.imageUrl) {
@@ -98,9 +104,15 @@ async function uploadImagemParaGithub(file) {
         reject(err.message);
       }
     };
+
+    reader.onerror = () => {
+      reject("Erro ao ler o arquivo de imagem");
+    };
+
     reader.readAsDataURL(file);
   });
 }
+
 
 // Coleta dados e faz upload de imagens
 async function coletarDadosCSVComUpload() {
