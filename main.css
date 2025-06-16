@@ -277,6 +277,16 @@ body.loaded #img_principal {
 
 /* Adapta o layout em telas menores */
 
+@media (max-width: 1200px) {
+  
+ 
+  #subtitulo_sobre{
+
+    font-size:18px;
+  }
+ 
+}
+
 #vantagens{
  background-color: #eceae6;
 }
