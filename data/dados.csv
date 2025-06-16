@@ -1,55 +1,55 @@
 chave,valor
-logo_top,img/logo-likehome-top.svg
-texto_img_principal,Transformamos seu imóvel em uma fonte de alta rentabilidade.
-img_sobre,/img/img_sobre.jpg
-texto_sobre,"A LikeHome nasceu em Porto Alegre com um propósito claro: elevar o mercado de locações de temporada por meio de uma gestão profissional, estética e estratégica. Com olhar atento para curadoria e design, criamos experiências únicas para hóspedes, asseguramos rentabilidade para investidores e valorizamos cada espaço sob nossa gestão."
-subtitulo_sobre,"Gestão profissional de imóveis de curta e longa temporada com foco em sofisticação, curadoria e retorno financeiro."
-img_principal,img/foto_principal.jpg
+viewport,
+img_principal,
+texto_img_principal,Transformamos seu im?vel em uma fonte de alta rentabilidade.
+img_sobre,
+texto_sobre,"A LikeHome nasceu em Porto Alegre com um prop?sito claro: elevar o mercado de loca??es de temporada por meio de uma gest?o profissional, est?tica e estrat?gica. Com olhar atento para curadoria e design, criamos experi?ncias ?nicas para h?spedes, asseguramos rentabilidade para investidores e valorizamos cada espa?o sob nossa gest?o."
+subtitulo_sobre,"Gest?o profissional de im?veis de curta e longa temporada com foco em sofistica??o, curadoria e retorno financeiro."
 titulo_vantagens,Vantagens
-icone_vantagem_1,img/icons/icon-vantagem-1.svg
-icone_vantagem_2,img/icons/icon-vantagem-2.svg
-icone_vantagem_3,img/icons/icon-vantagem-3.svg
-icone_vantagem_4,img/icons/icon-vantagem-4.svg
-icone_vantagem_5,img/icons/icon-vantagem-5.svg
-icone_vantagem_6,img/icons/icon-vantagem-6.svg
-subtitulo_vantagem_1,"Imóvel parado, custo dobrado"
-subtitulo_vantagem_2,Gestão com tecnologia de ponta
-subtitulo_vantagem_3,Divulgação multiplataforma e em mídia digital
+icone_vantagem_1,
+subtitulo_vantagem_1,"Im?vel parado, custo dobrado"
+txt_vantagem_1,Manter um im?vel sem uso gera despesas mensais sem retorno. Nossa gest?o transforma esse passivo em uma fonte de renda recorrente.
+icone_vantagem_2,
+subtitulo_vantagem_2,Gest?o com tecnologia de ponta
+txt_vantagem_2,"Utilizamos sistemas inteligentes para automatizar reservas, check-ins, comunica??o e precifica??o din?mica."
+icone_vantagem_3,
+subtitulo_vantagem_3,Divulga??o multiplataforma e em m?dia digital
+txt_vantagem_3,"Publicamos seu im?vel nas principais OTAs (Airbnb, Booking etc.) e o promovemos por meio de campanhas digitais segmentadas."
+icone_vantagem_4,
 subtitulo_vantagem_4,Design e home staging para encantar e rentabilizar
-subtitulo_vantagem_5,Atuação com diferentes tipos de propriedades
-subtitulo_vantagem_6,Atendimento completo – você livre de qualquer preocupação
-txt_vantagem_1,Manter um imóvel sem uso gera despesas mensais sem retorno. Nossa gestão transforma esse passivo em uma fonte de renda recorrente.
-txt_vantagem_2,"Utilizamos sistemas inteligentes para automatizar reservas, check-ins, comunicação e precificação dinâmica."
-txt_vantagem_3,"Publicamos seu imóvel nas principais OTAs (Airbnb, Booking etc.) e o promovemos por meio de campanhas digitais segmentadas."
-txt_vantagem_4,"Aplicamos estratégias visuais e funcionais para valorizar o espaço, aumentando seu apelo e potencial de lucro desde o primeiro hóspede."
-txt_vantagem_5,"De studios a grandes casas, adaptamos nossa gestão para o perfil e objetivo de cada imóvel, com soluções personalizadas."
-txt_vantagem_6,"Cuidamos de tudo: comunicação com hóspedes, limpeza, manutenção, abastecimento e suporte. Você não precisa se preocupar com nada."
-img_acesso,/img/img_acesso_plataforma.jpg
-subtitulo_acesso,Acesso à plataforma do proprietário
-txt_acesso,"Você acompanha reservas, faturamento e desempenho do seu imóvel em tempo real, com total transparência e autonomia."
-titulo_numeros,Nossos números falam por si
-img_numeros,/img/img-fundo-numeros.jpg
-icone_numero_1,/img/icons/item_1.svg
-icone_numero_2,/img/icons/item_2.svg
-icone_numero_3,/img/icons/item_3.svg
-icone_numero_4,/img/icons/item_4.svg
-icone_numero_5,/img/icons/item_5.svg
-txt_item_1, +40 Propriedades sob gestão
-txt_item_2,56% de ocupação média
-txt_item_3,"R$ 1.000.000,00 em reservas só em 2024"
+txt_vantagem_4,"Aplicamos estrat?gias visuais e funcionais para valorizar o espa?o, aumentando seu apelo e potencial de lucro desde o primeiro h?spede."
+icone_vantagem_5,
+subtitulo_vantagem_5,Atua??o com diferentes tipos de propriedades
+txt_vantagem_5,"De studios a grandes casas, adaptamos nossa gest?o para o perfil e objetivo de cada im?vel, com solu??es personalizadas."
+icone_vantagem_6,
+subtitulo_vantagem_6,Atendimento completo ? voc? livre de qualquer preocupa??o
+txt_vantagem_6,"Cuidamos de tudo: comunica??o com h?spedes, limpeza, manuten??o, abastecimento e suporte. Voc? n?o precisa se preocupar com nada."
+img_acesso,
+subtitulo_acesso,Acesso ? plataforma do propriet?rio
+txt_acesso,"Voc? acompanha reservas, faturamento e desempenho do seu im?vel em tempo real, com total transpar?ncia e autonomia."
+titulo_numeros,Nossos n?meros falam por si
+icone_numero_1,
+txt_item_1,+40 Propriedades sob gest?o
+icone_numero_2,
+txt_item_2,56% de ocupa??o m?dia
+icone_numero_3,
+txt_item_3,"R$ 1.000.000,00 em reservas s? em 2024"
+icone_numero_4,
 txt_item_4,Nota 4.9 no Airbnb
-txt_item_5, + 2.000 reservas realizadas
-titulo_servicos,Nossos serviços
-img_servicos,/img/img-servicos.jpg
-subtitulo_txt_servicos_1,Gestão da Propriedade
-subtitulo_txt_servicos_2,Implantação & Home Staging
+icone_numero_5,
+txt_item_5,+ 2.000 reservas realizadas
+img_numeros,
+titulo_servicos,Nossos servi?os
+img_servicos,
+subtitulo_txt_servicos_1,Gest?o da Propriedade
+txt_servicos_1,"Manuten??o, limpeza, compras, verifica??o de danos"
+subtitulo_txt_servicos_2,Implanta??o & Home Staging
+txt_servicos_2,Adequa??o completa para loca??o
 subtitulo_txt_servicos_3,Fotografia Profissional
-subtitulo_txt_servicos_4,Atendimento ao Hóspede
+txt_servicos_3,An?ncios com imagens imobili?rias feitas por especialistas.
+subtitulo_txt_servicos_4,Atendimento ao H?spede
+txt_servicos_4,"Check-in/out, verifica??o, contratos, suporte e cobran?as."
 subtitulo_txt_servicos_5,Listing Management
-txt_servicos_1,"Manutenção, limpeza, compras, verificação de danos"
-txt_servicos_2,Adequação completa para locação
-txt_servicos_3,Anúncios com imagens imobiliárias feitas por especialistas.
-txt_servicos_4,"Check-in/out, verificação, contratos, suporte e cobranças."
-txt_servicos_5,Publicação em múltiplas plataformas e gestão inteligente de preços.
-img_rentabilizar,/img/img-quero-rentabilizar-back.jpg
-txt_rentabilizar,Seu imóvel tem potencial para fazer parte da nossa curadoria exclusiva?
+txt_servicos_5,Publica??o em m?ltiplas plataformas e gest?o inteligente de pre?os.
+img_rentabilizar,
+txt_rentabilizar,Seu im?vel tem potencial para fazer parte da nossa curadoria exclusiva?
