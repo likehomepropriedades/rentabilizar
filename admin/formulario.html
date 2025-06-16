@@ -159,6 +159,68 @@
     const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
     let SHA_ATUAL = '';
 
+    async function uploadImagemParaGithub(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        try {
+          const base64 = reader.result;
+          const nomeArquivo = file.name;
+
+          const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              imagemBase64: base64,
+              nomeArquivo: nomeArquivo
+            })
+          });
+
+          const data = await res.json();
+          if (data.success && data.imageUrl) {
+            resolve(data.imageUrl);
+          } else {
+            reject(data.error || "Erro ao enviar imagem");
+          }
+        } catch (err) {
+          reject(err.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function coletarDadosCSVComUpload() {
+    const inputs = document.querySelectorAll('[name]');
+    const data = [];
+
+    for (const input of inputs) {
+      const chave = input.name;
+      let valor = "";
+
+      if (input.type === "file") {
+        const file = input.files[0];
+        if (file) {
+          try {
+            valor = await uploadImagemParaGithub(file);
+          } catch (erro) {
+            alert(`Erro ao enviar imagem "${chave}": ${erro}`);
+            throw erro;
+          }
+        }
+      } else {
+        valor = (input.value || "").replace(/(\r\n|\n|\r)/gm, " ").trim();
+        if (typeof valor === 'string' && valor.startsWith('/admin/')) {
+          valor = valor.replace(/^\/admin\//, '/');
+        }
+      }
+
+      data.push({ chave, valor });
+    }
+
+    return Papa.unparse(data);
+  }
+
     async function carregarDados() {
       const res = await fetch(API_URL, { method: 'GET' });
       const data = await res.json();
@@ -209,38 +271,42 @@
       return Papa.unparse(data);
     }
 
-    async function enviarDados() {
-      const csv = coletarDadosCSV();
-      const payload = { csv, sha: SHA_ATUAL };
-      try {
-        const res = await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const data = await res.json();
-        if (data.success) {
-          SHA_ATUAL = data.commit; // Atualiza SHA com o commit mais recente
-          alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
-        } else {
-          alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
-        }
-      } catch (err) {
-        alert('Erro na comunicação com o servidor: ' + err.message);
-      }
-    }
+      async function enviarDados() {
+          try {
+            const csv = await coletarDadosCSVComUpload();
+            const payload = { csv, sha: SHA_ATUAL };
 
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        await carregarDados();
-        document.getElementById('btn-enviar').addEventListener('click', async e => {
-          e.preventDefault();
-          await enviarDados();
-        });
-      } catch (err) {
-        console.error('Erro de inicialização:', err);
-      }
-    });
+            const res = await fetch(API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+            });
+
+            const data = await res.json();
+            if (data.success) {
+              SHA_ATUAL = data.commit;
+              alert('Conteúdo atualizado com sucesso! Commit: ' + data.commit);
+            } else {
+              alert('Erro ao salvar: ' + (data.error || 'Erro desconhecido'));
+            }
+          } catch (err) {
+            alert('Erro ao enviar dados: ' + err.message);
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+              await carregarDados();
+              document.getElementById('btn-enviar').addEventListener('click', async e => {
+                e.preventDefault();
+                await enviarDados();
+              });
+            } catch (err) {
+              console.error('Erro de inicialização:', err);
+            }
+          });
+
+    
   </script>
 </body>
 </html>
