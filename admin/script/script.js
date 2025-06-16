@@ -161,14 +161,16 @@ function preencherFormulario(csvText) {
     if (input && input.type !== 'file') {
       input.value = valor || '';
     }
+
     const link = document.getElementById('link_' + chave);
-    if (link && valor && valor.includes("drive.google.com")) {
+    if (link && valor && valor.startsWith("https://drive.google.com")) {
       link.href = valor;
       link.textContent = 'Ver imagem carregada';
       link.style.display = 'inline';
     }
   });
 }
+
 
 // Envia CSV atualizado para backend
 async function enviarDados() {
