@@ -283,11 +283,10 @@ body.loaded #img_principal {
     padding-left: 10px;
     padding-right: 10px;
     font-size: 12px;
-    width: 90%;
   }
 
   .img-container-sobre {
-    flex: 1 1 800px;
+    flex: 1 1 600px;
     max-width: 100%;
     aspect-ratio: 16 / 9;
     border-radius: 10px;
