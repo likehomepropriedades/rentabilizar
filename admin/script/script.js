@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyx8e29uo5bIWBl82s0I_o2Mz9ZPzjW-IDp0Xs1TaqRaL0NWK7SbeFtE9dRO9FZcaz9QA/exec';
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 let SHA_ATUAL = '';
 
