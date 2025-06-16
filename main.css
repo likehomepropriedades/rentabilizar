@@ -286,7 +286,7 @@ body.loaded #img_principal {
     flex: 1 1 200px;
     padding-left: 10px;
     padding-right: 10px;
-    font-size: medium;
+    font-size: smaller;
   }
 
   .img-container-sobre {
