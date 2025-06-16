@@ -276,35 +276,7 @@ body.loaded #img_principal {
 }
 
 /* Adapta o layout em telas menores */
-@media (max-width: 1200px) {
-  
-  #container_sobre_txt {
-    flex: 1 1 200px;
-    padding-left: 10px;
-    padding-right: 10px;
-    font-size: 12px;
-  }
 
-  .img-container-sobre {
-    flex: 1 1 600px;
-    max-width: 100%;
-    aspect-ratio: 16 / 9;
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .img-container-sobre img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  #subtitulo_sobre{
-
-    font-size:14px;
-  }
- 
-}
 #vantagens{
  background-color: #eceae6;
 }
