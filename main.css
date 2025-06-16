@@ -277,10 +277,7 @@ body.loaded #img_principal {
 
 /* Adapta o layout em telas menores */
 @media (max-width: 1200px) {
-  #container_sobre {
-    flex-direction: column;
-  }
-
+  
   #container_sobre_txt {
     flex: 1 1 200px;
     padding-left: 10px;
