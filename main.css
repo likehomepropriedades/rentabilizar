@@ -279,7 +279,6 @@ body.loaded #img_principal {
 @media (max-width: 1200px) {
   #container_sobre {
     flex-direction: column;
-    font-size: 12px;
   }
 
   #container_sobre_txt {
@@ -287,6 +286,7 @@ body.loaded #img_principal {
     padding-left: 10px;
     padding-right: 10px;
     font-size: 12px;
+    width: 90%;
   }
 
   .img-container-sobre {
