@@ -1,4 +1,4 @@
-const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/dados.csv";
+const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 const API_URL = "https://script.google.com/macros/s/AKfycbxYTOj-NdzndaUqi263xYb_NEBKd2IBINhmneeUm7raSnhJrEWZvjNmsrfRz2-9suLD_w/exec";
 const USER_EMAIL = "paula@likehomepropriedades.com.br";
 let SHA_ATUAL = ""; // Opcional, se for necessário manter alguma referência
