@@ -367,7 +367,7 @@ body.loaded #img_principal {
   height: auto;
 }
 
-#img-acesso-fundo {
+.img-acesso-fundo {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   display: block;
