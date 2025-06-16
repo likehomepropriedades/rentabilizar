@@ -120,6 +120,12 @@ async function coletarDadosCSVComUpload() {
           alert(`Erro ao enviar imagem "${chave}": ${erro}`);
           throw erro;
         }
+      } else {
+        // Se nenhum novo arquivo foi selecionado, utiliza a URL já carregada (se existir)
+        const linkImg = document.getElementById('link_' + chave);
+        if (linkImg && linkImg.href && linkImg.href.startsWith("https://drive.google.com")) {
+          valor = linkImg.href;
+        }
       }
     } else {
       valor = (input.value || "").replace(/(\r\n|\n|\r)/gm, " ").trim();
@@ -170,7 +176,6 @@ function preencherFormulario(csvText) {
     }
   });
 }
-
 
 // Envia CSV atualizado para backend
 async function enviarDados() {
