@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Teste Base64</title>
+</head>
+<body>
+  <input type="file" id="fileInput" accept="image/*" />
+  <script>
+    document.getElementById('fileInput').addEventListener('change', event => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          // e.target.result contém a string base64 com o prefixo (exemplo: "data:image/png;base64,...")
+          console.log("Base64 da imagem:", e.target.result);
+          alert("Confira a string no Console do Navegador!");
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>
