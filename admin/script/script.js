@@ -16,7 +16,8 @@ function gerarGrupo(id, titulo, campos, quantidade = 6) {
         html += `<textarea name="${nomeCampo}"></textarea>`;
       } else if (campo.tipo === "file") {
         html += `<input type="file" name="${nomeCampo}" accept="image/*" />
-                 <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>`;
+                 <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
+                 <img id="preview_${nomeCampo}" src="" alt="Preview ${nomeCampo}" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />`;
       } else {
         html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
       }
@@ -43,21 +44,24 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
 
-// Pré-visualização de imagem selecionada
-
+// Preview de imagem ao selecionar arquivo
 document.addEventListener('change', function (e) {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
     const link = document.getElementById('link_' + e.target.name);
-    if (file && link) {
+    const preview = document.getElementById('preview_' + e.target.name);
+    if (file && link && preview) {
       const url = URL.createObjectURL(file);
       link.href = url;
       link.style.display = 'inline';
       link.textContent = 'Ver imagem selecionada';
+      preview.src = url;
+      preview.style.display = 'inline-block';
     }
   }
 });
 
+// Accordion toggle
 document.addEventListener('click', function (e) {
   if (e.target.classList.contains('accordion-toggle')) {
     e.target.classList.toggle('active');
@@ -107,6 +111,18 @@ async function coletarDadosCSVComUpload() {
       const file = input.files[0];
       if (file) {
         valor = await uploadImagemParaGitHub(file, chave);
+        // Atualizar preview após upload
+        const preview = document.getElementById('preview_' + chave);
+        const link = document.getElementById('link_' + chave);
+        if(preview) {
+          preview.src = valor;
+          preview.style.display = 'inline-block';
+        }
+        if(link) {
+          link.href = valor;
+          link.textContent = 'Ver imagem carregada';
+          link.style.display = 'inline';
+        }
       } else {
         const link = document.getElementById('link_' + chave);
         if (link && link.href.includes("raw.githubusercontent")) {
@@ -139,10 +155,15 @@ function preencherFormulario(csvText) {
     const input = document.querySelector(`[name="${chave}"]`);
     if (input && input.type !== 'file') input.value = valor || '';
     const link = document.getElementById('link_' + chave);
+    const preview = document.getElementById('preview_' + chave);
     if (link && valor && valor.startsWith("https://raw.githubusercontent")) {
       link.href = valor;
       link.textContent = 'Ver imagem carregada';
       link.style.display = 'inline';
+    }
+    if(preview && valor && valor.startsWith("https://raw.githubusercontent")) {
+      preview.src = valor;
+      preview.style.display = 'inline-block';
     }
   });
 }
