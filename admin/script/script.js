@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbwaWyMMVNy3hGA1gsOC4tI7cFy0gRalZ7yoG68vmBZEqW4Nedll4Gp8ra12vepgWHSLlg/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbyBrjGDgYLo4QWbg8iTZgOOsrixm_dAwuqLTEa4iDVsLG6hugZirgMegtnZrzmzBBqVLQ/exec';
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 
