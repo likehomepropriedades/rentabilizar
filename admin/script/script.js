@@ -1,4 +1,3 @@
-// script.js atualizado para salvar dados e imagens no GitHub via Google Apps Script
 const API_URL = 'https://script.google.com/macros/s/AKfycbwaWyMMVNy3hGA1gsOC4tI7cFy0gRalZ7yoG68vmBZEqW4Nedll4Gp8ra12vepgWHSLlg/exec';
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
@@ -17,7 +16,7 @@ function gerarGrupo(id, titulo, campos, quantidade = 6) {
       } else if (campo.tipo === "file") {
         html += `<input type="file" name="${nomeCampo}" accept="image/*" />
                  <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
-                 <img id="preview_${nomeCampo}" src="" alt="Preview ${nomeCampo}" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />`;
+                 <br><img id="preview_${nomeCampo}" src="" alt="Preview ${nomeCampo}" style="display:none; max-width: 150px; margin-top: 5px;">`;
       } else {
         html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
       }
@@ -44,24 +43,25 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
 
-// Preview de imagem ao selecionar arquivo
+// Pré-visualização de imagem selecionada
 document.addEventListener('change', function (e) {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
     const link = document.getElementById('link_' + e.target.name);
     const preview = document.getElementById('preview_' + e.target.name);
-    if (file && link && preview) {
+    if (file && link) {
       const url = URL.createObjectURL(file);
       link.href = url;
       link.style.display = 'inline';
       link.textContent = 'Ver imagem selecionada';
-      preview.src = url;
-      preview.style.display = 'inline-block';
+      if (preview) {
+        preview.src = url;
+        preview.style.display = 'inline-block';
+      }
     }
   }
 });
 
-// Accordion toggle
 document.addEventListener('click', function (e) {
   if (e.target.classList.contains('accordion-toggle')) {
     e.target.classList.toggle('active');
@@ -111,18 +111,6 @@ async function coletarDadosCSVComUpload() {
       const file = input.files[0];
       if (file) {
         valor = await uploadImagemParaGitHub(file, chave);
-        // Atualizar preview após upload
-        const preview = document.getElementById('preview_' + chave);
-        const link = document.getElementById('link_' + chave);
-        if(preview) {
-          preview.src = valor;
-          preview.style.display = 'inline-block';
-        }
-        if(link) {
-          link.href = valor;
-          link.textContent = 'Ver imagem carregada';
-          link.style.display = 'inline';
-        }
       } else {
         const link = document.getElementById('link_' + chave);
         if (link && link.href.includes("raw.githubusercontent")) {
@@ -151,19 +139,29 @@ async function carregarDados() {
 
 function preencherFormulario(csvText) {
   const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+  const baseURL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/";
+
   resultado.data.forEach(({ chave, valor }) => {
     const input = document.querySelector(`[name="${chave}"]`);
-    if (input && input.type !== 'file') input.value = valor || '';
+    if (input && input.type !== 'file') {
+      input.value = valor || '';
+    }
     const link = document.getElementById('link_' + chave);
     const preview = document.getElementById('preview_' + chave);
-    if (link && valor && valor.startsWith("https://raw.githubusercontent")) {
-      link.href = valor;
+    if (link && valor) {
+      let url = valor;
+      if (!valor.startsWith('http')) {
+        const caminho = valor.startsWith('/') ? valor.slice(1) : valor;
+        url = baseURL + caminho;
+      }
+      link.href = url;
       link.textContent = 'Ver imagem carregada';
       link.style.display = 'inline';
-    }
-    if(preview && valor && valor.startsWith("https://raw.githubusercontent")) {
-      preview.src = valor;
-      preview.style.display = 'inline-block';
+
+      if (preview) {
+        preview.src = url;
+        preview.style.display = 'inline-block';
+      }
     }
   });
 }
