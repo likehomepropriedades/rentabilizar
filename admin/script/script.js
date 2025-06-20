@@ -1,15 +1,8 @@
+// script.js atualizado para salvar dados e imagens no GitHub via Google Apps Script
+const API_URL = 'https://script.google.com/macros/s/AKfycbwaWyMMVNy3hGA1gsOC4tI7cFy0gRalZ7yoG68vmBZEqW4Nedll4Gp8ra12vepgWHSLlg/exec';
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
-// URL do CSV versionado no GitHub (arquivo raw)
-const GITHUB_CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
-
-// URL do Apps Script responsável apenas pelo upload de imagens
-const API_URL = 'https://script.google.com/macros/s/AKfycbzm-hePmBqjXr63vrpVY5GrE5aEhNDs4jKpsphAwtZutUuAMXtlJiKmaG33nFbEm4NM2g/exec';
-
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 
-let SHA_ATUAL = ""; // Opcional, se for necessário manter alguma referência
-
-// Geração dos grupos de campos 
 function gerarGrupo(id, titulo, campos, quantidade = 6) {
   let html = "";
   for (let i = 1; i <= quantidade; i++) {
@@ -49,7 +42,9 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Título", prefixo: "subtitulo_txt_servicos", tipo: "text" },
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
-// --- Lida com as pré-visualizações das imagens ---
+
+// Pré-visualização de imagem selecionada
+
 document.addEventListener('change', function (e) {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
@@ -67,41 +62,32 @@ document.addEventListener('click', function (e) {
   if (e.target.classList.contains('accordion-toggle')) {
     e.target.classList.toggle('active');
     const content = e.target.nextElementSibling;
-    if (content.style.maxHeight) {
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + 'px';
-    }
+    content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
   }
 });
 
-// --- Upload da imagem para o Google Drive ---
-async function uploadImagemParaDrive(file) {
-  const reader = new FileReader();
+async function uploadImagemParaGitHub(file, campo) {
   return new Promise((resolve, reject) => {
+    const reader = new FileReader();
     reader.onloadend = async () => {
       try {
         const base64 = reader.result;
-        if (!base64 || !base64.startsWith('data:image')) {
-          return reject('Formato de imagem inválido');
-        }
         const res = await fetch(API_URL, {
           method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             email: USER_EMAIL,
             imagemBase64: base64,
-            nomeArquivo: file.name
+            nomeArquivo: `${campo}-${file.name}`,
+            campo: campo,
+            action: 'upload'
           })
         });
         const data = await res.json();
-        if (data.success && data.imageUrl) {
-          resolve(data.imageUrl);
-        } else {
-          reject(data.error || 'Erro ao enviar imagem');
-        }
-      } catch (err) {
-        reject(err.message);
+        if (data.success) resolve(data.imageUrl);
+        else reject(data.error || 'Erro ao enviar imagem');
+      } catch (e) {
+        reject(e.message);
       }
     };
     reader.onerror = () => reject("Erro ao ler o arquivo");
@@ -109,7 +95,6 @@ async function uploadImagemParaDrive(file) {
   });
 }
 
-// --- Coleta os dados do formulário e faz o upload das imagens ---
 async function coletarDadosCSVComUpload() {
   const inputs = document.querySelectorAll('[name]');
   const data = [];
@@ -121,24 +106,15 @@ async function coletarDadosCSVComUpload() {
     if (input.type === "file") {
       const file = input.files[0];
       if (file) {
-        try {
-          valor = await uploadImagemParaDrive(file);
-        } catch (erro) {
-          alert(`Erro ao enviar imagem "${chave}": ${erro}`);
-          throw erro;
-        }
+        valor = await uploadImagemParaGitHub(file, chave);
       } else {
-        // Se nenhum novo arquivo foi selecionado, utiliza a URL já carregada (se existir)
-        const linkImg = document.getElementById('link_' + chave);
-        if (linkImg && linkImg.href && linkImg.href.startsWith("https://drive.google.com")) {
-          valor = linkImg.href;
+        const link = document.getElementById('link_' + chave);
+        if (link && link.href.includes("raw.githubusercontent")) {
+          valor = link.href;
         }
       }
     } else {
-      valor = (input.value || "").replace(/(\r\n|\n|\r)/gm, " ").trim();
-      if (valor.startsWith('/admin/')) {
-        valor = valor.replace(/^\/admin\//, '/');
-      }
+      valor = (input.value || "").replace(/\r?\n|\r/g, ' ').trim();
     }
 
     data.push({ chave, valor });
@@ -147,10 +123,9 @@ async function coletarDadosCSVComUpload() {
   return Papa.unparse(data);
 }
 
-// --- Carrega o CSV a partir do GitHub ---
 async function carregarDados() {
   try {
-    const res = await fetch(GITHUB_CSV_URL);
+    const res = await fetch(CSV_URL);
     const csvText = await res.text();
     preencherFormulario(csvText);
   } catch (err) {
@@ -158,16 +133,13 @@ async function carregarDados() {
   }
 }
 
-// --- Preenche o formulário com os dados do CSV ---
 function preencherFormulario(csvText) {
   const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
   resultado.data.forEach(({ chave, valor }) => {
     const input = document.querySelector(`[name="${chave}"]`);
-    if (input && input.type !== 'file') {
-      input.value = valor || '';
-    }
+    if (input && input.type !== 'file') input.value = valor || '';
     const link = document.getElementById('link_' + chave);
-    if (link && valor && valor.startsWith("https://drive.google.com")) {
+    if (link && valor && valor.startsWith("https://raw.githubusercontent")) {
       link.href = valor;
       link.textContent = 'Ver imagem carregada';
       link.style.display = 'inline';
@@ -175,36 +147,26 @@ function preencherFormulario(csvText) {
   });
 }
 
-// --- Envia os dados atualizados (gerando o novo CSV) ---
-// Nesta nova abordagem, em vez de enviar o CSV para o Apps Script,
-// criamos uma versão atualizada do CSV para que você possa fazer o commit manualmente.
 async function enviarDados() {
   try {
     const csv = await coletarDadosCSVComUpload();
-    // Cria um link para baixar o CSV atualizado
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const downloadUrl = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = downloadUrl;
-    a.download = "dados.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    alert("CSV atualizado! Faça o commit do novo arquivo no GitHub manualmente.");
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: USER_EMAIL, action: "update", csv })
+    });
+    const resultado = await res.json();
+    if (resultado.success) alert("Dados atualizados com sucesso no GitHub!");
+    else alert("Erro ao salvar dados: " + (resultado.error || "Desconhecido"));
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   }
 }
 
-// --- Inicialização ---
 document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    await carregarDados();
-    document.getElementById('btn-enviar').addEventListener('click', async e => {
-      e.preventDefault();
-      await enviarDados();
-    });
-  } catch (err) {
-    console.error('Erro de inicialização:', err);
-  }
+  await carregarDados();
+  document.getElementById('btn-enviar').addEventListener('click', async e => {
+    e.preventDefault();
+    await enviarDados();
+  });
 });
