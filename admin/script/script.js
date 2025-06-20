@@ -1,4 +1,4 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycbyBrjGDgYLo4QWbg8iTZgOOsrixm_dAwuqLTEa4iDVsLG6hugZirgMegtnZrzmzBBqVLQ/exec';
+const API_URL = 'https://proxy-likehome.vercel.app/api';
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 
