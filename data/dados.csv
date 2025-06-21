@@ -1,6 +1,6 @@
 chave,valor
 viewport,
-img_principal,https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/img/img_principal.jpg
+img_principal,https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/img/foto_principal.jpg
 texto_img_principal,Transformamos seu im?vel em uma fonte de alta rentabilidade.
 img_sobre,https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/img/img_sobre.jpg
 texto_sobre,"A LikeHome nasceu em Porto Alegre com um prop?sito claro: elevar o mercado de loca??es de temporada por meio de uma gest?o profissional, est?tica e estrat?gica. Com olhar atento para curadoria e design, criamos experi?ncias ?nicas para h?spedes, asseguramos rentabilidade para investidores e valorizamos cada espa?o sob nossa gest?o."
@@ -52,4 +52,4 @@ txt_servicos_4,"Check-in/out, verifica??o, contratos, suporte e cobran?as."
 subtitulo_txt_servicos_5,Listing Management
 txt_servicos_5,Publica??o em m?ltiplas plataformas e gest?o inteligente de pre?os.
 img_rentabilizar,https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/img/img-quero-rentabilizar-back.jpg
-txt_rentabilizar,Seu im?vel tem potencial para fazer parte da nossa curadoria exclusiva?
+txt_rentabilizar,Seu im?vel tem potencial para fazer parte da nossa curadoria exclusiva?teste
