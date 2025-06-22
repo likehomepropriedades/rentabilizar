@@ -124,7 +124,10 @@ async function coletarDadosCSVComUpload() {
     data.push({ chave, valor });
   }
 
-  return Papa.unparse(data);
+  // Adiciona BOM UTF-8 para evitar problemas de acentuação
+  const csvComBOM = "\uFEFF" + Papa.unparse(data);
+  console.log("CSV final:", csvComBOM);
+  return csvComBOM;
 }
 
 async function carregarDados() {
@@ -167,7 +170,20 @@ function preencherFormulario(csvText) {
 }
 
 async function enviarDados() {
+  const botao = document.getElementById('btn-enviar');
+  botao.disabled = true;
+  botao.textContent = 'Enviando...';
+
   try {
+    // Validação mínima
+    const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
+    if (!subtitulo1 || !subtitulo1.value.trim()) {
+      alert("Preencha pelo menos a primeira vantagem antes de enviar.");
+      botao.disabled = false;
+      botao.textContent = 'Salvar alterações';
+      return;
+    }
+
     const csv = await coletarDadosCSVComUpload();
     const res = await fetch(API_URL, {
       method: "POST",
@@ -175,10 +191,16 @@ async function enviarDados() {
       body: JSON.stringify({ email: USER_EMAIL, action: "update", csv })
     });
     const resultado = await res.json();
-    if (resultado.success) alert("Dados atualizados com sucesso no GitHub!");
-    else alert("Erro ao salvar dados: " + (resultado.error || "Desconhecido"));
+    if (resultado.success) {
+      alert("Dados atualizados com sucesso no GitHub!");
+    } else {
+      alert("Erro ao salvar dados: " + (resultado.error || "Desconhecido"));
+    }
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
+  } finally {
+    botao.disabled = false;
+    botao.textContent = 'Salvar alterações';
   }
 }
 
