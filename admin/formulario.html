@@ -8,99 +8,113 @@
 </head>
 <body>
   <h1>Gerenciamento de Conteúdo</h1>
- <form id="formulario-conteudo">
-  <!-- Área capa - foto principal -->
-  <section>
-    <h2>Área "Capa" - Foto principal do site</h2>
-    <label>
-      Imagem Principal:
-      <input type="file" name="img_principal" accept="image/*" />
-      <a id="link_img_principal" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_principal" alt="Preview imagem principal" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-    <label>Texto da Imagem Principal: <input type="text" name="texto_img_principal" /></label>
-  </section>
 
-  <!-- Área Sobre -->
-  <section>
-    <h2>Área "Sobre"</h2>
-    <label>
-      Imagem do Texto "Sobre":
-      <input type="file" name="img_sobre" accept="image/*" />
-      <a id="link_img_sobre" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_sobre" alt="Preview imagem sobre" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-    <label>Texto "Sobre": <textarea name="texto_sobre"></textarea></label>
-    <label>Texto Destaque "Sobre": <input type="text" name="subtitulo_sobre" /></label>
-  </section>
+  <form id="formulario-conteudo">
+    <!-- Área Capa -->
+    <section class="form-section">
+      <h2>Área "Capa"</h2>
+      <label>Imagem Principal:
+        <input type="file" name="img_principal" accept="image/*" />
+        <a id="link_img_principal" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_principal" alt="Pré-visualização da imagem principal" style="display:none; max-width:150px;" />
+      </label>
+      <label>Texto da Imagem Principal:
+        <input type="text" name="texto_img_principal" />
+      </label>
+    </section>
 
-  <!-- Área Vantagens -->
-  <section>
-    <h2>Área "Vantagens"</h2>
-    <label>Título: <input type="text" name="titulo_vantagens" /></label>
-    <div id="grupos-vantagens" class="accordion-container"></div>
-  </section>
+    <!-- Área Sobre -->
+    <section class="form-section">
+      <h2>Área "Sobre"</h2>
+      <label>Imagem:
+        <input type="file" name="img_sobre" accept="image/*" />
+        <a id="link_img_sobre" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_sobre" alt="Pré-visualização da imagem sobre" style="display:none; max-width:150px;" />
+      </label>
+      <label>Texto "Sobre":
+        <textarea name="texto_sobre"></textarea>
+      </label>
+      <label>Texto Destaque:
+        <input type="text" name="subtitulo_sobre" />
+      </label>
+    </section>
 
-  <!-- Área Acesso Plataforma -->
-  <section>
-    <h2>Área "Acesso Plataforma"</h2>
-    <label>
-      Imagem:
-      <input type="file" name="img_acesso" accept="image/*" />
-      <a id="link_img_acesso" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_acesso" alt="Preview imagem acesso" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-    <label>Título: <input type="text" name="subtitulo_acesso" /></label>
-    <label>Descrição: <textarea name="txt_acesso"></textarea></label>
-  </section>
+    <!-- Área Vantagens -->
+    <section class="form-section">
+      <h2>Área "Vantagens"</h2>
+      <label>Título:
+        <input type="text" name="titulo_vantagens" />
+      </label>
+      <div id="grupos-vantagens" class="accordion-container"></div>
+    </section>
 
-  <!-- Área Nossos Números -->
-  <section>
-    <h2>Área "Nossos Números"</h2>
-    <label>Título: <input type="text" name="titulo_numeros" /></label>
-    <div id="grupos-numeros" class="accordion-container"></div>
-    <label>
-      Imagem de Fundo:
-      <input type="file" name="img_numeros" accept="image/*" />
-      <a id="link_img_numeros" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_numeros" alt="Preview imagem números" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-  </section>
+    <!-- Acesso Plataforma -->
+    <section class="form-section">
+      <h2>Área "Acesso Plataforma"</h2>
+      <label>Imagem:
+        <input type="file" name="img_acesso" accept="image/*" />
+        <a id="link_img_acesso" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_acesso" alt="Pré-visualização da imagem de acesso" style="display:none; max-width:150px;" />
+      </label>
+      <label>Título:
+        <input type="text" name="subtitulo_acesso" />
+      </label>
+      <label>Descrição:
+        <textarea name="txt_acesso"></textarea>
+      </label>
+    </section>
 
-  <!-- Área Nossos Serviços -->
-  <section>
-    <h2>Área "Nossos Serviços"</h2>
-    <label>Título: <input type="text" name="titulo_servicos" /></label>
-    <label>
-      Imagem:
-      <input type="file" name="img_servicos" accept="image/*" />
-      <a id="link_img_servicos" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_servicos" alt="Preview imagem serviços" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-    <div id="grupos-servicos" class="accordion-container"></div>
-  </section>
+    <!-- Nossos Números -->
+    <section class="form-section">
+      <h2>Área "Nossos Números"</h2>
+      <label>Título:
+        <input type="text" name="titulo_numeros" />
+      </label>
+      <div id="grupos-numeros" class="accordion-container"></div>
+      <label>Imagem de Fundo:
+        <input type="file" name="img_numeros" accept="image/*" />
+        <a id="link_img_numeros" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_numeros" alt="Pré-visualização da imagem números" style="display:none; max-width:150px;" />
+      </label>
+    </section>
 
-  <!-- Área Quero Rentabilizar -->
-  <section>
-    <h2>Área "Quero Rentabilizar"</h2>
-    <label>
-      Imagem:
-      <input type="file" name="img_rentabilizar" accept="image/*" />
-      <a id="link_img_rentabilizar" class="preview-link" target="_blank" style="display:none;">Ver imagem carregada</a>
-      <img id="preview_img_rentabilizar" alt="Preview imagem rentabilizar" style="display:none; max-width:150px; margin-left:10px; vertical-align:middle;" />
-    </label>
-    <label>Descrição: <textarea name="txt_rentabilizar"></textarea></label>
-  </section>
+    <!-- Nossos Serviços -->
+    <section class="form-section">
+      <h2>Área "Nossos Serviços"</h2>
+      <label>Título:
+        <input type="text" name="titulo_servicos" />
+      </label>
+      <label>Imagem:
+        <input type="file" name="img_servicos" accept="image/*" />
+        <a id="link_img_servicos" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_servicos" alt="Pré-visualização da imagem serviços" style="display:none; max-width:150px;" />
+      </label>
+      <div id="grupos-servicos" class="accordion-container"></div>
+    </section>
 
-  <!-- Botão para enviar -->
-  <div class="form-actions">
-    <button id="btn-enviar">Enviar</button>
-  </div>
-</form>
+    <!-- Quero Rentabilizar -->
+    <section class="form-section">
+      <h2>Área "Quero Rentabilizar"</h2>
+      <label>Imagem:
+        <input type="file" name="img_rentabilizar" accept="image/*" />
+        <a id="link_img_rentabilizar" target="_blank" style="display:none;">Ver imagem carregada</a>
+        <img id="preview_img_rentabilizar" alt="Pré-visualização da imagem rentabilizar" style="display:none; max-width:150px;" />
+      </label>
+      <label>Descrição:
+        <textarea name="txt_rentabilizar"></textarea>
+      </label>
+    </section>
+
+    <!-- Botão Enviar -->
+    <div class="form-actions">
+      <button id="btn-enviar" type="submit">Salvar alterações</button>
+    </div>
+  </form>
+
   <!-- PapaParse para CSV -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
-  <!-- Script externo -->
+  <!-- Script JS principal -->
   <script src="script/script.js"></script>
 </body>
 </html>
