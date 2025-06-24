@@ -138,10 +138,11 @@ async function coletarDadosCSVComUpload() {
 async function carregarDados() {
   try {
     const res = await fetch(CSV_URL);
-    const csvText = await res.text();
+    const csvText = await res.text(); // ✅ correto para CSV puro
     preencherFormulario(csvText);
   } catch (err) {
-    alert("Erro ao carregar CSV do GitHub: " + err.message);
+    alert("Erro ao carregar CSV: " + err.message);
+    console.error("Erro ao carregar CSV:", err);
   }
 }
 
