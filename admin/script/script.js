@@ -3,6 +3,24 @@ const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabil
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 const TOKEN_SECRETO = "likehome_2025_admin_token";
 
+// Utilitário para requisição POST com tratamento de erros
+async function enviarParaAPI(payload) {
+  const res = await fetch(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...payload, token: TOKEN_SECRETO })
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Erro HTTP ${res.status}: ${text}`);
+  }
+
+  const data = await res.json();
+  if (data.error) throw new Error(data.error);
+  return data;
+}
+
 function gerarGrupo(id, titulo, campos, quantidade = 6) {
   let html = "";
   for (let i = 1; i <= quantidade; i++) {
@@ -44,7 +62,6 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
 
-// Pré-visualização de imagem selecionada
 document.addEventListener('change', function (e) {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
@@ -77,23 +94,16 @@ async function uploadImagemParaGitHub(file, campo) {
     reader.onloadend = async () => {
       try {
         const base64 = reader.result;
-        const res = await fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: USER_EMAIL,
-            imagemBase64: base64,
-            nomeArquivo: `${campo}-${file.name}`,
-            campo: campo,
-            action: 'upload',
-            token: TOKEN_SECRETO // **token aqui**
-          })
+        const data = await enviarParaAPI({
+          email: USER_EMAIL,
+          imagemBase64: base64,
+          nomeArquivo: `${campo}-${file.name}`,
+          campo,
+          action: 'upload'
         });
-        const data = await res.json();
-        if (data.success) resolve(data.imageUrl);
-        else reject(data.error || 'Erro ao enviar imagem');
-      } catch (e) {
-        reject(e.message);
+        resolve(data.imageUrl);
+      } catch (err) {
+        reject(`Erro ao enviar imagem (${campo}): ${err.message}`);
       }
     };
     reader.onerror = () => reject("Erro ao ler o arquivo");
@@ -129,11 +139,8 @@ async function coletarDadosCSVComUpload() {
     data.push({ chave: chave.trim(), valor });
   }
 
-  // CSV com BOM UTF-8 para acentuação correta
   const csvSemBOM = Papa.unparse(data);
-  const csvComBOM = "\uFEFF" + csvSemBOM;
-  console.log("CSV final:", csvComBOM);
-  return csvComBOM;
+  return "\uFEFF" + csvSemBOM;
 }
 
 async function carregarDados() {
@@ -182,32 +189,20 @@ async function enviarDados() {
   botao.textContent = 'Enviando...';
 
   try {
-    // Validação mínima
     const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
-      botao.disabled = false;
-      botao.textContent = 'Salvar alterações';
       return;
     }
 
     const csv = await coletarDadosCSVComUpload();
-    const res = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: USER_EMAIL,
-        action: "update",
-        csv,
-        token: TOKEN_SECRETO // **token aqui**
-      })
+    const resultado = await enviarParaAPI({
+      email: USER_EMAIL,
+      action: "update",
+      csv
     });
-    const resultado = await res.json();
-    if (resultado.success) {
-      alert("Dados atualizados com sucesso no GitHub!");
-    } else {
-      alert("Erro ao salvar dados: " + (resultado.error || "Desconhecido"));
-    }
+
+    alert("Dados atualizados com sucesso no GitHub!");
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   } finally {
