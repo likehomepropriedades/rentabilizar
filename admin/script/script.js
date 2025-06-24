@@ -100,12 +100,15 @@ async function uploadImagemParaGitHub(file, campo) {
 }
 
 async function coletarDadosCSVComUpload() {
-  const inputs = document.querySelectorAll('[name]');
+  const formulario = document.querySelector('form'); // usa apenas campos dentro do <form>
+  const inputs = formulario.querySelectorAll('[name]');
   const data = [];
 
   for (const input of inputs) {
     const chave = input.name;
     let valor = "";
+
+    if (!chave || chave === 'viewport') continue; // filtro adicional de segurança
 
     if (input.type === "file") {
       const file = input.files[0];
@@ -121,10 +124,9 @@ async function coletarDadosCSVComUpload() {
       valor = (input.value || "").replace(/\r?\n|\r/g, ' ').trim();
     }
 
-    data.push({ chave, valor });
+    data.push({ chave: chave.trim(), valor });
   }
 
-  // Adiciona BOM UTF-8 para evitar problemas de acentuação
   const csvComBOM = "\uFEFF" + Papa.unparse(data);
   console.log("CSV final:", csvComBOM);
   return csvComBOM;
