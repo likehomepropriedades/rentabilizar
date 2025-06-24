@@ -1,40 +1,43 @@
-const CSV_URL = 'https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv';
+document.addEventListener('DOMContentLoaded', () => {
+  const CSV_URL = 'https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv';
 
-function removerBOM(texto) {
-  if (texto.charCodeAt(0) === 0xFEFF) {
-    return texto.slice(1);
+  function removerBOM(texto) {
+    if (texto.charCodeAt(0) === 0xFEFF) {
+      return texto.slice(1);
+    }
+    return texto;
   }
-  return texto;
-}
 
-fetch(CSV_URL)
-  .then(response => response.text())
-  .then(csvText => {
-    const textoSemBOM = removerBOM(csvText);
-    const parsed = Papa.parse(textoSemBOM, {
-      header: true,
-      skipEmptyLines: true
-    }).data;
+  fetch(CSV_URL)
+    .then(response => response.text())
+    .then(csvText => {
+      const textoSemBOM = removerBOM(csvText);
+      const parsed = Papa.parse(textoSemBOM, {
+        header: true,
+        skipEmptyLines: true
+      }).data;
 
-    const dados = Object.fromEntries(parsed.map(row => [row.chave, row.valor]));
+      const dados = Object.fromEntries(parsed.map(row => [row.chave, row.valor]));
 
-    Object.entries(dados).forEach(([key, value]) => {
-      const el = document.getElementById(key);
-      if (el) {
-        if (el.tagName === 'IMG') {
-          el.src = value;
-        } else {
-          el.innerText = value;
+      Object.entries(dados).forEach(([key, value]) => {
+        const el = document.getElementById(key);
+        if (el) {
+          if (el.tagName === 'IMG') {
+            el.src = value;
+          } else {
+            el.innerText = value;
+          }
         }
-      }
-    });
+      });
 
-    document.querySelectorAll('[data-content]').forEach(el => {
-      const key = el.dataset.content;
-      if (dados[key]) el.textContent = dados[key];
-    });
-  })
-  .catch(err => console.error('Erro ao carregar CSV:', err));
+      document.querySelectorAll('[data-content]').forEach(el => {
+        const key = el.dataset.content;
+        if (dados[key]) el.textContent = dados[key];
+      });
+    })
+    .catch(err => console.error('Erro ao carregar CSV:', err));
+});
+
 
 
   //validar nr telefone com DDD
