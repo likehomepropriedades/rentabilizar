@@ -1,4 +1,5 @@
-const CSV_URL = 'https://proxy-likehome.vercel.app/api'; // seu proxy Vercel
+const API_URL = 'https://proxy-likehome.vercel.app/api';
+const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 
 function removerBOM(texto) {
   if (texto.charCodeAt(0) === 0xFEFF) {
