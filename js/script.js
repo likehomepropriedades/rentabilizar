@@ -1,17 +1,23 @@
-// script.js
-// Carrega dados do CSV e preenche a página
-fetch('data/dados.csv')
+const CSV_URL = 'https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv';
+
+function removerBOM(texto) {
+  if (texto.charCodeAt(0) === 0xFEFF) {
+    return texto.slice(1);
+  }
+  return texto;
+}
+
+fetch(CSV_URL)
   .then(response => response.text())
   .then(csvText => {
-    const parsed = Papa.parse(csvText, {
+    const textoSemBOM = removerBOM(csvText);
+    const parsed = Papa.parse(textoSemBOM, {
       header: true,
       skipEmptyLines: true
-    }).data; // array de objetos {chave, valor}
+    }).data;
 
-    // Converte para objeto chave->valor
     const dados = Object.fromEntries(parsed.map(row => [row.chave, row.valor]));
 
-    // Percorre todas as entradas e tenta inserir por ID
     Object.entries(dados).forEach(([key, value]) => {
       const el = document.getElementById(key);
       if (el) {
@@ -23,13 +29,13 @@ fetch('data/dados.csv')
       }
     });
 
-    // Se também usar data-content etc.
-    document.querySelectorAll('[data-content]').forEach(el=>{
+    document.querySelectorAll('[data-content]').forEach(el => {
       const key = el.dataset.content;
       if (dados[key]) el.textContent = dados[key];
     });
   })
   .catch(err => console.error('Erro ao carregar CSV:', err));
+
 
   //validar nr telefone com DDD
    const telefoneInput = document.getElementById('telefone');
