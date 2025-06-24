@@ -1,6 +1,7 @@
 const API_URL = 'https://proxy-likehome.vercel.app/api';
 const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
+const TOKEN_SECRETO = "likehome_2025_admin_token";
 
 function gerarGrupo(id, titulo, campos, quantidade = 6) {
   let html = "";
@@ -84,7 +85,8 @@ async function uploadImagemParaGitHub(file, campo) {
             imagemBase64: base64,
             nomeArquivo: `${campo}-${file.name}`,
             campo: campo,
-            action: 'upload'
+            action: 'upload',
+            token: TOKEN_SECRETO // **token aqui**
           })
         });
         const data = await res.json();
@@ -100,7 +102,7 @@ async function uploadImagemParaGitHub(file, campo) {
 }
 
 async function coletarDadosCSVComUpload() {
-  const formulario = document.getElementById('formulario-conteudo'); // novo: ID do <form>
+  const formulario = document.getElementById('formulario-conteudo');
   const inputs = formulario.querySelectorAll('[name]');
   const data = [];
 
@@ -108,7 +110,7 @@ async function coletarDadosCSVComUpload() {
     const chave = input.name;
     let valor = "";
 
-    if (!chave || chave === 'viewport') continue; // proteção contra campos inválidos
+    if (!chave || chave === 'viewport') continue;
 
     if (input.type === "file") {
       const file = input.files[0];
@@ -127,18 +129,17 @@ async function coletarDadosCSVComUpload() {
     data.push({ chave: chave.trim(), valor });
   }
 
-  // ✅ CSV com BOM UTF-8 para garantir acentuação correta
+  // CSV com BOM UTF-8 para acentuação correta
   const csvSemBOM = Papa.unparse(data);
   const csvComBOM = "\uFEFF" + csvSemBOM;
   console.log("CSV final:", csvComBOM);
   return csvComBOM;
 }
 
-
 async function carregarDados() {
   try {
     const res = await fetch(CSV_URL);
-    const csvText = await res.text(); // ✅ correto para CSV puro
+    const csvText = await res.text();
     preencherFormulario(csvText);
   } catch (err) {
     alert("Erro ao carregar CSV: " + err.message);
@@ -194,7 +195,12 @@ async function enviarDados() {
     const res = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: USER_EMAIL, action: "update", csv })
+      body: JSON.stringify({
+        email: USER_EMAIL,
+        action: "update",
+        csv,
+        token: TOKEN_SECRETO // **token aqui**
+      })
     });
     const resultado = await res.json();
     if (resultado.success) {
