@@ -1,9 +1,9 @@
 const API_URL = 'https://proxy-likehome.vercel.app/api';
-const CSV_URL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/data/dados.csv";
+const CSV_URL = API_URL; // GET via proxy
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 const TOKEN_SECRETO = "likehome_2025_admin_token";
 
-// Utilitário para requisição POST com tratamento de erros
+// Função para envio POST à API
 async function enviarParaAPI(payload) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -146,6 +146,7 @@ async function coletarDadosCSVComUpload() {
 async function carregarDados() {
   try {
     const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error(`Erro ${res.status}: ${await res.text()}`);
     const csvText = await res.text();
     preencherFormulario(csvText);
   } catch (err) {
@@ -196,7 +197,7 @@ async function enviarDados() {
     }
 
     const csv = await coletarDadosCSVComUpload();
-    const resultado = await enviarParaAPI({
+    await enviarParaAPI({
       email: USER_EMAIL,
       action: "update",
       csv
