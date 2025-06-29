@@ -42,11 +42,15 @@
 <body>
 
   <!-- Tela de login -->
-  <div id="login-container" style="text-align:center; margin-top: 4rem;">
-    <h2>Acesso restrito</h2>
-    <p>Use sua conta @likehomepropriedades.com.br</p>
-    <button onclick="autenticarComGoogle()">Login com Google</button>
-  </div>
+    <div id="login-container">
+      <h2>Acesso restrito</h2>
+      <img id="logo_top" src="../img/logo-likehome-top.svg" alt="Like Home" />
+      <p>Use sua conta @likehomepropriedades.com.br</p>
+      <button class="google-login-btn" onclick="autenticarComGoogle()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" />
+        Entrar com Google
+      </button>
+    </div>
 
   <!-- Área admin protegida -->
   <div id="admin-interface" style="display:none;">
