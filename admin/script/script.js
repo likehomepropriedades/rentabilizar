@@ -27,7 +27,10 @@ function gerarGrupo(id, titulo, campos, quantidade = 6) {
 
   for (let i = 1; i <= quantidade; i++) {
     html += `<div class="accordion-item">
-      <button class="accordion-toggle" type="button">${titulo} ${i}</button>
+      <button class="accordion-toggle material-toggle" type="button">
+        <span class="material-icons">expand_more</span>
+        <span>${titulo} ${i}</span>
+      </button>
       <div class="accordion-content">`;
 
     campos.forEach(campo => {
@@ -96,10 +99,14 @@ document.addEventListener('change', e => {
 
 // Toggle individual dos accordions
 document.addEventListener('click', e => {
-  if (e.target.classList.contains('accordion-toggle')) {
-    e.target.classList.toggle('active');
-    const content = e.target.nextElementSibling;
+  if (e.target.closest('.accordion-toggle')) {
+    const toggle = e.target.closest('.accordion-toggle');
+    const content = toggle.nextElementSibling;
+    const icon = toggle.querySelector('.material-icons');
+
+    toggle.classList.toggle('active');
     content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';
+    icon.textContent = toggle.classList.contains('active') ? 'expand_less' : 'expand_more';
   }
 });
 
@@ -117,12 +124,15 @@ document.querySelectorAll('.toggle-todos').forEach(link => {
 
     accordions.forEach(acc => {
       const content = acc.nextElementSibling;
+      const icon = acc.querySelector('.material-icons');
       if (algumFechado) {
         acc.classList.add('active');
         content.style.maxHeight = content.scrollHeight + 'px';
+        if (icon) icon.textContent = 'expand_less';
       } else {
         acc.classList.remove('active');
         content.style.maxHeight = null;
+        if (icon) icon.textContent = 'expand_more';
       }
     });
 
@@ -237,8 +247,7 @@ async function enviarDados() {
   botao.textContent = 'Enviando...';
 
   try {
-    // Validação simples: garantir que a primeira vantagem tenha texto
-    const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
+    const subtitulo1 = document.querySelector('textarea[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
       botao.disabled = false;
@@ -254,10 +263,7 @@ async function enviarDados() {
     });
 
     alert("Dados atualizados com sucesso no GitHub!");
-
-    // Recarregar dados para atualizar o formulário
     await carregarDados();
-
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   } finally {
@@ -266,7 +272,6 @@ async function enviarDados() {
   }
 }
 
-// Inicialização após carregamento da página
 document.addEventListener('DOMContentLoaded', async () => {
   await carregarDados();
 

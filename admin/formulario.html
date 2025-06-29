@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gerenciamento de Conteúdo</title>
   <link rel="stylesheet" href="estilos.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
     label input[type="file"] {
       display: block;
@@ -26,7 +27,6 @@
   <h1>Gerenciamento de Conteúdo</h1>
 
   <form id="formulario-conteudo">
-    <!-- Status -->
     <div id="mensagem-status" class="status-msg" style="display:none;"></div>
 
     <!-- Área Capa -->
@@ -41,7 +41,7 @@
         <input type="file" id="img_principal" name="img_principal" accept="image/*" />
       </div>
       <label for="texto_img_principal">Texto da Imagem Principal:</label>
-      <input type="text" id="texto_img_principal" name="texto_img_principal" />
+      <textarea id="texto_img_principal" name="texto_img_principal"></textarea>
     </section>
 
     <!-- Área Sobre -->
@@ -59,7 +59,7 @@
       <textarea id="texto_sobre" name="texto_sobre"></textarea>
 
       <label for="subtitulo_sobre">Texto Destaque:</label>
-      <input type="text" id="subtitulo_sobre" name="subtitulo_sobre" />
+      <textarea id="subtitulo_sobre" name="subtitulo_sobre"></textarea>
     </section>
 
     <!-- Área Vantagens -->
@@ -69,7 +69,8 @@
         <a href="#" class="toggle-todos" data-target="grupos-vantagens" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
       </h2>
       <label for="titulo_vantagens">Título:</label>
-      <input type="text" id="titulo_vantagens" name="titulo_vantagens" />
+      <textarea id="titulo_vantagens" name="titulo_vantagens"></textarea>
+
       <div id="grupos-vantagens" class="accordion-container"></div>
     </section>
 
@@ -85,7 +86,7 @@
         <input type="file" id="img_acesso" name="img_acesso" accept="image/*" />
       </div>
       <label for="subtitulo_acesso">Título:</label>
-      <input type="text" id="subtitulo_acesso" name="subtitulo_acesso" />
+      <textarea id="subtitulo_acesso" name="subtitulo_acesso"></textarea>
 
       <label for="txt_acesso">Descrição:</label>
       <textarea id="txt_acesso" name="txt_acesso"></textarea>
@@ -98,7 +99,8 @@
         <a href="#" class="toggle-todos" data-target="grupos-numeros" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
       </h2>
       <label for="titulo_numeros">Título:</label>
-      <input type="text" id="titulo_numeros" name="titulo_numeros" />
+      <textarea id="titulo_numeros" name="titulo_numeros"></textarea>
+
       <div id="grupos-numeros" class="accordion-container"></div>
 
       <label for="img_numeros">Imagem de Fundo:</label>
@@ -118,7 +120,7 @@
         <a href="#" class="toggle-todos" data-target="grupos-servicos" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
       </h2>
       <label for="titulo_servicos">Título:</label>
-      <input type="text" id="titulo_servicos" name="titulo_servicos" />
+      <textarea id="titulo_servicos" name="titulo_servicos"></textarea>
 
       <label for="img_servicos">Imagem:</label>
       <div class="imagem-container">
@@ -148,16 +150,12 @@
       <textarea id="txt_rentabilizar" name="txt_rentabilizar"></textarea>
     </section>
 
-    <!-- Botão Enviar -->
     <div class="form-actions">
       <button id="btn-enviar" type="submit">Salvar alterações</button>
     </div>
   </form>
 
-  <!-- PapaParse para CSV -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-
-  <!-- Bloqueio Enter -->
   <script>
     document.getElementById('formulario-conteudo').addEventListener('keydown', function(e) {
       if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
@@ -165,8 +163,6 @@
       }
     });
   </script>
-
-  <!-- Script JS principal -->
   <script src="script/script.js"></script>
 </body>
 </html>

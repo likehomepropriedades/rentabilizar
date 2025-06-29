@@ -35,6 +35,7 @@ label {
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.2rem;
+  margin-top: 1.2rem;
   font-weight: 600;
   color: #222;
   flex-wrap: wrap;
@@ -184,59 +185,61 @@ input[type="file"] {
 .accordion-container {
   margin-top: 1rem;
 }
-
 .accordion-item {
-  border: 1px solid #ccc;
-  margin-bottom: 0.7rem;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background-color: #fff;
   overflow: hidden;
-  background-color: #fefefe;
+  transition: box-shadow 0.3s ease;
+}
+
+.accordion-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .accordion-toggle {
-  position: relative;
-  padding-left: 2rem; /* espaço para a seta */
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: left;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f5f5f5;
+  color: #333;
+  font-weight: 600;
   font-size: 1rem;
+  padding: 1rem 1.25rem;
   cursor: pointer;
+  border: none;
   outline: none;
   transition: background-color 0.3s ease;
 }
 
-.accordion-toggle::before {
-  content: "▶"; /* seta para direita */
-  position: absolute;
-  left: 0.6rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 1rem;
+.accordion-toggle:hover {
+  background-color: #e0e0e0;
+}
+
+.accordion-toggle::after {
+  content: "expand_more";
+  font-family: 'Material Icons';
+  font-size: 1.2rem;
   transition: transform 0.3s ease;
-  color: #007bff;
 }
 
-.accordion-toggle.active::before {
-  content: "▼"; /* seta para baixo */
-  color: #004a99;
-}
-
-.accordion-toggle.active {
-  background-color: #d9e9ff;
+.accordion-toggle.active::after {
+  transform: rotate(180deg);
 }
 
 .accordion-content {
-  padding: 0 1rem;
+  padding: 1rem 1.25rem;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.3s ease-out;
+  transition: max-height 0.4s ease;
+  background-color: #fafafa;
 }
 
-.accordion-content label {
-  margin: 1rem 0;
+.accordion-toggle.active + .accordion-content {
+  max-height: 1000px; /* grande o suficiente */
 }
+
 
 /* Botões */
 .form-actions {
@@ -286,15 +289,19 @@ input[type="file"] {
     line-height: normal;
   }
 
-  /* Inputs de texto aparecem com altura maior e quebram texto */
-  input[type="text"] {
-    min-height: 3.5rem;
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
-    font-size: 1rem;
-    line-height: 1.4;
-    white-space: normal; /* permite quebra de linha */
-    overflow-x: visible; /* evita rolagem horizontal */
-    word-break: break-word; /* quebra palavras longas */
+  textarea {
+  height: auto;
+  overflow-y: auto;
+  }
+
+  label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  label textarea,
+  label input[type="file"] {
+    width: 100%;
+    margin-top: 0.4rem;
   }
 }
