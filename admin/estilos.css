@@ -258,43 +258,25 @@ input[type="file"] {
 }
 
 @media (max-width: 600px) {
-  body {
-    padding: 1rem;
-  }
-
-  section {
-    padding: 1.2rem;
-  }
-
-  input[type="text"],
-  textarea,
-  input[type="file"] {
-    font-size: 0.95rem;
-  }
-
-  .form-actions button {
-    width: 100%;
-    padding: 1rem;
-  }
-
-  /* Ajuste para thumbnails e inputs de imagens em 2 linhas lado a lado */
   .imagem-container {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
   .imagem-thumbnail {
-    flex: 0 0 100%;
-    max-width: 100%;
+    flex-shrink: 0; /* mantém tamanho fixo */
+    width: 150px;    /* largura fixa */
+    height: 100px;   /* altura fixa */
   }
 
   .imagem-container > input[type="file"] {
-    flex: 0 0 100%;
+    flex: 1 1 100%;  /* ocupa toda largura restante */
     max-width: 100%;
   }
 
   .imagem-thumbnail a {
     line-height: normal;
   }
-  
 }
+  
+
