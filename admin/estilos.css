@@ -1,4 +1,3 @@
-/* ===== Estilos básicos ===== */
 body {
   font-family: "Segoe UI", Arial, sans-serif;
   background-color: #f8f8f8;
@@ -31,7 +30,6 @@ section h2 {
   padding-bottom: 0.3rem;
 }
 
-/* ===== Formulário ===== */
 label {
   display: flex;
   align-items: center;
@@ -62,7 +60,6 @@ textarea {
   min-height: 90px;
 }
 
-/* ===== Preview Imagem ===== */
 .preview-container {
   position: relative;
   display: inline-block;
@@ -70,11 +67,9 @@ textarea {
   max-width: 180px;
 }
 
-.preview-container img,
-img[id^="preview_"] {
+.preview-container img {
   display: block;
   max-width: 180px;
-  margin-top: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 5px;
   background: #fafafa;
@@ -110,7 +105,16 @@ a[target="_blank"] {
   text-decoration: underline;
 }
 
-/* ===== Imagem Container ===== */
+img[id^="preview_"] {
+  display: block;
+  margin-top: 0.5rem;
+  max-width: 180px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fafafa;
+  padding: 4px;
+}
+
 .imagem-container {
   display: flex;
   align-items: center;
@@ -148,7 +152,6 @@ a[target="_blank"] {
   line-height: 100px;
   text-decoration: none;
   display: none;
-  transition: background 0.3s ease;
 }
 
 .imagem-thumbnail a:hover {
@@ -163,7 +166,6 @@ input[type="file"] {
   flex: 1;
 }
 
-/* ===== Grupos e Accordion ===== */
 .grupo {
   padding: 0.6rem 1rem;
   background-color: #f0f4f9;
@@ -190,8 +192,8 @@ input[type="file"] {
 
 .accordion-toggle {
   position: relative;
-  padding: 1rem 1rem 1rem 2.5rem; /* Espaço para a seta */
-  background-color: #f2f2f2;
+  padding-left: 2rem; /* espaço para a seta */
+  background: none;
   border: none;
   width: 100%;
   text-align: left;
@@ -200,13 +202,12 @@ input[type="file"] {
   cursor: pointer;
   outline: none;
   transition: background-color 0.3s ease;
-  color: #003366;
 }
 
 .accordion-toggle::before {
   content: "▶"; /* seta para direita */
   position: absolute;
-  left: 0.8rem;
+  left: 0.6rem;
   top: 50%;
   transform: translateY(-50%);
   font-size: 1rem;
@@ -224,19 +225,16 @@ input[type="file"] {
 }
 
 .accordion-content {
-  padding: 0 1rem 1rem 1rem;
+  padding: 0 1rem;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
-  font-weight: normal;
-  color: #222;
 }
 
 .accordion-content label {
   margin: 1rem 0;
 }
 
-/* ===== Botão ===== */
 .form-actions {
   text-align: center;
   margin: 2.5rem 0;
@@ -259,7 +257,6 @@ input[type="file"] {
   transform: scale(1.02);
 }
 
-/* ===== Responsividade ===== */
 @media (max-width: 600px) {
   body {
     padding: 1rem;
@@ -278,5 +275,21 @@ input[type="file"] {
   .form-actions button {
     width: 100%;
     padding: 1rem;
+  }
+
+  /* Ajuste para thumbnails e inputs de imagens em 2 linhas lado a lado */
+  .imagem-container {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .imagem-thumbnail,
+  .imagem-container > input[type="file"] {
+    flex: 0 0 48%;
+    max-width: 48%;
+  }
+
+  .imagem-thumbnail a {
+    line-height: normal;
   }
 }
