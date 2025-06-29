@@ -247,14 +247,6 @@ async function enviarDados() {
   botao.textContent = 'Enviando...';
 
   try {
-    const subtitulo1 = document.querySelector('textarea[name="subtitulo_vantagem_1"]');
-    if (!subtitulo1 || !subtitulo1.value.trim()) {
-      alert("Preencha pelo menos a primeira vantagem antes de enviar.");
-      botao.disabled = false;
-      botao.textContent = 'Salvar alterações';
-      return;
-    }
-
     const csv = await coletarDadosCSVComUpload();
     await enviarParaAPI({
       email: USER_EMAIL,
