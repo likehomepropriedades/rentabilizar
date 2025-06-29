@@ -8,7 +8,7 @@ function removerBOM(texto) {
   return texto;
 }
 
-fetch(CSV_URL)
+fetch(API_URL)
   .then(response => {
     if (!response.ok) throw new Error('Erro na requisição');
     return response.text(); // trocar para .text() para ler CSV puro
