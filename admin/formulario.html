@@ -6,6 +6,22 @@
   <title>Gerenciamento de Conteúdo</title>
   <link rel="stylesheet" href="estilos.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+  <script>
+     const firebaseConfig = {
+    apiKey: "AIzaSyCyMM_PVcPNN8dmDsKUoSHHdyE0NUa7k90",
+    authDomain: "likehome-rentabilizar-admin.firebaseapp.com",
+    projectId: "likehome-rentabilizar-admin",
+    storageBucket: "likehome-rentabilizar-admin.firebasestorage.app",
+    messagingSenderId: "359914719365",
+    appId: "1:359914719365:web:4a12b8806f6fead4a541ec"
+  };
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
   <style>
     label input[type="file"] {
       display: block;
@@ -24,10 +40,24 @@
   </style>
 </head>
 <body>
-  <h1>Gerenciamento de Conteúdo</h1>
 
-  <form id="formulario-conteudo">
-    <div id="mensagem-status" class="status-msg" style="display:none;"></div>
+  <!-- Tela de login -->
+  <div id="login-container" style="text-align:center; margin-top: 4rem;">
+    <h2>Acesso restrito</h2>
+    <p>Use sua conta @likehomepropriedades.com.br</p>
+    <button onclick="autenticarComGoogle()">Login com Google</button>
+  </div>
+
+  <!-- Área admin protegida -->
+  <div id="admin-interface" style="display:none;">
+    <div style="text-align:right; padding: 1rem;">
+      <button onclick="logout()">Sair</button>
+    </div>
+
+    <h1>Gerenciamento de Conteúdo</h1>
+
+    <form id="formulario-conteudo">
+      <div id="mensagem-status" class="status-msg" style="display:none;"></div>
 
     <!-- Área Capa -->
     <section class="form-section">
@@ -153,16 +183,51 @@
     <div class="form-actions">
       <button id="btn-enviar" type="submit">Salvar alterações</button>
     </div>
-  </form>
+   </form>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script>
-    document.getElementById('formulario-conteudo').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+      document.getElementById('formulario-conteudo').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+          e.preventDefault();
+        }
+      });
+
+      function autenticarComGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider)
+          .then(result => {
+            const email = result.user.email;
+            if (email.endsWith('@likehomepropriedades.com.br')) {
+              iniciarInterfaceAdmin();
+            } else {
+              alert("Acesso não autorizado.");
+              firebase.auth().signOut();
+            }
+          })
+          .catch(error => {
+            console.error("Erro autenticação:", error);
+            alert("Erro ao autenticar.");
+          });
       }
-    });
-  </script>
-  <script src="script/script.js"></script>
+
+      function iniciarInterfaceAdmin() {
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-interface').style.display = 'block';
+      }
+
+      function logout() {
+        firebase.auth().signOut().then(() => location.reload());
+      }
+
+      firebase.auth().onAuthStateChanged(user => {
+        if (user && user.email.endsWith('@likehomepropriedades.com.br')) {
+          iniciarInterfaceAdmin();
+        }
+      });
+    </script>
+
+    <script src="script/script.js"></script>
+  </div>
 </body>
 </html>
