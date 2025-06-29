@@ -240,9 +240,37 @@ function preencherFormulario(csvText) {
   });
 }
 
+// **Validação: todos os campos preenchidos**
+function validarTodosCampos() {
+  const formulario = document.getElementById('formulario-conteudo');
+  const campos = formulario.querySelectorAll('[name]');
+
+  for (const campo of campos) {
+    if (campo.type === 'file') {
+      if (campo.files.length === 0) {
+        alert(`Por favor, selecione um arquivo para o campo "${campo.name}".`);
+        campo.focus();
+        return false;
+      }
+    } else {
+      if (!campo.value || campo.value.trim() === '') {
+        alert(`Por favor, preencha o campo "${campo.name}".`);
+        campo.focus();
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 // Função para enviar os dados do formulário ao backend
 async function enviarDados() {
   const botao = document.getElementById('btn-enviar');
+
+  if (!validarTodosCampos()) {
+    return; // cancela envio se algum campo vazio
+  }
+
   botao.disabled = true;
   botao.textContent = 'Enviando...';
 
