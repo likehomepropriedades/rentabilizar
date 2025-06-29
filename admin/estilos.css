@@ -283,13 +283,18 @@ input[type="file"] {
     gap: 0.5rem;
   }
 
-  .imagem-thumbnail,
+  .imagem-thumbnail {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
   .imagem-container > input[type="file"] {
-    flex: 0 0 48%;
-    max-width: 48%;
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 
   .imagem-thumbnail a {
     line-height: normal;
   }
+  
 }
