@@ -5,104 +5,147 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gerenciamento de Conteúdo</title>
   <link rel="stylesheet" href="estilos.css" />
+  <style>
+    label input[type="file"] {
+      display: block;
+      margin-bottom: 5px;
+    }
+    label img {
+      margin-top: 5px;
+      display: block;
+      max-height: 100px;
+      border-radius: 4px;
+    }
+    .status-msg {
+      font-weight: bold;
+      margin: 10px 0;
+    }
+  </style>
 </head>
 <body>
   <h1>Gerenciamento de Conteúdo</h1>
 
   <form id="formulario-conteudo">
+    <!-- Status -->
+    <div id="mensagem-status" class="status-msg" style="display:none;"></div>
+
     <!-- Área Capa -->
     <section class="form-section">
       <h2>Área "Capa"</h2>
-      <label>Imagem Principal:
-        <input type="file" name="img_principal" accept="image/*" />
-        <a id="link_img_principal" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_principal" alt="Pré-visualização da imagem principal" style="display:none; max-width:150px;" />
-      </label>
-      <label>Texto da Imagem Principal:
-        <input type="text" name="texto_img_principal" />
-      </label>
+      <label for="img_principal">Imagem Principal:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_principal" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_principal" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_principal" name="img_principal" accept="image/*" />
+      </div>
+      <label for="texto_img_principal">Texto da Imagem Principal:</label>
+      <input type="text" id="texto_img_principal" name="texto_img_principal" />
     </section>
 
     <!-- Área Sobre -->
     <section class="form-section">
       <h2>Área "Sobre"</h2>
-      <label>Imagem:
-        <input type="file" name="img_sobre" accept="image/*" />
-        <a id="link_img_sobre" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_sobre" alt="Pré-visualização da imagem sobre" style="display:none; max-width:150px;" />
-      </label>
-      <label>Texto "Sobre":
-        <textarea name="texto_sobre"></textarea>
-      </label>
-      <label>Texto Destaque:
-        <input type="text" name="subtitulo_sobre" />
-      </label>
+      <label for="img_sobre">Imagem:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_sobre" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_sobre" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_sobre" name="img_sobre" accept="image/*" />
+      </div>
+      <label for="texto_sobre">Texto "Sobre":</label>
+      <textarea id="texto_sobre" name="texto_sobre"></textarea>
+
+      <label for="subtitulo_sobre">Texto Destaque:</label>
+      <input type="text" id="subtitulo_sobre" name="subtitulo_sobre" />
     </section>
 
     <!-- Área Vantagens -->
     <section class="form-section">
-      <h2>Área "Vantagens"</h2>
-      <label>Título:
-        <input type="text" name="titulo_vantagens" />
-      </label>
+      <h2>
+        Área "Vantagens"
+        <a href="#" class="toggle-todos" data-target="grupos-vantagens" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
+      </h2>
+      <label for="titulo_vantagens">Título:</label>
+      <input type="text" id="titulo_vantagens" name="titulo_vantagens" />
       <div id="grupos-vantagens" class="accordion-container"></div>
     </section>
 
-    <!-- Acesso Plataforma -->
+    <!-- Área Acesso Plataforma -->
     <section class="form-section">
       <h2>Área "Acesso Plataforma"</h2>
-      <label>Imagem:
-        <input type="file" name="img_acesso" accept="image/*" />
-        <a id="link_img_acesso" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_acesso" alt="Pré-visualização da imagem de acesso" style="display:none; max-width:150px;" />
-      </label>
-      <label>Título:
-        <input type="text" name="subtitulo_acesso" />
-      </label>
-      <label>Descrição:
-        <textarea name="txt_acesso"></textarea>
-      </label>
+      <label for="img_acesso">Imagem:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_acesso" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_acesso" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_acesso" name="img_acesso" accept="image/*" />
+      </div>
+      <label for="subtitulo_acesso">Título:</label>
+      <input type="text" id="subtitulo_acesso" name="subtitulo_acesso" />
+
+      <label for="txt_acesso">Descrição:</label>
+      <textarea id="txt_acesso" name="txt_acesso"></textarea>
     </section>
 
-    <!-- Nossos Números -->
+    <!-- Área Nossos Números -->
     <section class="form-section">
-      <h2>Área "Nossos Números"</h2>
-      <label>Título:
-        <input type="text" name="titulo_numeros" />
-      </label>
+      <h2>
+        Área "Nossos Números"
+        <a href="#" class="toggle-todos" data-target="grupos-numeros" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
+      </h2>
+      <label for="titulo_numeros">Título:</label>
+      <input type="text" id="titulo_numeros" name="titulo_numeros" />
       <div id="grupos-numeros" class="accordion-container"></div>
-      <label>Imagem de Fundo:
-        <input type="file" name="img_numeros" accept="image/*" />
-        <a id="link_img_numeros" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_numeros" alt="Pré-visualização da imagem números" style="display:none; max-width:150px;" />
-      </label>
+
+      <label for="img_numeros">Imagem de Fundo:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_numeros" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_numeros" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_numeros" name="img_numeros" accept="image/*" />
+      </div>
     </section>
 
-    <!-- Nossos Serviços -->
+    <!-- Área Nossos Serviços -->
     <section class="form-section">
-      <h2>Área "Nossos Serviços"</h2>
-      <label>Título:
-        <input type="text" name="titulo_servicos" />
-      </label>
-      <label>Imagem:
-        <input type="file" name="img_servicos" accept="image/*" />
-        <a id="link_img_servicos" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_servicos" alt="Pré-visualização da imagem serviços" style="display:none; max-width:150px;" />
-      </label>
+      <h2>
+        Área "Nossos Serviços"
+        <a href="#" class="toggle-todos" data-target="grupos-servicos" style="font-size:0.9rem; margin-left:1rem;">Abrir todos</a>
+      </h2>
+      <label for="titulo_servicos">Título:</label>
+      <input type="text" id="titulo_servicos" name="titulo_servicos" />
+
+      <label for="img_servicos">Imagem:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_servicos" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_servicos" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_servicos" name="img_servicos" accept="image/*" />
+      </div>
+
       <div id="grupos-servicos" class="accordion-container"></div>
     </section>
 
-    <!-- Quero Rentabilizar -->
+    <!-- Área Quero Rentabilizar -->
     <section class="form-section">
       <h2>Área "Quero Rentabilizar"</h2>
-      <label>Imagem:
-        <input type="file" name="img_rentabilizar" accept="image/*" />
-        <a id="link_img_rentabilizar" target="_blank" style="display:none;">Ver imagem carregada</a>
-        <img id="preview_img_rentabilizar" alt="Pré-visualização da imagem rentabilizar" style="display:none; max-width:150px;" />
-      </label>
-      <label>Descrição:
-        <textarea name="txt_rentabilizar"></textarea>
-      </label>
+      <label for="img_rentabilizar">Imagem:</label>
+      <div class="imagem-container">
+        <div class="imagem-thumbnail">
+          <img id="preview_img_rentabilizar" alt="Pré-visualização" style="display:none;" />
+          <a id="link_img_rentabilizar" target="_blank" style="display:none;">Ver imagem carregada</a>
+        </div>
+        <input type="file" id="img_rentabilizar" name="img_rentabilizar" accept="image/*" />
+      </div>
+
+      <label for="txt_rentabilizar">Descrição:</label>
+      <textarea id="txt_rentabilizar" name="txt_rentabilizar"></textarea>
     </section>
 
     <!-- Botão Enviar -->
@@ -113,6 +156,15 @@
 
   <!-- PapaParse para CSV -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <!-- Bloqueio Enter -->
+  <script>
+    document.getElementById('formulario-conteudo').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+      }
+    });
+  </script>
 
   <!-- Script JS principal -->
   <script src="script/script.js"></script>

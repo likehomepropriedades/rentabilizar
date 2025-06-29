@@ -88,6 +88,34 @@ document.addEventListener('click', function (e) {
   }
 });
 
+// FUNÇÃO NOVA para abrir/fechar todos
+document.querySelectorAll('.toggle-todos').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const containerId = link.dataset.target;
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const accordions = container.querySelectorAll('.accordion-toggle');
+    // Verifica se algum está fechado para decidir abrir ou fechar todos
+    const algumFechado = Array.from(accordions).some(acc => !acc.classList.contains('active'));
+
+    accordions.forEach(acc => {
+      const content = acc.nextElementSibling;
+      if (algumFechado) {
+        acc.classList.add('active');
+        content.style.maxHeight = content.scrollHeight + 'px';
+      } else {
+        acc.classList.remove('active');
+        content.style.maxHeight = null;
+      }
+    });
+
+    // Atualiza texto do link
+    link.textContent = algumFechado ? 'Fechar todos' : 'Abrir todos';
+  });
+});
+
 async function uploadImagemParaGitHub(file, campo) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -145,9 +173,7 @@ async function coletarDadosCSVComUpload() {
 
 async function carregarDados() {
   try {
-    // Adiciona cache-buster para evitar carregar versão antiga
-    const urlCacheBuster = `${CSV_URL}?_=${Date.now()}`;
-    const res = await fetch(urlCacheBuster, { cache: "no-store" });
+    const res = await fetch(CSV_URL);
     if (!res.ok) throw new Error(`Erro ${res.status}: ${await res.text()}`);
     const csvText = await res.text();
     preencherFormulario(csvText);
@@ -195,6 +221,8 @@ async function enviarDados() {
     const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
+      botao.disabled = false;
+      botao.textContent = 'Salvar alterações';
       return;
     }
 
@@ -205,10 +233,11 @@ async function enviarDados() {
       csv
     });
 
-    // Carrega os dados atualizados para o formulário, aguarda completar
+    alert("Dados atualizados com sucesso no GitHub!");
+
+    // >>> Recarregar dados para atualizar formulário
     await carregarDados();
 
-    alert("Dados atualizados com sucesso no GitHub!");
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   } finally {

@@ -1,65 +1,175 @@
+/* ===== Estilos básicos ===== */
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
   background-color: #f8f8f8;
   padding: 2rem;
   max-width: 1000px;
   margin: auto;
+  color: #333;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
+  font-size: 2rem;
+  color: #222;
 }
 
 section {
-  background: white;
-  padding: 1.5rem;
+  background: #ffffff;
+  padding: 1.75rem;
   margin-bottom: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 
 section h2 {
-  margin-bottom: 1rem;
-  color: #333;
+  margin-bottom: 1.25rem;
+  color: #003366;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #007bff33;
+  padding-bottom: 0.3rem;
 }
 
+/* ===== Formulário ===== */
 label {
-  display: block;
-  margin-bottom: 1rem;
-  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
   color: #222;
+  flex-wrap: wrap;
+}
+
+label input[type="file"] {
+  flex: 1;
 }
 
 input[type="text"],
 textarea,
 input[type="file"] {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.55rem;
   margin-top: 0.3rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 5px;
+  font-size: 1rem;
 }
 
 textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 90px;
 }
 
-a.preview-link {
-  display: none;
+/* ===== Preview Imagem ===== */
+.preview-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  max-width: 180px;
+}
+
+.preview-container img,
+img[id^="preview_"] {
+  display: block;
+  max-width: 180px;
+  margin-top: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fafafa;
+  padding: 4px;
+}
+
+.preview-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  text-align: center;
+  padding: 6px;
   font-size: 0.9rem;
-  color: #007BFF;
-  margin-top: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.preview-container:hover .preview-overlay {
+  opacity: 1;
+}
+
+a.preview-link,
+a[target="_blank"] {
+  display: inline-block;
+  font-size: 0.9rem;
+  color: #007bff;
+  margin-top: 0.4rem;
   text-decoration: underline;
 }
 
-.grupo {
-  padding: 0.5rem 1rem;
-  background-color: #f0f0f0;
-  margin: 1rem 0;
-  border-left: 3px solid #007BFF;
+/* ===== Imagem Container ===== */
+.imagem-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.imagem-thumbnail {
+  position: relative;
+  width: 150px;
+  height: 100px;
   border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.imagem-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 4px;
+}
+
+.imagem-thumbnail a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  font-size: 0.9rem;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  line-height: 100px;
+  text-decoration: none;
+  display: none;
+  transition: background 0.3s ease;
+}
+
+.imagem-thumbnail a:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.imagem-thumbnail a.mostrar {
+  display: block;
+}
+
+input[type="file"] {
+  flex: 1;
+}
+
+/* ===== Grupos e Accordion ===== */
+.grupo {
+  padding: 0.6rem 1rem;
+  background-color: #f0f4f9;
+  margin: 1rem 0;
+  border-left: 4px solid #007bff;
+  border-radius: 5px;
 }
 
 .grupo h3 {
@@ -72,20 +182,41 @@ a.preview-link {
 
 .accordion-item {
   border: 1px solid #ccc;
-  margin-bottom: 0.5rem;
-  border-radius: 4px;
+  margin-bottom: 0.7rem;
+  border-radius: 5px;
   overflow: hidden;
+  background-color: #fefefe;
 }
 
 .accordion-toggle {
+  position: relative;
+  padding: 1rem 1rem 1rem 2.5rem; /* Espaço para a seta */
   background-color: #f2f2f2;
   border: none;
   width: 100%;
   text-align: left;
-  padding: 1rem;
   font-weight: bold;
+  font-size: 1rem;
   cursor: pointer;
   outline: none;
+  transition: background-color 0.3s ease;
+  color: #003366;
+}
+
+.accordion-toggle::before {
+  content: "▶"; /* seta para direita */
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+  color: #007bff;
+}
+
+.accordion-toggle.active::before {
+  content: "▼"; /* seta para baixo */
+  color: #004a99;
 }
 
 .accordion-toggle.active {
@@ -93,32 +224,59 @@ a.preview-link {
 }
 
 .accordion-content {
-  padding: 0 1rem;
+  padding: 0 1rem 1rem 1rem;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out;
+  font-weight: normal;
+  color: #222;
 }
 
 .accordion-content label {
-  margin: 0.8rem 0;
+  margin: 1rem 0;
 }
 
+/* ===== Botão ===== */
 .form-actions {
   text-align: center;
-  margin: 2rem 0;
+  margin: 2.5rem 0;
 }
 
 .form-actions button {
   background-color: #0066cc;
   color: #fff;
-  padding: 0.75rem 2rem;
+  padding: 0.8rem 2.2rem;
   font-size: 1rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 102, 204, 0.15);
 }
 
 .form-actions button:hover {
   background-color: #004fa3;
+  transform: scale(1.02);
+}
+
+/* ===== Responsividade ===== */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  section {
+    padding: 1.2rem;
+  }
+
+  input[type="text"],
+  textarea,
+  input[type="file"] {
+    font-size: 0.95rem;
+  }
+
+  .form-actions button {
+    width: 100%;
+    padding: 1rem;
+  }
 }
