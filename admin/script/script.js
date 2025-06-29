@@ -1,9 +1,9 @@
 const API_URL = 'https://proxy-likehome.vercel.app/api';
-const CSV_URL = API_URL; // GET via proxy
+const CSV_URL = API_URL; // CSV será carregado via GET no proxy
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 const TOKEN_SECRETO = "likehome_2025_admin_token";
 
-// Função para envio POST à API
+// Função para envio POST à API proxy
 async function enviarParaAPI(payload) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -193,6 +193,8 @@ async function enviarDados() {
     const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
+      botao.disabled = false;
+      botao.textContent = 'Salvar alterações';
       return;
     }
 
