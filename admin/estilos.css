@@ -60,6 +60,7 @@ textarea {
   min-height: 90px;
 }
 
+/* Preview de imagens */
 .preview-container {
   position: relative;
   display: inline-block;
@@ -115,6 +116,7 @@ img[id^="preview_"] {
   padding: 4px;
 }
 
+/* Container e thumbnails de imagens */
 .imagem-container {
   display: flex;
   align-items: center;
@@ -166,6 +168,7 @@ input[type="file"] {
   flex: 1;
 }
 
+/* Grupos e accordions */
 .grupo {
   padding: 0.6rem 1rem;
   background-color: #f0f4f9;
@@ -235,6 +238,7 @@ input[type="file"] {
   margin: 1rem 0;
 }
 
+/* Botões */
 .form-actions {
   text-align: center;
   margin: 2.5rem 0;
@@ -257,26 +261,40 @@ input[type="file"] {
   transform: scale(1.02);
 }
 
+/* Ajustes para mobile */
 @media (max-width: 600px) {
+  /* Container de imagens passa a duas linhas com wrap */
   .imagem-container {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
 
+  /* Thumbnail mantém tamanho fixo */
   .imagem-thumbnail {
-    flex-shrink: 0; /* mantém tamanho fixo */
-    width: 150px;    /* largura fixa */
-    height: 100px;   /* altura fixa */
+    flex-shrink: 0;
+    width: 150px;
+    height: 100px;
   }
 
+  /* Input file ocupa toda a largura disponível */
   .imagem-container > input[type="file"] {
-    flex: 1 1 100%;  /* ocupa toda largura restante */
+    flex: 1 1 100%;
     max-width: 100%;
   }
 
   .imagem-thumbnail a {
     line-height: normal;
   }
-}
-  
 
+  /* Inputs de texto aparecem com altura maior e quebram texto */
+  input[type="text"] {
+    min-height: 3.5rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    font-size: 1rem;
+    line-height: 1.4;
+    white-space: normal; /* permite quebra de linha */
+    overflow-x: visible; /* evita rolagem horizontal */
+    word-break: break-word; /* quebra palavras longas */
+  }
+}

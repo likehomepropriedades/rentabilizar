@@ -3,7 +3,7 @@ const CSV_URL = API_URL; // CSV será carregado via GET no proxy
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 const TOKEN_SECRETO = "likehome_2025_admin_token";
 
-// Função para envio POST à API proxy
+// Envia dados via POST para a API proxy com autenticação pelo token
 async function enviarParaAPI(payload) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -21,31 +21,42 @@ async function enviarParaAPI(payload) {
   return data;
 }
 
+// Gera grupos de accordions dinâmicos com base nos campos e quantidade
 function gerarGrupo(id, titulo, campos, quantidade = 6) {
   let html = "";
+
   for (let i = 1; i <= quantidade; i++) {
     html += `<div class="accordion-item">
       <button class="accordion-toggle" type="button">${titulo} ${i}</button>
       <div class="accordion-content">`;
+
     campos.forEach(campo => {
       const nomeCampo = `${campo.prefixo}_${i}`;
       html += `<label>${campo.label}: `;
+
       if (campo.tipo === "textarea") {
         html += `<textarea name="${nomeCampo}"></textarea>`;
       } else if (campo.tipo === "file") {
-        html += `<input type="file" name="${nomeCampo}" accept="image/*" />
-                 <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
-                 <br><img id="preview_${nomeCampo}" src="" alt="Preview ${nomeCampo}" style="display:none; max-width: 150px; margin-top: 5px;">`;
+        html += `
+          <input type="file" name="${nomeCampo}" accept="image/*" />
+          <a id="link_${nomeCampo}" href="#" target="_blank" style="display:none; margin-left:10px;">Ver imagem</a>
+          <br>
+          <img id="preview_${nomeCampo}" src="" alt="Preview ${nomeCampo}" style="display:none; max-width: 150px; margin-top: 5px;">
+        `;
       } else {
         html += `<input type="${campo.tipo}" name="${nomeCampo}" />`;
       }
+
       html += `</label>`;
     });
+
     html += `</div></div>`;
   }
+
   document.getElementById(id).innerHTML = html;
 }
 
+// Gerar os grupos necessários
 gerarGrupo("grupos-vantagens", "Vantagem", [
   { label: "Ícone", prefixo: "icone_vantagem", tipo: "file" },
   { label: "Texto Destaque", prefixo: "subtitulo_vantagem", tipo: "text" },
@@ -62,16 +73,19 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
 
-document.addEventListener('change', function (e) {
+// Preview de imagens selecionadas e atualização do link para abrir a imagem
+document.addEventListener('change', e => {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
     const link = document.getElementById('link_' + e.target.name);
     const preview = document.getElementById('preview_' + e.target.name);
+
     if (file && link) {
       const url = URL.createObjectURL(file);
       link.href = url;
       link.style.display = 'inline';
       link.textContent = 'Ver imagem selecionada';
+
       if (preview) {
         preview.src = url;
         preview.style.display = 'inline-block';
@@ -80,7 +94,8 @@ document.addEventListener('change', function (e) {
   }
 });
 
-document.addEventListener('click', function (e) {
+// Toggle individual dos accordions
+document.addEventListener('click', e => {
   if (e.target.classList.contains('accordion-toggle')) {
     e.target.classList.toggle('active');
     const content = e.target.nextElementSibling;
@@ -88,16 +103,16 @@ document.addEventListener('click', function (e) {
   }
 });
 
-// FUNÇÃO NOVA para abrir/fechar todos
+// Abrir / Fechar todos os accordions do container alvo
 document.querySelectorAll('.toggle-todos').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
+
     const containerId = link.dataset.target;
     const container = document.getElementById(containerId);
     if (!container) return;
 
     const accordions = container.querySelectorAll('.accordion-toggle');
-    // Verifica se algum está fechado para decidir abrir ou fechar todos
     const algumFechado = Array.from(accordions).some(acc => !acc.classList.contains('active'));
 
     accordions.forEach(acc => {
@@ -111,11 +126,11 @@ document.querySelectorAll('.toggle-todos').forEach(link => {
       }
     });
 
-    // Atualiza texto do link
     link.textContent = algumFechado ? 'Fechar todos' : 'Abrir todos';
   });
 });
 
+// Upload de imagem para GitHub via API proxy, retornando URL pública
 async function uploadImagemParaGitHub(file, campo) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -139,6 +154,7 @@ async function uploadImagemParaGitHub(file, campo) {
   });
 }
 
+// Coleta todos os dados do formulário, incluindo upload de imagens, e converte para CSV
 async function coletarDadosCSVComUpload() {
   const formulario = document.getElementById('formulario-conteudo');
   const inputs = formulario.querySelectorAll('[name]');
@@ -171,6 +187,7 @@ async function coletarDadosCSVComUpload() {
   return "\uFEFF" + csvSemBOM;
 }
 
+// Carrega os dados CSV do backend e preenche o formulário
 async function carregarDados() {
   try {
     const res = await fetch(CSV_URL);
@@ -183,6 +200,7 @@ async function carregarDados() {
   }
 }
 
+// Preenche o formulário com os dados extraídos do CSV
 function preencherFormulario(csvText) {
   const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
   const baseURL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/";
@@ -212,12 +230,14 @@ function preencherFormulario(csvText) {
   });
 }
 
+// Função para enviar os dados do formulário ao backend
 async function enviarDados() {
   const botao = document.getElementById('btn-enviar');
   botao.disabled = true;
   botao.textContent = 'Enviando...';
 
   try {
+    // Validação simples: garantir que a primeira vantagem tenha texto
     const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
@@ -235,7 +255,7 @@ async function enviarDados() {
 
     alert("Dados atualizados com sucesso no GitHub!");
 
-    // >>> Recarregar dados para atualizar formulário
+    // Recarregar dados para atualizar o formulário
     await carregarDados();
 
   } catch (err) {
@@ -246,8 +266,10 @@ async function enviarDados() {
   }
 }
 
+// Inicialização após carregamento da página
 document.addEventListener('DOMContentLoaded', async () => {
   await carregarDados();
+
   document.getElementById('btn-enviar').addEventListener('click', async e => {
     e.preventDefault();
     await enviarDados();
