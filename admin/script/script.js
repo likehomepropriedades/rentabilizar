@@ -206,6 +206,10 @@ async function enviarDados() {
     });
 
     alert("Dados atualizados com sucesso no GitHub!");
+
+    // >>> Recarregar dados para atualizar formulário
+    await carregarDados();
+
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   } finally {
