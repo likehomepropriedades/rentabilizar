@@ -1,9 +1,8 @@
 const API_URL = 'https://proxy-likehome.vercel.app/api';
-const CSV_URL = API_URL; // CSV será carregado via GET no proxy
+const CSV_URL = API_URL;
 const USER_EMAIL = 'paula@likehomepropriedades.com.br';
 const TOKEN_SECRETO = "likehome_2025_admin_token";
 
-// Envia dados via POST para a API proxy com autenticação pelo token
 async function enviarParaAPI(payload) {
   const res = await fetch(API_URL, {
     method: "POST",
@@ -21,7 +20,6 @@ async function enviarParaAPI(payload) {
   return data;
 }
 
-// Gera grupos de accordions dinâmicos com base nos campos e quantidade
 function gerarGrupo(id, titulo, campos, quantidade = 6) {
   let html = "";
 
@@ -59,7 +57,7 @@ function gerarGrupo(id, titulo, campos, quantidade = 6) {
   document.getElementById(id).innerHTML = html;
 }
 
-// Gerar os grupos necessários
+// Gerar grupos
 gerarGrupo("grupos-vantagens", "Vantagem", [
   { label: "Ícone", prefixo: "icone_vantagem", tipo: "file" },
   { label: "Texto Destaque", prefixo: "subtitulo_vantagem", tipo: "text" },
@@ -76,7 +74,7 @@ gerarGrupo("grupos-servicos", "Serviço", [
   { label: "Descrição", prefixo: "txt_servicos", tipo: "textarea" }
 ], 5);
 
-// Preview de imagens selecionadas e atualização do link para abrir a imagem
+// Preview de imagens
 document.addEventListener('change', e => {
   if (e.target.type === 'file') {
     const file = e.target.files[0];
@@ -97,7 +95,7 @@ document.addEventListener('change', e => {
   }
 });
 
-// Toggle individual dos accordions
+// Accordions
 document.addEventListener('click', e => {
   if (e.target.closest('.accordion-toggle')) {
     const toggle = e.target.closest('.accordion-toggle');
@@ -110,11 +108,9 @@ document.addEventListener('click', e => {
   }
 });
 
-// Abrir / Fechar todos os accordions do container alvo
 document.querySelectorAll('.toggle-todos').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
-
     const containerId = link.dataset.target;
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -140,7 +136,7 @@ document.querySelectorAll('.toggle-todos').forEach(link => {
   });
 });
 
-// Upload de imagem para GitHub via API proxy, retornando URL pública
+// Upload imagem
 async function uploadImagemParaGitHub(file, campo) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -164,7 +160,39 @@ async function uploadImagemParaGitHub(file, campo) {
   });
 }
 
-// Coleta todos os dados do formulário, incluindo upload de imagens, e converte para CSV
+// 🔴 VALIDAÇÃO COMPLETA dos campos (texto, textarea e arquivos)
+function validarTodosCampos() {
+  const formulario = document.getElementById('formulario-conteudo');
+  const campos = formulario.querySelectorAll('[name]');
+  for (const campo of campos) {
+    campo.classList.remove("campo-invalido");
+
+    if (campo.name === 'viewport') continue;
+
+    if (campo.type === 'file') {
+      const file = campo.files[0];
+      const link = document.getElementById('link_' + campo.name);
+      const jaTemImagem = link && link.href.includes("raw.githubusercontent");
+      if (!file && !jaTemImagem) {
+        campo.classList.add("campo-invalido");
+        campo.scrollIntoView({ behavior: "smooth", block: "center" });
+        alert(`O campo "${campo.name}" precisa de uma imagem.`);
+        return false;
+      }
+    } else {
+      if (!campo.value.trim()) {
+        campo.classList.add("campo-invalido");
+        campo.focus();
+        alert(`Preencha o campo: ${campo.name}`);
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// Coleta e envio
 async function coletarDadosCSVComUpload() {
   const formulario = document.getElementById('formulario-conteudo');
   const inputs = formulario.querySelectorAll('[name]');
@@ -197,20 +225,7 @@ async function coletarDadosCSVComUpload() {
   return "\uFEFF" + csvSemBOM;
 }
 
-// Carrega os dados CSV do backend e preenche o formulário
-async function carregarDados() {
-  try {
-    const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error(`Erro ${res.status}: ${await res.text()}`);
-    const csvText = await res.text();
-    preencherFormulario(csvText);
-  } catch (err) {
-    alert("Erro ao carregar CSV: " + err.message);
-    console.error("Erro ao carregar CSV:", err);
-  }
-}
-
-// Preenche o formulário com os dados extraídos do CSV
+// Preencher formulário
 function preencherFormulario(csvText) {
   const resultado = Papa.parse(csvText, { header: true, skipEmptyLines: true });
   const baseURL = "https://raw.githubusercontent.com/likehomepropriedades/rentabilizar/main/";
@@ -231,7 +246,6 @@ function preencherFormulario(csvText) {
       link.href = url;
       link.textContent = 'Ver imagem carregada';
       link.style.display = 'inline';
-
       if (preview) {
         preview.src = url;
         preview.style.display = 'inline-block';
@@ -240,41 +254,19 @@ function preencherFormulario(csvText) {
   });
 }
 
-// **Validação: todos os campos preenchidos**
-function validarTodosCampos() {
-  const formulario = document.getElementById('formulario-conteudo');
-  const campos = formulario.querySelectorAll('[name]');
-
-  for (const campo of campos) {
-    if (campo.type === 'file') {
-      if (campo.files.length === 0) {
-        alert(`Por favor, selecione um arquivo para o campo "${campo.name}".`);
-        campo.focus();
-        return false;
-      }
-    } else {
-      if (!campo.value || campo.value.trim() === '') {
-        alert(`Por favor, preencha o campo "${campo.name}".`);
-        campo.focus();
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-// Função para enviar os dados do formulário ao backend
+// Enviar dados
 async function enviarDados() {
   const botao = document.getElementById('btn-enviar');
-
-  if (!validarTodosCampos()) {
-    return; // cancela envio se algum campo vazio
-  }
-
   botao.disabled = true;
   botao.textContent = 'Enviando...';
 
   try {
+    if (!validarTodosCampos()) {
+      botao.disabled = false;
+      botao.textContent = 'Salvar alterações';
+      return;
+    }
+
     const csv = await coletarDadosCSVComUpload();
     await enviarParaAPI({
       email: USER_EMAIL,
@@ -292,6 +284,19 @@ async function enviarDados() {
   }
 }
 
+async function carregarDados() {
+  try {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error(`Erro ${res.status}: ${await res.text()}`);
+    const csvText = await res.text();
+    preencherFormulario(csvText);
+  } catch (err) {
+    alert("Erro ao carregar CSV: " + err.message);
+    console.error("Erro ao carregar CSV:", err);
+  }
+}
+
+// Iniciar
 document.addEventListener('DOMContentLoaded', async () => {
   await carregarDados();
 
