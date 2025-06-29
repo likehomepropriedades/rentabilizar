@@ -145,7 +145,9 @@ async function coletarDadosCSVComUpload() {
 
 async function carregarDados() {
   try {
-    const res = await fetch(CSV_URL);
+    // Adiciona cache-buster para evitar carregar versão antiga
+    const urlCacheBuster = `${CSV_URL}?_=${Date.now()}`;
+    const res = await fetch(urlCacheBuster, { cache: "no-store" });
     if (!res.ok) throw new Error(`Erro ${res.status}: ${await res.text()}`);
     const csvText = await res.text();
     preencherFormulario(csvText);
@@ -193,8 +195,6 @@ async function enviarDados() {
     const subtitulo1 = document.querySelector('input[name="subtitulo_vantagem_1"]');
     if (!subtitulo1 || !subtitulo1.value.trim()) {
       alert("Preencha pelo menos a primeira vantagem antes de enviar.");
-      botao.disabled = false;
-      botao.textContent = 'Salvar alterações';
       return;
     }
 
@@ -205,11 +205,10 @@ async function enviarDados() {
       csv
     });
 
-    alert("Dados atualizados com sucesso no GitHub!");
-
-    // >>> Recarregar dados para atualizar formulário
+    // Carrega os dados atualizados para o formulário, aguarda completar
     await carregarDados();
 
+    alert("Dados atualizados com sucesso no GitHub!");
   } catch (err) {
     alert("Erro ao enviar dados: " + err.message);
   } finally {
